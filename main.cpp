@@ -1,4 +1,6 @@
 #include <iostream>
+#include <fstream>
+
 #include "Section.h"
 
 
@@ -7,7 +9,27 @@
 
 int main() {
 
-    std::cout << "Hello, World!" << std::endl;
+
+    // Test reading in from file a collection of sections
+    Section** sections = new Section* [50];
+
+    std::ifstream fin;
+    fin.open("sections.txt");
+    
+    int s = 0;
+    std::string id, lname;
+    while(!fin.eof()) {
+        
+        fin >> id >> lname;
+
+        sections[s++] = new Section(id, lname);
+
+    }
+
+
+    for(int i = 0; i < s; ++i) {
+        std::cout << sections[i]->getSectionId() << " " << sections[i]->getInstructorLName() << std::endl;
+    }
 
     return 0;
 

@@ -16,8 +16,8 @@ cse122 smith
 cmpet117 mueller
 cmpet120 mueller
 chem110 adj001
-chem111 adj001
-chem111 adj001
+chem111.01 adj001
+chem111.02 adj001
 mcht111 kowalski
 mcht112 kowalski
 math140 adj002
