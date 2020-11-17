@@ -34,6 +34,10 @@ int main() {
         std::cout << sections[i]->getSectionId() << " " << sections[i]->getInstructorLName() << std::endl;
     }
 
+    Time bedTime(22, 30);
+    std::cout << "BedTime: " << bedTime.HH() << ":" << bedTime.MM() << std::endl;
+    std::cout << "Time: " << bedTime.MM() << std::endl;
+
     return 0;
 
 }

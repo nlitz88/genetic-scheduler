@@ -25,33 +25,37 @@ public:
     Time(int HH, int MM) {
         
         // Max time cannot exceed 1440 minutes (1440 minutes in a day)
-        time = (HH * 60 + MM) % 1440;
+        time = ((HH * 60) + MM) % 1440;
 
     }
 
     virtual ~Time() {}
 
 
-    // Returns time in minutes as an integer
-    virtual int MM() const {
+    // Returns time in minutes
+    virtual int t() const {
         return time;
     }
 
 
+    virtual void setTime(int newTimeInMinutes) {
+        // Prevents negative time
+        time = newTimeInMinutes < 0 ? -1 * newTimeInMinutes % 1440 : newTimeInMinutes % 1440;
+    }
+
+
+    // Returns hour of time
     virtual int HH() const {
+        return time / 60;
+    }
+
+
+    // Returns minutes of time after hours
+    virtual int MM() const {
         return time % 60;
     }
 
-
-    virtual int SS() const {
-        return time * 60;
-    }
-
-    virtual void setTime(int newTimeInMinutes) {
-        time = newTimeInMinutes % 1440;
-    }
-
-
+    
     // Operator Overloads
     //
 

@@ -3,12 +3,17 @@
 
 #include <string>
 
+#include "Meeting.h"
+
 class Section {
 
 private:
 
     std::string sectionId;
     std::string instructorLName;
+
+    // Collection of Meetings associated with this section
+    Meeting** meetings;
 
 public:
 
