@@ -14,10 +14,27 @@ private:
 
     // Collection of Meetings associated with this section
     Meeting** meetings;
+    int meetingCount;
 
 public:
 
+    // Default Section Constructor
+    //
     Section(std::string initId, std::string initLName);
+
+    // Section Destructor
+    //
+    virtual ~Section();
+
+    // Operation that adds meeting to the section's collection of meetings
+    //
+    virtual void addMeeting(Meeting* newMeeting);
+
+    // Operation that removes meeting from section's collection of meetings
+    //
+
+    // Get Meetings? (returns pointer to the collection of meetings) (Maybe this could be used to modify particular meetings)
+    // 
 
     virtual std::string getSectionId() const;
     virtual void setSectionId(std::string newId);

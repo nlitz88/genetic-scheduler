@@ -26,6 +26,7 @@ protected:
 public:
 
     // Default constructor for meeting
+    //
     Meeting() {
 
         day = M;
@@ -35,6 +36,7 @@ public:
     }
 
     // Meeting constructor for providing day, starTime, and endTime
+    //
     Meeting(Day initDay, Time initStartTime, Time initEndTime) {
 
         day = initDay;
@@ -44,6 +46,7 @@ public:
     }
 
     // Meeting constructor for providing day, starTime, and endTime (time in minutes as integers)
+    //
     Meeting(Day initDay, int initStartTime, int initEndTime) {
 
         day = initDay;
@@ -90,6 +93,7 @@ public:
 
 
     // Returns time ellapsed of meeting in minutes
+    //
     virtual int getMeetingDuration() const {
         int d;
         return d = endTime.MM() - startTime.MM() < 0 ? (-1 * d) : d;

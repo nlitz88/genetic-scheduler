@@ -2,11 +2,68 @@
 
 #include <string>
 
+#include <iostream>
 
+const int MEETING_STEP = 3;
+
+
+
+// Default Section Constructor
+//
 Section::Section(std::string initId, std::string initLName) {
 
     sectionId = initId;
     instructorLName = initLName;
+
+    meetings = new Meeting* [MEETING_STEP];
+    meetingCount = 0;
+
+}
+
+
+// Section Destructor
+//
+Section::~Section() {
+
+    // Release memory maintaining dynamically allocated Meeting objects
+    for(int m = 0; m < meetingCount; ++m) {
+
+        std::cout << "Meeting " << m << " of " << sectionId <<" destroyed" << std::endl;
+        delete meetings[m];
+
+    }
+
+    // Finally, release memory maintaining collection of Meetings
+    delete [] meetings;
+
+}
+
+
+
+// Operation that adds meeting to the section's collection of meetings
+//
+void Section::addMeeting(Meeting* newMeeting) {
+
+    // Could add additional checking up here and status reporting. Not sure how necessarry that'll be
+
+    // First, check to see if meeting collection must be expanded
+    if(meetingCount % MEETING_STEP == 0) {
+
+        Meeting** tempMeetings = new Meeting* [MEETING_STEP + meetingCount];
+
+        for(int m = 0; m < meetingCount; ++m) {
+
+            tempMeetings[m] = meetings[m];
+
+        }
+
+        delete [] meetings;
+        meetings = tempMeetings;
+
+    }
+
+    // As long as array large enough, add event
+    meetings[meetingCount++] = newMeeting;
 
 }
 
