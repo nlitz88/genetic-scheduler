@@ -32,7 +32,8 @@ public:
     virtual ~Time() {}
 
 
-    virtual int getTimeInMinutes() const {
+    // Returns time in minutes as an integer
+    virtual int t() const {
         return time;
     }
 
@@ -67,9 +68,36 @@ public:
 
     Time operator + (const Time& otherTime) {
         Time temp;
-        temp.time = otherTime.time;
+        temp.time = this->time + otherTime.time;
         return temp;
     }
+
+    Time operator + (int otherTime) {
+        Time temp;
+        temp.time =  this->time + otherTime;
+        return temp;
+    }
+
+    Time operator - (const Time& otherTime) {
+        Time temp;
+        temp.time = this->time - otherTime.time;
+    }
+
+    Time operator - (int otherTime) {
+        Time temp;
+        temp.time = this->time - otherTime;
+    }
+    
+    Time operator % (const Time& otherTime) {
+        Time temp;
+        temp.time = this->time % otherTime.time;
+    }
+
+    Time operator % (int otherTime) {
+        Time temp;
+        temp.time = this->time % otherTime;
+    }
+
 
     Time operator += (const Time& otherTime) {
         this->time += otherTime.time;
