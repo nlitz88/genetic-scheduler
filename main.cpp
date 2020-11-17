@@ -24,6 +24,9 @@ int main() {
 
         sections[s++] = new Section(id, lname);
 
+        // NOTE: Should I check for duplicate sections in the provided list?
+        //       I would imagine these should be ignored. Ask Hal about this later.
+
     }
 
 
