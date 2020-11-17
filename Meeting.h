@@ -1,6 +1,8 @@
 #ifndef MEETING_H
 #define MEETING_H
 
+#include <string>
+
 #include "Time.h"
 
 enum Day {M, T, W, R, F, S, U};
@@ -17,11 +19,39 @@ protected:
     Time startTime;
     Time endTime;
 
+    // Meeting ID unique to each section
+    // std::string meetingId;
+
+
 public:
 
+    // Default constructor for meeting
     Meeting() {
 
+        day = M;
+        startTime = 0;
+        endTime = 0;
+
     }
+
+    // Meeting constructor for providing day, starTime, and endTime
+    Meeting(Day initDay, Time initStartTime, Time initEndTime) {
+
+        day = initDay;
+        startTime = initStartTime;
+        endTime = initEndTime;
+        
+    }
+
+    // Meeting constructor for providing day, starTime, and endTime (time in minutes as integers)
+    Meeting(Day initDay, int initStartTime, int initEndTime) {
+
+        day = initDay;
+        startTime = initStartTime;
+        endTime = initEndTime;
+        
+    }
+
 
     virtual Day getDay() const {
         return day;
