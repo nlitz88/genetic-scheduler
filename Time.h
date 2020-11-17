@@ -36,12 +36,49 @@ public:
         return time;
     }
 
+
+    virtual void setTime(int newTimeInMinutes) {
+        time = newTimeInMinutes;
+    }
+
+
     virtual int getTimeInHours() const {
         return time % 60;
     }
 
+
     virtual int getTimeInSeconds() const {
         return time * 60;
+    }
+
+
+    // Operator Overloads
+    //
+
+    Time operator = (const Time& otherTime) {
+        this->time = otherTime.time;
+        return *this;
+    }
+
+    Time operator = (int newTime) {
+        this->time = newTime;
+        return *this;
+    }
+
+    Time operator + (const Time& otherTime) {
+        Time temp;
+        temp.time = otherTime.time;
+        return temp;
+    }
+
+    Time operator += (const Time& otherTime) {
+        this->time += otherTime.time;
+        return *this;
+    }
+
+    Time operator += (int additionalTime) {
+        this->time += additionalTime;
+        return *this;
     }
 
 };

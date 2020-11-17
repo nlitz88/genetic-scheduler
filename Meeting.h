@@ -8,7 +8,7 @@ class Meeting {
 
 protected:
 
-    
+    MeetingTime meetTime;
 
 public:
 
