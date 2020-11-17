@@ -1,7 +1,7 @@
 #ifndef MEETING_H
 #define MEETING_H
 
-#include <string>
+// #include <string>
 
 #include "Time.h"
 
