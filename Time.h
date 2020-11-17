@@ -33,23 +33,22 @@ public:
 
 
     // Returns time in minutes as an integer
-    virtual int t() const {
+    virtual int MM() const {
         return time;
     }
 
 
-    virtual void setTime(int newTimeInMinutes) {
-        time = newTimeInMinutes;
-    }
-
-
-    virtual int getTimeInHours() const {
+    virtual int HH() const {
         return time % 60;
     }
 
 
-    virtual int getTimeInSeconds() const {
+    virtual int SS() const {
         return time * 60;
+    }
+
+    virtual void setTime(int newTimeInMinutes) {
+        time = newTimeInMinutes % 1440;
     }
 
 
@@ -81,21 +80,25 @@ public:
     Time operator - (const Time& otherTime) {
         Time temp;
         temp.time = this->time - otherTime.time;
+        return temp;
     }
 
     Time operator - (int otherTime) {
         Time temp;
         temp.time = this->time - otherTime;
+        return temp;
     }
     
     Time operator % (const Time& otherTime) {
         Time temp;
         temp.time = this->time % otherTime.time;
+        return temp;
     }
 
     Time operator % (int otherTime) {
         Time temp;
         temp.time = this->time % otherTime;
+        return temp;
     }
 
 

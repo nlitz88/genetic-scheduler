@@ -89,7 +89,7 @@ public:
         return startTime;
     }
 
-    
+
     virtual void setStartTime(Time newTime) {
         startTime = newTime;
     }
@@ -114,7 +114,7 @@ public:
     // Returns time ellapsed of meeting in minutes
     virtual int getMeetingDuration() const {
         int d;
-        return d = endTime.getTimeInMinutes() - startTime.getTimeInMinutes() < 0 ? (-1 * d) : d;
+        return d = endTime.MM() - startTime.MM() < 0 ? (-1 * d) : d;
     }
 
 
