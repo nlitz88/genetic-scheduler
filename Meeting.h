@@ -100,6 +100,17 @@ public:
     }
 
 
+    virtual std::string toString() const {
+
+        std::string result;
+        result = std::to_string(day) + "\n" + std::to_string(startTime.HH()) + ":" + std::to_string(startTime.MM()) + "-\n"
+                 + std::to_string(endTime.HH()) + ":" + std::to_string(endTime.MM());
+
+        return result;
+
+    }
+
+
 };
 
 #endif

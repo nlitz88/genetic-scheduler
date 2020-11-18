@@ -48,6 +48,8 @@ public:
     virtual std::string getInstructorLName() const;
     virtual void setInstructorLName(std::string initLName);
 
+    virtual std::string toString() const;
+
 
 };
 

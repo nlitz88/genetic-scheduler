@@ -30,9 +30,15 @@ int main() {
     }
 
 
-    for(int i = 0; i < s; ++i) {
-        std::cout << sections[i]->getSectionId() << " " << sections[i]->getInstructorLName() << std::endl;
-    }
+    // for(int i = 0; i < s; ++i) {
+    //     std::cout << sections[i]->getSectionId() << " " << sections[i]->getInstructorLName() << std::endl;
+    // }
+
+    std::cout << sections[0]->getSectionId() << " meetings: \n\n";
+    sections[0]->addMeeting(new Meeting(T, Time(9,05), Time(9,55)));
+    sections[0]->addMeeting(new Meeting(R, Time(9,05), Time(9,55)));
+    std::cout << sections[0]->toString();
+
     for(int i = 0; i < s; ++i) {
         delete sections[i];
     }

@@ -115,3 +115,17 @@ std::string Section::getInstructorLName() const {
 void Section::setInstructorLName(std::string newLName) {
     instructorLName = newLName;
 }
+
+
+std::string Section::toString() const {
+
+    std::string result;
+
+    for(int m = 0; m < meetingCount; ++m) {
+        result += sectionId + "\n" + instructorLName + "\n" + meetings[m]->toString() + "\n\n";
+    }
+     
+
+    return result;
+
+}
