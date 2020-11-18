@@ -10,7 +10,7 @@ enum Day {M, T, W, R, F, S, U};
 
 class Meeting {
 
-protected:
+private:
 
     // Day of week as enumerated integer (Days from Sunday)
     Day day;
