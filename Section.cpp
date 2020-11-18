@@ -68,6 +68,24 @@ void Section::addMeeting(Meeting* newMeeting) {
 }
 
 
+// Operation that removes meeting from section's collection of meetings. Removed by Day?
+//
+void Section::removeMeeting(Day day) {
+
+    bool found = false;
+    int m = 0;
+    
+    while(!found) {
+        if(meetings[m]->getDay() == day) {
+            delete meetings[m];
+            found = true;
+        }
+        else {++m;}
+    }
+
+}
+
+
 // Function that will remove all meetings from a section
 // 
 void Section::removeAllMeetings() {

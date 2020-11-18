@@ -30,8 +30,9 @@ public:
     //
     virtual void addMeeting(Meeting* newMeeting);
 
-    // Operation that removes meeting from section's collection of meetings. Removed by ID
+    // Operation that removes meeting from section's collection of meetings. Removed by Day?
     //
+    virtual void removeMeeting(Day day);
 
     // Function that will remove all meetings from a section
     // 
