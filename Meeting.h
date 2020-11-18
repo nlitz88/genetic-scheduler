@@ -103,9 +103,9 @@ public:
     virtual std::string toString() const {
 
         std::string result;
-        result = std::to_string(day) + "\n"
-                + startTime.get24HourTime() + "-\n"
-                + endTime.get24HourTime();
+        std::string dayNames[] {"M", "T", "W", "R", "F", "S", "U"};
+        result = dayNames[day] + "\n"
+                + startTime.get24HourTime() + "-" + endTime.get24HourTime();
 
         return result;
 

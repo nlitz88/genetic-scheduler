@@ -116,11 +116,13 @@ void Section::generateMeetings() {
     - No course may be scheduled such that it overlaps common hour which occurs 12-1 each day
     
     */
+   
 
     // 1.) Randomly choose MWF, TR, MW, or A (any day) scheme. Set meetingCount accordingly
     
     enum DaySchemes {MWF, TR, MW, A};
     int dayScheme = rand() % 4;
+
 
     // 2.) Based on the randomly selected scheme, generate meeting times.
 
@@ -160,12 +162,39 @@ void Section::generateMeetings() {
         
 
         case TR: case MW:
+
+            do{
+
+                // // Get random start time in minutes of some hour in the day
+                startTime = (rand() % 24) * 60;
+                // TR and MW sections meet for 2 hours each day
+                endTime = startTime + 120;
+                
+                // Can only start at 8am, 10am, 1pm, 3pm, 5pm, and 7pm. Again, no need to check for overflow into common hour,
+                // as startTime will control this.
+            }while(startTime != 480 && startTime != 600 && startTime != 780 && startTime != 900 && startTime != 1020 && startTime != 1140);
             
+
+            std::cout << "Meeting Time: " << startTime.get24HourTime() << std::endl;
+
+            // 3.) Then, instantiate and add new Meeting objects with the parameters to the sections "meetings" collection
+            
+            if(dayScheme == TR) {
+                this->addMeeting(new Meeting(T, startTime, endTime));
+                this->addMeeting(new Meeting(R, startTime, endTime));
+            }
+            else {
+                this->addMeeting(new Meeting(M, startTime, endTime));
+                this->addMeeting(new Meeting(W, startTime, endTime));
+            }
+
             break;
         
 
         case A:
             
+            std::cout << "Any" << std::endl; 
+
             break;
     }
 
