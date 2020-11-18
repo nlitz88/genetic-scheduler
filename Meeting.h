@@ -103,8 +103,9 @@ public:
     virtual std::string toString() const {
 
         std::string result;
-        result = std::to_string(day) + "\n" + std::to_string(startTime.HH()) + ":" + std::to_string(startTime.MM()) + "-\n"
-                 + std::to_string(endTime.HH()) + ":" + std::to_string(endTime.MM());
+        result = std::to_string(day) + "\n"
+                + startTime.get24HourTime() + "-\n"
+                + endTime.get24HourTime();
 
         return result;
 

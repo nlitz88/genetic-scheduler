@@ -1,6 +1,9 @@
 #include <iostream>
 #include <fstream>
 
+#include <random>
+#include <time.h>
+
 #include "Section.h"
 
 
@@ -8,6 +11,9 @@
 // This file will eventually server as a broker to the various remote notes that it connects to?
 
 int main() {
+
+    // Seed random number generator
+    srand(time(0));
 
 
     // Test reading in from file a collection of sections
@@ -34,18 +40,19 @@ int main() {
     //     std::cout << sections[i]->getSectionId() << " " << sections[i]->getInstructorLName() << std::endl;
     // }
 
-    std::cout << sections[0]->getSectionId() << " meetings: \n\n";
-    sections[0]->addMeeting(new Meeting(T, Time(9,05), Time(9,55)));
-    sections[0]->addMeeting(new Meeting(R, Time(9,05), Time(9,55)));
-    std::cout << sections[0]->toString();
+    // Pointer to test section
+    Section* s1 = sections[0];
+
+    std::cout << s1->getSectionId() << " meetings: \n\n";
+    // s1->addMeeting(new Meeting(T, Time(9,05), Time(9,55)));
+    // s1->addMeeting(new Meeting(R, Time(9,05), Time(9,55)));
+    s1->generateMeetings();
+    // std::cout << s1->toString();
+
 
     for(int i = 0; i < s; ++i) {
         delete sections[i];
     }
-
-    Time bedTime(22, 30);
-    std::cout << "BedTime: " << bedTime.HH() << ":" << bedTime.MM() << std::endl;
-    std::cout << "Time: " << bedTime.t() << std::endl;
 
     return 0;
 

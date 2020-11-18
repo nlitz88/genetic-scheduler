@@ -1,8 +1,11 @@
 #include "Section.h"
 
 #include <string>
-
+#include <random>
+#include <time.h>
 #include <iostream>
+
+#include "Time.h"
 
 
 const int MEETING_STEP = 3;
@@ -35,6 +38,8 @@ Section::~Section() {
 
     // Finally, release memory maintaining collection of Meetings
     delete [] meetings;
+
+    meetingCount = 0;
 
 }
 
@@ -95,6 +100,82 @@ void Section::removeAllMeetings() {
     }
 
 }
+
+
+
+// DEVELOPMENTAL: This operation will, according to certain criteria, randomly generate meetings for this section
+//
+void Section::generateMeetings() {
+
+    /*
+    
+    - Sections can only be scheduled as MWF, TR, MW or one day a week (any day)
+    - MWF sections meets for 1 hr each day and can start on any hour BUT 12pm
+    - TR and MW sections meet for 2 hours each day and can only start at 8am, 10am, 1pm, 3pm, 5pm, and 7pm
+    - A one-day-a-week section meets for 3 hrs and can have any start time
+    - No course may be scheduled such that it overlaps common hour which occurs 12-1 each day
+    
+    */
+
+    // 1.) Randomly choose MWF, TR, MW, or A (any day) scheme. Set meetingCount accordingly
+    
+    enum DaySchemes {MWF, TR, MW, A};
+    int dayScheme = rand() % 4;
+
+    // 2.) Based on the randomly selected scheme, generate meeting times.
+
+    // Variables for calculating meeting parameters
+    Time startTime;
+    Time endTime;
+    
+    switch(dayScheme) {
+        
+
+        case MWF:
+
+            // Each meeting will start at the same time. So calculate random start time within the restraints
+            do {
+                
+                // Get random start time in minutes of some hour in the day
+                startTime = (rand() % 24) * 60;
+                // MWF: meet for 1 hour a day (StartTime + 60 minutes)
+                endTime = startTime + 60;
+                
+                // Don't have to check if it overlaps with common hour, as the only way that could happen is at 12pm, which we don't allow
+            }while(startTime == 720);
+
+
+            std::cout << "Meeting Time: " << startTime.get24HourTime() << std::endl;
+
+
+            // 3.) Then, instantiate and add new Meeting objects with the parameters to the sections "meetings" collection
+
+            this->addMeeting(new Meeting(M, startTime, endTime));
+            this->addMeeting(new Meeting(W, startTime, endTime));
+            this->addMeeting(new Meeting(F, startTime, endTime));
+
+            // NOTE: meetingCount will be updated as these meetings are added
+
+            break;
+        
+
+        case TR: case MW:
+            
+            break;
+        
+
+        case A:
+            
+            break;
+    }
+
+
+    // Just for debugging
+    std::string daySchemes[] {"MWF", "TR", "MW", "A"};
+    std::cout << "Day Scheme: " << daySchemes[dayScheme] << ". Will meet " << meetingCount << " time(s) per week." << std::endl;
+
+}
+
 
 
 std::string Section::getSectionId() const {

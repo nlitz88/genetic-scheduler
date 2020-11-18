@@ -42,6 +42,13 @@ public:
     // Get Meetings? (returns pointer to the collection of meetings) (Maybe this could be used to modify particular meetings)
     // 
 
+
+    
+    // DEVELOPMENTAL: This operation will, according to certain criteria, randomly generate meetings for this section
+    //
+    virtual void generateMeetings();
+
+
     virtual std::string getSectionId() const;
     virtual void setSectionId(std::string newId);
 

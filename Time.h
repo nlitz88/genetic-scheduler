@@ -1,6 +1,8 @@
 #ifndef TIME_H
 #define TIME_H
 
+#include <string>
+
 
 class Time {
 
@@ -45,19 +47,83 @@ public:
 
 
     // Returns hour of time
+    //
     virtual int HH() const {
         return time / 60;
     }
 
 
     // Returns minutes of time after hours
+    //
     virtual int MM() const {
         return time % 60;
+    }
+
+
+    // Returns string representation of time
+    virtual std::string get24HourTime() const {
+
+        std::string result;
+        result = (this->HH() < 10 ? "0" + std::to_string(this->HH()) : std::to_string(this->HH()))
+               + ":"
+               + (this->MM() < 10 ? "0" + std::to_string(this->MM()) : std::to_string(this->MM()));
+        
+        return result;
+        
     }
 
     
     // Operator Overloads
     //
+
+    bool operator == (int otherTime) {
+        return this->time == otherTime;
+    }
+    bool operator == (const Time& otherTime) {
+        return this->time == otherTime.time;
+    }
+
+
+    bool operator != (int otherTime) {
+        return this->time != otherTime;
+    }
+    bool operator != (const Time& otherTime) {
+        return this->time != otherTime.time;
+    }
+
+
+    bool operator >= (int otherTime) {
+        return this->time >= otherTime;
+    }
+    bool operator >= (const Time& otherTime) {
+        return this->time >= otherTime.time;
+    }
+
+
+    bool operator <= (int otherTime) {
+        return this->time <= otherTime;
+    }
+    bool operator <= (const Time& otherTime) {
+        return this->time <= otherTime.time;
+    }
+
+
+    bool operator > (int otherTime) {
+        return this->time > otherTime;
+    }
+    bool operator > (const Time& otherTime) {
+        return this->time > otherTime.time;
+    }
+
+
+    bool operator < (int otherTime) {
+        return this->time < otherTime;
+    }
+    bool operator < (const Time& otherTime) {
+        return this->time < otherTime.time;
+    }
+
+
 
     Time operator = (const Time& otherTime) {
         this->time = otherTime.time;
