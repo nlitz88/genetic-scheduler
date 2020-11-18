@@ -4,8 +4,8 @@
 
 #include <iostream>
 
-const int MEETING_STEP = 3;
 
+const int MEETING_STEP = 3;
 
 
 // Default Section Constructor
@@ -64,6 +64,17 @@ void Section::addMeeting(Meeting* newMeeting) {
 
     // As long as array large enough, add event
     meetings[meetingCount++] = newMeeting;
+
+}
+
+
+// Function that will remove all meetings from a section
+// 
+void Section::removeAllMeetings() {
+
+    while(meetingCount > 0) {
+        delete meetings[meetingCount--];
+    }
 
 }
 
