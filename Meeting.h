@@ -104,8 +104,7 @@ public:
 
         std::string result;
         std::string dayNames[] {"M", "T", "W", "R", "F", "S", "U"};
-        result = dayNames[day] + "\n"
-                + startTime.get24HourTime() + "-" + endTime.get24HourTime();
+        result = dayNames[day] + "\n" + startTime.get24HourTime() + "-" + endTime.get24HourTime();
 
         return result;
 

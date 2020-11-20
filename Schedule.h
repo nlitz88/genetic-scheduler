@@ -36,6 +36,17 @@ public:
     //
     virtual void removeAllSections();
 
+
+
+
+    // Operation that will generate non-overlapping, limited number of sections that will comprise the schedule (STUDENT SCHEDULE)
+    //
+    virtual void generateSchedule();
+
+
+
+
+    // EXPERIMENTAL: Operation that will generate an overlapping, nearly infinite number of sections that will comprise the schedule (SCHOOLWIDE MASTER SCHEDULE)
     //
     
 

@@ -39,16 +39,22 @@ public:
     virtual void removeAllMeetings();
 
 
+
     // Get Meetings? (returns pointer to the collection of meetings) (Maybe this could be used to modify particular meetings)
     // 
 
     // Also, get Num meetings?
 
 
+
+
     
     // DEVELOPMENTAL: This operation will, according to certain criteria, randomly generate meetings for this section
     //
     virtual void generateMeetings();
+
+
+
 
 
     virtual std::string getSectionId() const;
