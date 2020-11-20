@@ -150,7 +150,7 @@ void Section::generateMeetings() {
             std::cout << "Meeting Time: " << startTime.get24HourTime() << std::endl;
 
 
-            // 3.) Then, instantiate and add new Meeting objects with the parameters to the sections "meetings" collection
+            // 3.) Then, instantiate and add new Meeting objects with the parameters to the section's "meetings" collection
 
             this->addMeeting(new Meeting(M, startTime, endTime));
             this->addMeeting(new Meeting(W, startTime, endTime));
@@ -163,9 +163,11 @@ void Section::generateMeetings() {
 
         case TR: case MW:
 
+        
+            // Each meeting will start at the same time. So calculate random start time within the restraints
             do{
 
-                // // Get random start time in minutes of some hour in the day
+                // Get random start time in minutes of some hour in the day
                 startTime = (rand() % 24) * 60;
                 // TR and MW sections meet for 2 hours each day
                 endTime = startTime + 120;
@@ -177,7 +179,7 @@ void Section::generateMeetings() {
 
             std::cout << "Meeting Time: " << startTime.get24HourTime() << std::endl;
 
-            // 3.) Then, instantiate and add new Meeting objects with the parameters to the sections "meetings" collection
+            // 3.) Then, instantiate and add new Meeting objects with the parameters to the section's "meetings" collection
             
             if(dayScheme == TR) {
                 this->addMeeting(new Meeting(T, startTime, endTime));
@@ -192,8 +194,26 @@ void Section::generateMeetings() {
         
 
         case A:
+
+            // Generate random start time within the restraints for once a week section.
+            do{
+
+                // Get random start time in minutes of some hour in the day
+                startTime = (rand() % 24) * 60;
+                // ANY day sections meet for 3 hours one day a week.
+                endTime = startTime + 180;
+            
+            // Once a week courses (that occur ANY day) can start at any hour, but can't overlap with common hour.
+            // Therefore, they can't start anytime after 9AM until 1PM
+            }while(startTime > 540 && startTime < 780);
             
             std::cout << "Any" << std::endl; 
+
+            // 3.) Generate the random day on which the section will occur (limited to M-F)
+            Day sectionDay = static_cast<Day>(rand() % 5);
+
+            // 4.) Then, instantiate and add the single Meeting object with parameters to section's "meetings" collection
+            this->addMeeting(new Meeting(sectionDay, startTime, endTime));
 
             break;
     }
