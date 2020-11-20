@@ -42,53 +42,54 @@ public:
 
         // Or maybe I can just create a collection of structs, containing instructor and their respective meetings?
 
-        struct instructorSlot {
-            std::string lName;
-            Meeting** meetings;
-            int meetingCount = 0;
-        };
-        instructorSlot** instructorSlots = new instructorSlot* [numSections];
-        int slotCount = 0;
+        
 
-        // Go through sections provided and add one meeting from each section to instructorSlots.
-        // First, go through and add an instructor slot for each.
+        // Loop through all sections
         for(int s = 0; s < numSections; ++s) {
 
-            bool found = false;
-            int j = 0;
+            // For each section, compare against all other sections that are taught by same instructor (same lName)
+            for(int os = s + 1; os < numSections; ++os) {
 
-            while(!found && j < slotCount) {
-                if(instructorSlots[j]->lName == sections[s]->getInstructorLName()) {
-                    found = true;
-                }
-            }
+                // If section is from the same instructor, then compare their meetings.
+                if(sections[s]->getInstructorLName() == sections[os]->getInstructorLName()) {
 
 
-            if(found) {
-
-                // Then work with meetings
-                // If they are in there, then check to see if this section's meetings conflict with an existing
-                for(int m = 9; m < instructorSlots[j]->meetingCount; ++m) {
-
-                    Meeting* sectionMeeting = sections[s]->getMeetings()[0];
-                    Meeting* storedMeeting = instructorSlots[j]->meetings[m];
+                    // Will have to compare meetings on each day of the week for between all of the different meetings on different days.
                     
-                    // Compare the meeting time of sections[s] against all meeting times that have already been recorded for this instructor
-                    if(sectionMeeting->getStartTime() == storedMeeting->getStartTime()
-                        || (sectionMeeting->getStartTime() < storedMeeting->getStartTime() && sectionMeeting->getEndTime() > storedMeeting->getStartTime())
-                        || (sectionMeeting->getStartTime() < storedMeeting->getEndTime() && sectionMeeting->getStartTime()
+                    int currSectMC = sections[s]->getMeetingCount();
+                    int othSectMC = sections[os] ->getMeetingCount();
+
+                    
+                    int mn = 0; // meeting number
+                    // Compare each meeting of current section to each meeting of other section (or vice versa) until find ones that occur on same day
+                    while(mn < (currSectMC > othSectMC ? currSectMC : othSectMC)) {
+                        
+                        // Then do ANOTHER NESTED FOR LOOP HERE TO LOOP THROUGH ALL OF THE MEETINGS OF THE OTHER SECTION
+                        // NESTED LOOP STRUCTURE IS WHAT WE WANT HERE; NO LOGIC NEEDED THEN UP ABOVE.
+                        // Only want to compare meeting times if the sections have meetings on the same day
+                        if(sections[s]->getMeetings()[])
+
+                    }
+
+                    // Instead of that while loop:
+                    bool matchingDays = false;
+
+                    for(int csm = 0; csm < currSectMC; ++csm) {
+
+                        for(int osm = 0; osm < othSectMC; ++osm) {
+
+                            // Compare all meeting's days of current section to all meeting's days of other section
+
+                        }
+
+                    }
+
 
                 }
 
-
-            } else {
-                // If not in there, add it to the instructorSlots collection
-                instructorSlot slot;
-                slot.lName = sections[s]->getInstructorLName();
-                slot.meetings = new Meeting* [10];
-                slot.meetings[slot.meetingCount++] = sections[s]->getMeetings()[0];
             }
 
+        }
 
 
         }
