@@ -18,6 +18,10 @@ public:
     //
     Schedule();
 
+    // Constructor that accepts pointer to collection of pointers to sections that will be used to import those "shell sections"
+    //
+    Schedule(Section** importSectionList, int importCount);
+
 
     // Schedule destructor. Will deallocate all memory maintaining collection of sections.
     // Will also destroy the sections and meetings within those sections for now.
@@ -29,6 +33,11 @@ public:
     // Operation that will add section to collection of sections.
     //
     virtual void addSection(Section* newSection);
+
+
+    // Operation that will add multiple sections from a provided collection of Sections
+    //
+    virtual void importSections(Section** importSectionList, int importCount);
 
 
     // Operation that will remove section from collection of sections based on sectionId
@@ -46,7 +55,7 @@ public:
     // Operation that will generate non-overlapping, limited number of sections that will comprise the schedule (STUDENT SCHEDULE)
     // UPDATE: NOT EXACTLY SURE WHAT KIND OF SCHEDULE THIS IS SUPPOSED TO BE YET
     //
-    virtual void generateSchedule(Section** sectionList, int numSections);
+    virtual void generateSchedule();
 
 
 

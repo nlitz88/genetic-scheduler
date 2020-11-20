@@ -52,12 +52,11 @@ int main() {
 
 
 
-    Schedule* sched1 = new Schedule();
+    Schedule* sched1 = new Schedule(sections, numSections);
 
-    // sched1->addSection(s1);
-    // std::cout << sched1->toString();
+    sched1->generateSchedule();
+    std::cout << sched1->toString();
 
-    sched1->generateSchedule(sections, numSections);
     sched1->~Schedule();
 
     // for(int i = 0; i < numSections; ++i) {

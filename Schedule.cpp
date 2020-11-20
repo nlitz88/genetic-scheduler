@@ -17,6 +17,19 @@ Schedule::Schedule() {
 }
 
 
+// Constructor that accepts pointer to collection of pointers to sections that will be used to import those "shell sections"
+//
+Schedule::Schedule(Section** importSectionList, int importCount) {
+
+    // Establish new collection of pointers to Section objects to be defined later.
+    sections = new Section* [SECTION_STEP];
+    sectionCount = 0;
+
+   importSections(importSectionList, importCount);
+    
+}
+
+
 // Schedule destructor. Will deallocate all memory maintaining collection of sections.
 // Will also destroy the sections and meetings within those sections for now.
 // Could reuse sections to conserve memory, but that might be too much complexity for at the moment.
@@ -53,6 +66,20 @@ void Schedule::addSection(Section* newSection) {
     // As long as section collection large enough, add new section to collection
     sections[sectionCount++] = newSection;
 
+
+}
+
+
+// Operation that will add multiple sections from a provided collection of Sections
+//
+void Schedule::importSections(Section** importSectionList, int importCount) {
+
+    // sectionCount will increase as each additional section is added
+    for(int s = 0; s < importCount; ++s) {
+        // This essentially creates new Section Object based on an existing Section object. 
+        // The only data copied from one Section to another, however, is the ID and LName.
+        addSection(new Section(*(importSectionList[s])));
+    }
 
 }
 
@@ -95,26 +122,16 @@ void Schedule::removeAllSections() {
 // Operation that will generate non-overlapping, limited number of sections that will comprise the schedule (STUDENT SCHEDULE)
 // UPDATE: NOT EXACTLY SURE WHAT KIND OF SCHEDULE THIS IS SUPPOSED TO BE YET
 //
-void Schedule::generateSchedule(Section** sectionList, int numSectionsToAdd) {
+void Schedule::generateSchedule() {
 
 
     // ATTEMPT 1: COULD BE TOTALLY WRONG
 
-    // Pull in collection of sections from file (or that will be done in main and this will just use a pointer to that collection)
+    // 1.) When the schedule is first created, a sectionList (from main, imported from file) can be passed in to import those "shell" sections to the schedule
+    //     OR, these can be imported using an external call as well.
 
-    // This part will be done for POPULATION_SIZE
-    //      Copy section from main section to here to generate unique meetings for this one in particular, as that section may be used again differently in another schedule
-    //      Then generate meetings for that copy instance (all the copy needs is the Lastname and sectionID) (copy constructor??)
-    //      Then, add that generated section to the sections collection
+    // 2.) THEN, within here, we generate meetings for all of those schedules in our sectons collection.
 
-
-    // 1.) Create new section objects using sectionID and InstructorName from Section's from sectionList
-    //          CONSIDER MAKING THIS IT'S OWN FUNCTION!!
-    //
-    for(int s = 0; s < numSectionsToAdd; ++s) {
-        addSection(new Section(*(sectionList[s])));
-        // addSection(new Section(sectionList[s]->getSectionId(), sectionList[s]->getInstructorLName()));
-    }
 
     // 2.) Generate meetings for each of the sections pulled in
     //
