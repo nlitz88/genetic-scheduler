@@ -46,6 +46,13 @@ public:
 
     // Get Meetings? (returns pointer to the collection of meetings) (Maybe this could be used to modify particular meetings)
     // 
+    virtual Meeting** getMeetings() const;
+
+
+    // Operation that returns meetingCount
+    //
+    virtual int getMeetingCount() const;
+
 
     // Also, get Num meetings?
 

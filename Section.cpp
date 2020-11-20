@@ -113,6 +113,21 @@ void Section::removeAllMeetings() {
 }
 
 
+// Get Meetings? (returns pointer to the collection of meetings) (Maybe this could be used to modify particular meetings)
+// 
+Meeting** Section::getMeetings() const {
+    return meetings;
+}
+
+
+// Operation that returns meetingCount
+//
+int Section::getMeetingCount() const {
+    return meetingCount;
+}
+
+
+
 
 // DEVELOPMENTAL: This operation will, according to certain criteria, randomly generate meetings for this section
 //
