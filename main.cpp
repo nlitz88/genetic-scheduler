@@ -19,17 +19,17 @@ int main() {
 
     // Test reading in from file a collection of sections
     Section** sections = new Section* [50];
+    int numSections = 0;
 
     std::ifstream fin;
     fin.open("sections.txt");
     
-    int s = 0;
     std::string id, lname;
     while(!fin.eof()) {
         
         fin >> id >> lname;
 
-        sections[s++] = new Section(id, lname);
+        sections[numSections++] = new Section(id, lname);
 
         // NOTE: Should I check for duplicate sections in the provided list?
         //       I would imagine these should be ignored. Ask Hal about this later.
@@ -54,13 +54,17 @@ int main() {
 
     Schedule* sched1 = new Schedule();
 
-    sched1->addSection(s1);
-    std::cout << sched1->toString();
+    // sched1->addSection(s1);
+    // std::cout << sched1->toString();
 
+    sched1->generateSchedule(sections, numSections);
+    sched1->~Schedule();
 
-    for(int i = 0; i < s; ++i) {
-        delete sections[i];
-    }
+    // for(int i = 0; i < numSections; ++i) {
+    //     delete sections[i];
+    // }
+
+    std::cout << "This section should still exist: " << s1->toString();
 
     return 0;
 

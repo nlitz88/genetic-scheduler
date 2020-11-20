@@ -1,5 +1,7 @@
 #include "Schedule.h"
 
+#include <iostream>
+
 
 const int SECTION_STEP = 6;
 
@@ -79,7 +81,10 @@ void Schedule::removeSection(std::string idToRemove) {
 void Schedule::removeAllSections() {
 
     while(sectionCount > 0) {
+
+        // This should call Section destructor
         delete sections[sectionCount--];
+
     }
 
 }
@@ -90,7 +95,37 @@ void Schedule::removeAllSections() {
 // Operation that will generate non-overlapping, limited number of sections that will comprise the schedule (STUDENT SCHEDULE)
 // UPDATE: NOT EXACTLY SURE WHAT KIND OF SCHEDULE THIS IS SUPPOSED TO BE YET
 //
-void Schedule::generateSchedule() {}
+void Schedule::generateSchedule(Section** sectionList, int numSectionsToAdd) {
+
+
+    // ATTEMPT 1: COULD BE TOTALLY WRONG
+
+    // Pull in collection of sections from file (or that will be done in main and this will just use a pointer to that collection)
+
+    // This part will be done for POPULATION_SIZE
+    //      Copy section from main section to here to generate unique meetings for this one in particular, as that section may be used again differently in another schedule
+    //      Then generate meetings for that copy instance (all the copy needs is the Lastname and sectionID) (copy constructor??)
+    //      Then, add that generated section to the sections collection
+
+
+    // 1.) Create new section objects using sectionID and InstructorName from Section's from sectionList
+    //          CONSIDER MAKING THIS IT'S OWN FUNCTION!!
+    //
+    for(int s = 0; s < numSectionsToAdd; ++s) {
+        addSection(new Section(*(sectionList[s])));
+        // addSection(new Section(sectionList[s]->getSectionId(), sectionList[s]->getInstructorLName()));
+    }
+
+    // 2.) Generate meetings for each of the sections pulled in
+    //
+    for(int s = 0; s < sectionCount; ++s) {
+        std::cout << "Generate meetings for " << sections[s]->getSectionId() << std::endl;
+        // Generate meetings for each section
+        sections[s]->generateMeetings();
+    }
+
+
+}
 
 
 

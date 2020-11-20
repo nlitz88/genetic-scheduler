@@ -22,6 +22,10 @@ public:
     //
     Section(std::string initId, std::string initLName);
 
+    // Copy Constructor
+    //
+	Section(const Section& otherSection);
+
     // Section Destructor
     //
     virtual ~Section();

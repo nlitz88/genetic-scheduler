@@ -46,7 +46,7 @@ public:
     // Operation that will generate non-overlapping, limited number of sections that will comprise the schedule (STUDENT SCHEDULE)
     // UPDATE: NOT EXACTLY SURE WHAT KIND OF SCHEDULE THIS IS SUPPOSED TO BE YET
     //
-    virtual void generateSchedule();
+    virtual void generateSchedule(Section** sectionList, int numSections);
 
 
 

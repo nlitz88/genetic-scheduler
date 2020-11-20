@@ -24,19 +24,27 @@ Section::Section(std::string initId, std::string initLName) {
 }
 
 
+// Copy Constructor
+//
+Section::Section(const Section& otherSection) {
+
+    sectionId = otherSection.sectionId;
+    instructorLName = otherSection.instructorLName;
+
+    meetings = new Meeting* [MEETING_STEP];
+    meetingCount = 0;
+
+}
+
+
 // Section Destructor
 //
 Section::~Section() {
 
-    // Could also call removeAllMeetings here
+    std::cout << sectionId << " being deleted. # of meetings: " << meetingCount << std::endl;
 
     // Release memory maintaining dynamically allocated Meeting objects
-    for(int m = 0; m < meetingCount; ++m) {
-
-        std::cout << "Meeting " << m << " of " << sectionId <<" destroyed" << std::endl;
-        delete meetings[m];
-
-    }
+    removeAllMeetings();
 
     // Finally, release memory maintaining collection of Meetings
     delete [] meetings;
@@ -98,6 +106,7 @@ void Section::removeMeeting(Day day) {
 void Section::removeAllMeetings() {
 
     while(meetingCount > 0) {
+        std::cout << "Meeting " << meetingCount << " of " << sectionId << " destroyed" << std::endl;
         delete meetings[meetingCount--];
     }
 
