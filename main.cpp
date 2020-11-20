@@ -5,6 +5,7 @@
 #include <time.h>
 
 #include "Section.h"
+#include "Schedule.h"
 
 
 // This is where the various classes and scheduler optimization aglorithm will be tested.
@@ -43,11 +44,18 @@ int main() {
     // Pointer to test section
     Section* s1 = sections[0];
 
-    std::cout << s1->getSectionId() << " meetings: \n\n";
+    // std::cout << s1->getSectionId() << " meetings: \n\n";
     // s1->addMeeting(new Meeting(T, Time(9,05), Time(9,55)));
     // s1->addMeeting(new Meeting(R, Time(9,05), Time(9,55)));
     s1->generateMeetings();
-    std::cout << s1->toString();
+    // std::cout << s1->toString();
+
+
+
+    Schedule* sched1 = new Schedule();
+
+    sched1->addSection(s1);
+    std::cout << sched1->toString();
 
 
     for(int i = 0; i < s; ++i) {

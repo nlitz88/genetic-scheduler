@@ -48,6 +48,9 @@ public:
 
     // EXPERIMENTAL: Operation that will generate an overlapping, nearly infinite number of sections that will comprise the schedule (SCHOOLWIDE MASTER SCHEDULE)
     //
+
+
+    virtual std::string toString() const;
     
 
 };

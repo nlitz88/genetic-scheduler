@@ -1,7 +1,6 @@
 #include "Schedule.h"
 
 
-
 const int SECTION_STEP = 6;
 
 
@@ -68,3 +67,18 @@ void Schedule::removeAllSections() {}
 // Operation that will generate non-overlapping, limited number of sections that will comprise the schedule (STUDENT SCHEDULE)
 //
 void Schedule::generateSchedule() {}
+
+
+std::string Schedule::toString() const {
+
+    std::string result;
+
+    for(int s = 0; s < sectionCount; ++s) {
+
+        result += sections[s]->toString() + "\n\n";
+
+    }
+
+    return result;
+
+}

@@ -147,7 +147,7 @@ void Section::generateMeetings() {
             }while(startTime == 720);
 
 
-            std::cout << "Meeting Time: " << startTime.get24HourTime() << std::endl;
+            // std::cout << "Meeting Time: " << startTime.get24HourTime() << std::endl;
 
 
             // 3.) Then, instantiate and add new Meeting objects with the parameters to the section's "meetings" collection
@@ -177,7 +177,7 @@ void Section::generateMeetings() {
             }while(startTime != 480 && startTime != 600 && startTime != 780 && startTime != 900 && startTime != 1020 && startTime != 1140);
             
 
-            std::cout << "Meeting Time: " << startTime.get24HourTime() << std::endl;
+            // std::cout << "Meeting Time: " << startTime.get24HourTime() << std::endl;
 
             // 3.) Then, instantiate and add new Meeting objects with the parameters to the section's "meetings" collection
             
@@ -207,7 +207,7 @@ void Section::generateMeetings() {
             // Therefore, they can't start anytime after 9AM until 1PM
             }while(startTime > 540 && startTime < 780);
             
-            std::cout << "Any" << std::endl; 
+            // std::cout << "Any" << std::endl; 
 
             // 3.) Generate the random day on which the section will occur (limited to M-F)
             Day sectionDay = static_cast<Day>(rand() % 5);
@@ -220,8 +220,8 @@ void Section::generateMeetings() {
 
 
     // Just for debugging
-    std::string daySchemes[] {"MWF", "TR", "MW", "A"};
-    std::cout << "Day Scheme: " << daySchemes[dayScheme] << ". Will meet " << meetingCount << " time(s) per week." << std::endl;
+    // std::string daySchemes[] {"MWF", "TR", "MW", "A"};
+    // std::cout << "Day Scheme: " << daySchemes[dayScheme] << ". Will meet " << meetingCount << " time(s) per week." << std::endl;
 
 }
 
@@ -251,10 +251,17 @@ std::string Section::toString() const {
 
     std::string result;
 
+    // for(int m = 0; m < meetingCount; ++m) {
+    //     result += sectionId + "\n" + instructorLName + "\n" + meetings[m]->toString() + "\n\n";
+    // }
+
+    result += sectionId + "\n" + instructorLName + "\n";
+
     for(int m = 0; m < meetingCount; ++m) {
-        result += sectionId + "\n" + instructorLName + "\n" + meetings[m]->toString() + "\n\n";
+        result += meetings[m]->toString();
     }
-     
+
+    result += "\n" +meetings[0]->getStartTime().get24HourTime() + "-" + meetings[0]->getEndTime().get24HourTime() + "\n";
 
     return result;
 
