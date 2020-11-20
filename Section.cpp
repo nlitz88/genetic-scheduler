@@ -28,6 +28,8 @@ Section::Section(std::string initId, std::string initLName) {
 //
 Section::~Section() {
 
+    // Could also call removeAllMeetings here
+
     // Release memory maintaining dynamically allocated Meeting objects
     for(int m = 0; m < meetingCount; ++m) {
 

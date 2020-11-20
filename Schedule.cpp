@@ -21,7 +21,8 @@ Schedule::Schedule() {
 //
 Schedule::~Schedule() {
 
-
+    removeAllSections();
+    delete [] sections;
 
 }
 
@@ -53,20 +54,45 @@ void Schedule::addSection(Section* newSection) {
 
 }
 
+
 // Operation that will remove section from collection of sections based on sectionId
 //
-void Schedule::removeSection(std::string idToRemove) {}
+void Schedule::removeSection(std::string idToRemove) {
+
+
+    bool found = false;
+    int s = 0;
+
+    while(!found) {
+        if(sections[s]->getSectionId() == idToRemove) {
+            delete sections[s];
+            found = true;
+        }
+        else {++s;}
+    }
+
+}
+
 
 // Operation that will remove all sections from schedule
 //
-void Schedule::removeAllSections() {}
+void Schedule::removeAllSections() {
+
+    while(sectionCount > 0) {
+        delete sections[sectionCount--];
+    }
+
+}
 
 
 
 
 // Operation that will generate non-overlapping, limited number of sections that will comprise the schedule (STUDENT SCHEDULE)
+// UPDATE: NOT EXACTLY SURE WHAT KIND OF SCHEDULE THIS IS SUPPOSED TO BE YET
 //
 void Schedule::generateSchedule() {}
+
+
 
 
 std::string Schedule::toString() const {
