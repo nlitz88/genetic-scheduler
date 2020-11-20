@@ -1,6 +1,8 @@
 #ifndef RULE_H
 #define RULE_H
 
+#include <iostream>
+
 #include "Schedule.h"
 #include "Section.h"
 
@@ -18,7 +20,7 @@ public:
 
 
 // Test rule:
-class placeRule : Rule {
+class R_place : Rule {
 
 private:
     double fitness;
@@ -33,52 +35,37 @@ public:
 
         // Process for calculating fitness based on whether or not instructor has overlapping sections
 
-        // How can I calculate this?
-
-        // I'm given a schedule that has a collection of sections. Each section has an instructor.
-        // The schedule is NO GOOD if any instructor's sections overlap.
-        // So, perhaps one way I could do this is by creating a collection of sections for EACH composer.
-        // THEN, as I encounter each instructor, test if you can add it to the the collection based on time.
-
-        // Or maybe I can just create a collection of structs, containing instructor and their respective meetings?
-
-        
-
         // Loop through all sections
-        for(int s = 0; s < numSections; ++s) {
+        for(int cs = 0; cs < numSections; ++cs) {
 
             // For each section, compare against all other sections that are taught by same instructor (same lName)
-            for(int os = s + 1; os < numSections; ++os) {
+            for(int os = cs + 1; os < numSections; ++os) {
 
                 // If section is from the same instructor, then compare their meetings.
-                if(sections[s]->getInstructorLName() == sections[os]->getInstructorLName()) {
+                if(sections[cs]->getInstructorLName() == sections[os]->getInstructorLName()) {
 
 
                     // Will have to compare meetings on each day of the week for between all of the different meetings on different days.
                     
-                    int currSectMC = sections[s]->getMeetingCount();
+                    int currSectMC = sections[cs]->getMeetingCount();
                     int othSectMC = sections[os] ->getMeetingCount();
 
-                    
-                    int mn = 0; // meeting number
-                    // Compare each meeting of current section to each meeting of other section (or vice versa) until find ones that occur on same day
-                    while(mn < (currSectMC > othSectMC ? currSectMC : othSectMC)) {
-                        
-                        // Then do ANOTHER NESTED FOR LOOP HERE TO LOOP THROUGH ALL OF THE MEETINGS OF THE OTHER SECTION
-                        // NESTED LOOP STRUCTURE IS WHAT WE WANT HERE; NO LOGIC NEEDED THEN UP ABOVE.
-                        // Only want to compare meeting times if the sections have meetings on the same day
-                        if(sections[s]->getMeetings()[])
-
-                    }
-
-                    // Instead of that while loop:
+                    // Compare each meeting of the current section to EACH meeting of the other section.
+                    // If the days match between two meetings, THEN and only then will we compare their times.
                     bool matchingDays = false;
 
+                    // For each meeting in the "Current" section
                     for(int csm = 0; csm < currSectMC; ++csm) {
 
+                        // For each meeting in the "Other" section
                         for(int osm = 0; osm < othSectMC; ++osm) {
 
                             // Compare all meeting's days of current section to all meeting's days of other section
+                            if(sections[cs]->getMeetings()[csm]->getDay() == sections[os]->getMeetings()[osm]->getDay()) {
+                                
+                                std::cout << "Two meetings occur on same day! Will compare the times they occur now!" << std::endl;
+
+                            }
 
                         }
 
