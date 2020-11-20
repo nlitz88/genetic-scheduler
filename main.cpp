@@ -3,6 +3,7 @@
 
 #include <random>
 #include <time.h>
+#include <chrono>
 
 #include "Section.h"
 #include "Schedule.h"
@@ -15,6 +16,8 @@ int main() {
 
     // Seed random number generator
     srand(time(0));
+    
+    auto startTime = std::chrono::high_resolution_clock::now();
 
 
     // Test reading in from file a collection of sections
@@ -64,6 +67,13 @@ int main() {
     // }
 
     std::cout << "This section should still exist: " << s1->toString();
+
+
+
+    auto stopTime = std::chrono::high_resolution_clock::now();
+    auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stopTime - startTime);
+
+    std::cout << "Main execution time: " << duration.count() << std::endl;
 
     return 0;
 
