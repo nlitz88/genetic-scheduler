@@ -84,6 +84,20 @@ void Schedule::importSections(Section** importSectionList, int importCount) {
 }
 
 
+// Operation that returns pointer to collection of Sections
+//
+Section** Schedule::getSections() const {
+    return sections;
+}
+
+
+// Operation that returns number of sections in a Schedule's collection of sections
+//
+int Schedule::getNumSections() const {
+    return sectionCount;
+}
+
+
 // Operation that will remove section from collection of sections based on sectionId
 //
 void Schedule::removeSection(std::string idToRemove) {

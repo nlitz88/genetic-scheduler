@@ -40,6 +40,16 @@ public:
     virtual void importSections(Section** importSectionList, int importCount);
 
 
+    // Operation that returns pointer to collection of Sections
+    //
+    virtual Section** getSections() const;
+
+
+    // Operation that returns number of sections in a Schedule's collection of sections
+    //
+    virtual int getNumSections() const;
+
+
     // Operation that will remove section from collection of sections based on sectionId
     //
     virtual void removeSection(std::string idToRemove);
@@ -56,8 +66,6 @@ public:
     // UPDATE: NOT EXACTLY SURE WHAT KIND OF SCHEDULE THIS IS SUPPOSED TO BE YET
     //
     virtual void generateSchedule();
-
-
 
 
     // EXPERIMENTAL: Operation that will generate an overlapping, nearly infinite number of sections that will comprise the schedule (SCHOOLWIDE MASTER SCHEDULE)

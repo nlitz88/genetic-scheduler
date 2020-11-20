@@ -16,7 +16,7 @@ int main() {
 
     // Seed random number generator
     srand(time(0));
-    
+
     auto startTime = std::chrono::high_resolution_clock::now();
 
 
@@ -67,6 +67,14 @@ int main() {
     // }
 
     std::cout << "This section should still exist: " << s1->toString();
+
+
+
+    Schedule** schedules = new Schedule* [500];
+    for(int s = 0; s < 500; ++s) {
+        schedules[s] = new Schedule(sections, numSections);
+        schedules[s]->generateSchedule();
+    }
 
 
 
