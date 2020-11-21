@@ -28,20 +28,32 @@ private:
 
 public:
 
+    R_place() {
+        fitness = 0;
+    }
+
     virtual void getFitness(Schedule schedule) {
 
         Section** sections = schedule.getSections();
         int numSections = schedule.getNumSections();
 
+        int currSectMC = 0;
+        int othSectMC = 0;
+
+        Meeting* currSectMeeting;
+        Meeting* othSectMeeting;
+
+        bool tc = false;
+
         // Process for calculating fitness based on whether or not instructor has overlapping sections
 
         // Loop through all sections
-        for(int cs = 0; cs < numSections; ++cs) {
+        for(int cs = 0; cs < numSections && !tc; ++cs) {
 
             std::cout << "Section #" << cs << std::endl;
 
             // For each section, compare against all other sections that are taught by same instructor (same lName)
-            for(int os = cs + 1; os < numSections; ++os) {
+            for(int os = cs + 1; os < numSections && !tc; ++os) {
 
                 // If section is from the same instructor, then compare their meetings.
                 if(sections[cs]->getInstructorLName() == sections[os]->getInstructorLName()) {
@@ -49,39 +61,73 @@ public:
 
                     // Will have to compare meetings on each day of the week for between all of the different meetings on different days.
                     
-                    int currSectMC = sections[cs]->getMeetingCount();
-                    int othSectMC = sections[os] ->getMeetingCount();
+                    currSectMC = sections[cs]->getMeetingCount();
+                    othSectMC = sections[os] ->getMeetingCount();
+
 
                     // Compare each meeting of the current section to EACH meeting of the other section.
                     // If the days match between two meetings, THEN and only then will we compare their times.
                     // bool matchingDays = false;
 
                     // For each meeting in the "Current" section
-                    for(int csm = 0; csm < currSectMC; ++csm) {
+                    for(int csm = 0; csm < currSectMC && !tc; ++csm) {
 
                         // For each meeting in the "Other" section
-                        for(int osm = 0; osm < othSectMC; ++osm) {
+                        for(int osm = 0; osm < othSectMC && !tc; ++osm) {
+                            
+                            // Store current section meeting and other section meeting in pointers for further referencing
+                            currSectMeeting = sections[cs]->getMeetings()[csm];
+                            othSectMeeting = sections[os]->getMeetings()[osm];
 
                             // Compare all meeting's days of current section to all meeting's days of other section
-                            if(sections[cs]->getMeetings()[csm]->getDay() == sections[os]->getMeetings()[osm]->getDay()) {
+                            if(currSectMeeting->getDay() == othSectMeeting->getDay()) {
+                                
+                                
+                                std::cout << "Two meetings occur on same day! Will compare the times they occur now!" << std::endl;
+ 
+
+                                // std::cout << sections[cs]->getInstructorLName() << " teaches " << sections[cs]->getSectionId() << " on day "
+                                //           << currSectMeeting->toString() << " at "
+                                //           << currSectMeeting->getStartTime().get24HourTime() << "-" << currSectMeeting->getEndTime().get24HourTime() << std::endl;
+
+                                // std::cout << sections[os]->getInstructorLName() << " teaches " << sections[os]->getSectionId() << " on day "
+                                //           << othSectMeeting->toString() << " at "
+                                //           << othSectMeeting->getStartTime().get24HourTime() << "-" << othSectMeeting->getEndTime().get24HourTime() << std::endl;
+
+
+
+                                // NOW, compare the times of the two meetings to see if they overlap
+
+                                // If the two meetings start at the same time --> fitness = 1000000
+                                // OR
+                                // If the current section's meeting starts BEFORE the other meeting and ENDS after the other section's startTime
+                                // OR
+                                // If the current section's meeting starts AFTER other meeting startTime AND 
+                                if(currSectMeeting->getStartTime() == othSectMeeting->getStartTime() ||
+                                   (currSectMeeting->getStartTime() < othSectMeeting->getStartTime() && currSectMeeting->getEndTime() > othSectMeeting->getStartTime()) ||
+                                   (currSectMeeting->getStartTime() > othSectMeeting->getStartTime() && currSectMeeting->getStartTime() < othSectMeeting->getEndTime())) {
+
+                                    fitness += 1000000;
+                                    std::cout << "TIME CONFLICT: BAD SCHEDULE!\n";
+
+                                    std::cout << sections[cs]->getInstructorLName() << " teaches " << sections[cs]->getSectionId() << " on day "
+                                          << currSectMeeting->toString() << " at "
+                                          << currSectMeeting->getStartTime().get24HourTime() << "-" << currSectMeeting->getEndTime().get24HourTime() << std::endl;
+
+                                    std::cout << sections[os]->getInstructorLName() << " teaches " << sections[os]->getSectionId() << " on day "
+                                          << othSectMeeting->toString() << " at "
+                                          << othSectMeeting->getStartTime().get24HourTime() << "-" << othSectMeeting->getEndTime().get24HourTime() << std::endl;
+
+                                    tc = true;  // time conflict = true --> will break all outer loops. No more fitness evaluation needed
+
+
+                                } else {
+                                    
+                                    fitness = 0;
+
+                                }
                                 
 
-                                std::cout << "Two meetings occur on same day! Will compare the times they occur now!" << std::endl;
-                                // std::cout << sections[cs]->getInstructorLName() << " " << sections[cs]->getSectionId() << " on day "
-                                //           << sections[cs]->getMeetings()[osm]->toString() << std::endl;
-                                std::cout << sections[cs]->getInstructorLName() << " teaches " << sections[cs]->getSectionId() << " on day "
-                                          << sections[cs]->getMeetings()[csm]->toString() << " at "
-                                          << sections[cs]->getMeetings()[csm]->getStartTime().get24HourTime() << "-" << sections[cs]->getMeetings()[csm]->getEndTime().get24HourTime() << std::endl;
-
-                                std::cout << sections[os]->getInstructorLName() << " teaches " << sections[os]->getSectionId() << " on day "
-                                          << sections[os]->getMeetings()[osm]->toString() << " at "
-                                          << sections[os]->getMeetings()[osm]->getStartTime().get24HourTime() << "-" << sections[os]->getMeetings()[osm]->getEndTime().get24HourTime() << std::endl;
-
-
-                                // std::cout << "CURRENT SECTION:\n" << sections[cs]->toString();
-                                // std::cout << "OTHER SECTION:\n" << sections[os]->toString() << std::endl;
-
-                                // I want to print out the name and Id of the section
 
                             }
 
