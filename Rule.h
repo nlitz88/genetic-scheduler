@@ -83,7 +83,7 @@ public:
                             if(currSectMeeting->getDay() == othSectMeeting->getDay()) {
                                 
                                 
-                                std::cout << "Two meetings occur on same day! Will compare the times they occur now!" << std::endl;
+                                std::cout << "Two meetings of different sections occur on same day! Will compare the times of the meetings now!" << std::endl;
  
 
                                 // std::cout << sections[cs]->getInstructorLName() << " teaches " << sections[cs]->getSectionId() << " on day "
@@ -102,14 +102,14 @@ public:
                                 // OR
                                 // If the current section's meeting starts BEFORE the other meeting and ENDS after the other section's startTime
                                 // OR
-                                // If the current section's meeting starts AFTER other meeting startTime AND 
+                                // If the current section's meeting starts AFTER other meeting startTime AND starts before the other one ends
                                 if(currSectMeeting->getStartTime() == othSectMeeting->getStartTime() ||
                                    (currSectMeeting->getStartTime() < othSectMeeting->getStartTime() && currSectMeeting->getEndTime() > othSectMeeting->getStartTime()) ||
                                    (currSectMeeting->getStartTime() > othSectMeeting->getStartTime() && currSectMeeting->getStartTime() < othSectMeeting->getEndTime())) {
 
                                     fitness += 1000000;
-                                    std::cout << "TIME CONFLICT: BAD SCHEDULE!\n";
 
+                                    std::cout << "TIME CONFLICT: BAD SCHEDULE!\n";
                                     std::cout << sections[cs]->getInstructorLName() << " teaches " << sections[cs]->getSectionId() << " on day "
                                           << currSectMeeting->toString() << " at "
                                           << currSectMeeting->getStartTime().get24HourTime() << "-" << currSectMeeting->getEndTime().get24HourTime() << std::endl;
