@@ -167,7 +167,7 @@ void Section::generateMeetings() {
                 // Get random start time in minutes of some hour in the day
                 startTime = (rand() % 24) * 60;
                 // MWF: meet for 1 hour a day (StartTime + 60 minutes)
-                endTime = startTime + 60;
+                endTime = (startTime + 60) % 1440;
                 
                 // Don't have to check if it overlaps with common hour, as the only way that could happen is at 12pm, which we don't allow
             }while(startTime == 720);
@@ -196,7 +196,7 @@ void Section::generateMeetings() {
                 // Get random start time in minutes of some hour in the day
                 startTime = (rand() % 24) * 60;
                 // TR and MW sections meet for 2 hours each day
-                endTime = startTime + 120;
+                endTime = (startTime + 120) % 1440;
                 
                 // Can only start at 8am, 10am, 1pm, 3pm, 5pm, and 7pm. Again, no need to check for overflow into common hour,
                 // as startTime will control this.
@@ -227,7 +227,7 @@ void Section::generateMeetings() {
                 // Get random start time in minutes of some hour in the day
                 startTime = (rand() % 24) * 60;
                 // ANY day sections meet for 3 hours one day a week.
-                endTime = startTime + 180;
+                endTime = (startTime + 180) % 1440;
             
             // Once a week courses (that occur ANY day) can start at any hour, but can't overlap with common hour.
             // Therefore, they can't start anytime after 9AM until 1PM
