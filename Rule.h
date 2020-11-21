@@ -23,10 +23,12 @@ public:
 class R_place : Rule {
 
 private:
-    double fitness;
+    double temp;
 
 
 public:
+
+    double fitness;
 
     R_place() {
         fitness = 0;
@@ -83,7 +85,7 @@ public:
                             if(currSectMeeting->getDay() == othSectMeeting->getDay()) {
                                 
                                 
-                                std::cout << "Two meetings of different sections occur on same day! Will compare the times of the meetings now!" << std::endl;
+                                // std::cout << "Two meetings of different sections occur on same day! Will compare the times of the meetings now!" << std::endl;
  
 
                                 // std::cout << sections[cs]->getInstructorLName() << " teaches " << sections[cs]->getSectionId() << " on day "
@@ -107,7 +109,7 @@ public:
                                    (currSectMeeting->getStartTime() < othSectMeeting->getStartTime() && currSectMeeting->getEndTime() > othSectMeeting->getStartTime()) ||
                                    (currSectMeeting->getStartTime() > othSectMeeting->getStartTime() && currSectMeeting->getStartTime() < othSectMeeting->getEndTime())) {
 
-                                    fitness += 1000000;
+                                    fitness = 1000000;
 
                                     std::cout << "TIME CONFLICT: BAD SCHEDULE!\n";
                                     std::cout << sections[cs]->getInstructorLName() << " teaches " << sections[cs]->getSectionId() << " on day "

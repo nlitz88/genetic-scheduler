@@ -150,7 +150,7 @@ void Schedule::generateSchedule() {
     // 2.) Generate meetings for each of the sections pulled in
     //
     for(int s = 0; s < sectionCount; ++s) {
-        std::cout << "Generate meetings for " << sections[s]->getSectionId() << std::endl;
+        // std::cout << "Generate meetings for " << sections[s]->getSectionId() << std::endl;
         // Generate meetings for each section
         sections[s]->generateMeetings();
     }

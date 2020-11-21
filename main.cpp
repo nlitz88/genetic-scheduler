@@ -71,20 +71,25 @@ int main() {
 
 
 
-    // Schedule** schedules = new Schedule* [10];
-    // for(int s = 0; s < 10; ++s) {
-    //     schedules[s] = new Schedule(sections, numSections);
-    //     schedules[s]->generateSchedule();
-    // }
+    R_place testPlaceRule;
+
+    Schedule** schedules = new Schedule* [10];
+
+    for(int s = 0; s < 10; ++s) {
+
+        schedules[s] = new Schedule(sections, numSections);
+        schedules[s]->generateSchedule();
+
+        // Then, get fitness of shedule (in incorrect way for now)
+        testPlaceRule.getFitness(*schedules[s]);
+        std::cout << "Fitness of schedule #" <<  s << " : " << testPlaceRule.fitness << std::endl;
+
+    }
 
     // for(int s = 0; s < sched1->getNumSections(); ++s) {
     //     std::cout << "Section " << s << " of sched1 has " << sched1->getSections()[s]->getMeetingCount() << " meetings\n";
     // }
 
-    R_place testPlaceRule;
-    testPlaceRule.getFitness(*sched1);
-
-    
     
 
 
