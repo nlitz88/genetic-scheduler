@@ -71,7 +71,7 @@ int main() {
 
 
 
-    R_place testPlaceRule;
+    Rule_SameTime sameTimeRule;
 
     Schedule** schedules = new Schedule* [10];
 
@@ -81,8 +81,8 @@ int main() {
         schedules[s]->generateSchedule();
 
         // Then, get fitness of shedule (in incorrect way for now)
-        testPlaceRule.getFitness(*schedules[s]);
-        std::cout << "Fitness of schedule #" <<  s << " : " << testPlaceRule.fitness << std::endl;
+        sameTimeRule.getFitness(*schedules[s]);
+        std::cout << "Fitness of schedule #" <<  s << " : " << sameTimeRule.fitness << std::endl;
 
     }
 

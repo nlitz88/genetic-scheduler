@@ -18,9 +18,10 @@ public:
 
 
 
+const int SAMETIME_WEIGHT = 1000000;
 
 // Test rule:
-class R_place : Rule {
+class Rule_SameTime : Rule {
 
 private:
     double temp;
@@ -30,7 +31,7 @@ public:
 
     double fitness;
 
-    R_place() {
+    Rule_SameTime() {
         fitness = 0;
     }
 
@@ -109,7 +110,7 @@ public:
                                    (currSectMeeting->getStartTime() < othSectMeeting->getStartTime() && currSectMeeting->getEndTime() > othSectMeeting->getStartTime()) ||
                                    (currSectMeeting->getStartTime() > othSectMeeting->getStartTime() && currSectMeeting->getStartTime() < othSectMeeting->getEndTime())) {
 
-                                    fitness = 1000000;
+                                    fitness = SAMETIME_WEIGHT;
 
                                     std::cout << "TIME CONFLICT: BAD SCHEDULE!\n";
                                     std::cout << sections[cs]->getInstructorLName() << " teaches " << sections[cs]->getSectionId() << " on day "
