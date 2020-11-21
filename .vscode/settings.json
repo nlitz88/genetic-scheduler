@@ -59,6 +59,8 @@
         "xstddef": "cpp",
         "xtr1common": "cpp",
         "xutility": "cpp",
-        "optimizer": "cpp"
+        "optimizer": "cpp",
+        "chrono": "cpp",
+        "ratio": "cpp"
     }
 }

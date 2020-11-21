@@ -7,6 +7,7 @@
 
 #include "Section.h"
 #include "Schedule.h"
+#include "Rule.h"
 
 
 // This is where the various classes and scheduler optimization aglorithm will be tested.
@@ -50,7 +51,7 @@ int main() {
     // std::cout << s1->getSectionId() << " meetings: \n\n";
     // s1->addMeeting(new Meeting(T, Time(9,05), Time(9,55)));
     // s1->addMeeting(new Meeting(R, Time(9,05), Time(9,55)));
-    s1->generateMeetings();
+    // s1->generateMeetings();
     // std::cout << s1->toString();
 
 
@@ -58,23 +59,33 @@ int main() {
     Schedule* sched1 = new Schedule(sections, numSections);
 
     sched1->generateSchedule();
-    std::cout << sched1->toString();
+    // std::cout << sched1->toString();
 
-    sched1->~Schedule();
+    // sched1->~Schedule();
 
     // for(int i = 0; i < numSections; ++i) {
     //     delete sections[i];
     // }
 
-    std::cout << "This section should still exist: " << s1->toString();
+    // std::cout << "This section should still exist: " << s1->toString();
 
 
 
-    Schedule** schedules = new Schedule* [500];
-    for(int s = 0; s < 500; ++s) {
-        schedules[s] = new Schedule(sections, numSections);
-        schedules[s]->generateSchedule();
-    }
+    // Schedule** schedules = new Schedule* [10];
+    // for(int s = 0; s < 10; ++s) {
+    //     schedules[s] = new Schedule(sections, numSections);
+    //     schedules[s]->generateSchedule();
+    // }
+
+    // for(int s = 0; s < sched1->getNumSections(); ++s) {
+    //     std::cout << "Section " << s << " of sched1 has " << sched1->getSections()[s]->getMeetingCount() << " meetings\n";
+    // }
+
+    R_place testPlaceRule;
+    testPlaceRule.getFitness(*sched1);
+
+    
+    
 
 
 
