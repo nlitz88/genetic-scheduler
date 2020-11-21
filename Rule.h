@@ -8,10 +8,20 @@
 
 class Rule {
 
+protected:
+
+    long fitness;
+
 public:
 
     // Can we make this a pointer to a schedule? Might be kind of a heavy copy?
     virtual void getFitness(Schedule schedule) = 0;
+
+
+    // Operation that returns fitness value of a particular rule
+    virtual long fitnessValue() const {
+        return fitness;
+    }
 
 };
 
@@ -21,15 +31,10 @@ public:
 const int SAMETIME_WEIGHT = 1000000;
 
 // Test rule:
-class Rule_SameTime : Rule {
-
-private:
-    double temp;
+class Rule_SameTime : public Rule {
 
 
 public:
-
-    double fitness;
 
     Rule_SameTime() {
         fitness = 0;
@@ -53,7 +58,7 @@ public:
         // Loop through all sections
         for(int cs = 0; cs < numSections && !tc; ++cs) {
 
-            std::cout << "Section #" << cs << std::endl;
+            // std::cout << "Section #" << cs << std::endl;
 
             // For each section, compare against all other sections that are taught by same instructor (same lName)
             for(int os = cs + 1; os < numSections && !tc; ++os) {

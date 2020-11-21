@@ -82,9 +82,11 @@ int main() {
 
         // Then, get fitness of shedule (in incorrect way for now)
         sameTimeRule.getFitness(*schedules[s]);
-        std::cout << "Fitness of schedule #" <<  s << " : " << sameTimeRule.fitness << std::endl;
+        std::cout << "Fitness of schedule #" <<  s << " : " << sameTimeRule.fitnessValue() << std::endl;
 
     }
+
+
 
     // for(int s = 0; s < sched1->getNumSections(); ++s) {
     //     std::cout << "Section " << s << " of sched1 has " << sched1->getSections()[s]->getMeetingCount() << " meetings\n";
