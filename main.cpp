@@ -72,6 +72,9 @@ int main() {
 
 
     Rule_SameTime sameTimeRule;
+    Rule_BackToBack backToBackRule;
+
+    long overallFitness = 0;
 
     Schedule** schedules = new Schedule* [10];
 
@@ -82,8 +85,14 @@ int main() {
 
         // Is this the functionality that we would wrap up in the optimizer's fitness function? (I.e. is this what the fitness function would essentially be responsible for)
         // Then, get fitness of shedule (in incorrect way for now)
-        sameTimeRule.getFitness(*schedules[s]);
-        std::cout << "Fitness of schedule #" <<  s << " : " << sameTimeRule.fitnessValue() << std::endl;
+        // sameTimeRule.getFitness(*schedules[s]);
+        backToBackRule.getFitness(*schedules[s]);
+
+        // overallFitness = sameTimeRule.fitnessValue();
+        overallFitness = sameTimeRule.fitnessValue() + backToBackRule.fitnessValue();
+        
+
+        std::cout << "Fitness of schedule #" <<  s << " : " << overallFitness << std::endl;
 
     }
 

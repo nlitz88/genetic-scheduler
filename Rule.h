@@ -44,6 +44,9 @@ public:
 
     virtual void getFitness(Schedule schedule) {
 
+        // Reset fitness value to evaluate schedule
+        fitness = 0;
+
         Section** sections = schedule.getSections();
         int numSections = schedule.getNumSections();
 
@@ -175,6 +178,9 @@ public:
 
     virtual void getFitness(Schedule schedule) {
 
+        // Reset fitness value to evaluate schedule
+        fitness = 0;
+
         // Get collections of sections from provided schedule
         Section** sections = schedule.getSections();
         int numSections = schedule.getNumSections();
@@ -198,7 +204,7 @@ public:
                     // and then can determine if they occur back to back.
 
                     currSectMC = sections[cs]->getMeetingCount();
-                    othSectMC = sections[os] ->getMeetingCount();
+                    othSectMC = sections[os]->getMeetingCount();
 
                     // To do this, compare each meeting of the current section to each other meeting of the other section
                     for(int csm = 0; csm < currSectMC; ++csm) {
@@ -217,8 +223,18 @@ public:
 
                                 if(currSectMeeting->getEndTime() == othSectMeeting->getStartTime() ||
                                    othSectMeeting->getEndTime() == currSectMeeting->getStartTime()) {
-
+                                    
                                        fitness += BACKTOBACK_WEIGHT;
+
+                                        // Report occurence
+                                        std::cout << "BACK TO BACK MEETINGS BETWEEN SECTIONS!\n";
+                                        std::cout << sections[cs]->getInstructorLName() << " teaches " << sections[cs]->getSectionId() << " on day "
+                                                  << currSectMeeting->toString() << " at "
+                                                  << currSectMeeting->getStartTime().get24HourTime() << "-" << currSectMeeting->getEndTime().get24HourTime() << std::endl;
+
+                                        std::cout << sections[os]->getInstructorLName() << " teaches " << sections[os]->getSectionId() << " on day "
+                                                  << othSectMeeting->toString() << " at "
+                                                  << othSectMeeting->getStartTime().get24HourTime() << "-" << othSectMeeting->getEndTime().get24HourTime() << std::endl;
 
                                 }
 
