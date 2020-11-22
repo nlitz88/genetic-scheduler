@@ -28,9 +28,11 @@ public:
 
 
 
-const int SAMETIME_WEIGHT = 1000000;
+const int WEIGHT_SAMETIME = 1000000;
 
-// Test rule:
+// Rule that determines fitness according to whether or not the meetings of sections of the same professor overlap (the times at which they occur)
+// NOTE: currently, this rule is only configured to add WEIGHT_SAMETIME to the calculated fitness ONCE (as soon as it finds an instance of this in a schedule)
+//
 class Rule_SameTime : public Rule {
 
 
@@ -45,13 +47,14 @@ public:
         Section** sections = schedule.getSections();
         int numSections = schedule.getNumSections();
 
-        int currSectMC = 0;
-        int othSectMC = 0;
+        int currSectMC = 0;             // Current section meeting count.
+        int othSectMC = 0;              // Other section meeting count.
 
-        Meeting* currSectMeeting;
-        Meeting* othSectMeeting;
+        Meeting* currSectMeeting;       // Pointer to point to one of the current section's meeting object.
+        Meeting* othSectMeeting;        // Pointer to point to one of the other sections' meeting object.
 
-        bool tc = false;
+        bool tc = false;                // time conflict.
+
 
         // Process for calculating fitness based on whether or not instructor has overlapping sections
 
@@ -115,7 +118,7 @@ public:
                                    (currSectMeeting->getStartTime() < othSectMeeting->getStartTime() && currSectMeeting->getEndTime() > othSectMeeting->getStartTime()) ||
                                    (currSectMeeting->getStartTime() > othSectMeeting->getStartTime() && currSectMeeting->getStartTime() < othSectMeeting->getEndTime())) {
 
-                                    fitness = SAMETIME_WEIGHT;
+                                    fitness = WEIGHT_SAMETIME;
 
                                     std::cout << "TIME CONFLICT: BAD SCHEDULE!\n";
                                     std::cout << sections[cs]->getInstructorLName() << " teaches " << sections[cs]->getSectionId() << " on day "
@@ -158,5 +161,38 @@ public:
     }
 
 };
+
+
+
+const int BACKTOBACK_WEIGHT = 50;
+
+// Rule that determines fitness according to whether or not meetings of sections of the same professor occur back-to-back
+// NOTE: Currently configured to add BACKTOBACK_WEIGHT for every occurrence of this (every two  meetings on every day that this might occur)
+//
+class Rule_BackToBack : public Rule {
+
+public:
+
+    Rule_BackToBack() {
+        fitness = 0;
+    }
+
+    virtual void getFitness(Schedule schedule) {
+
+        // Get collections of sections from provided schedule
+        Section** sections = schedule.getSections();
+        int numSections = schedule.getNumSections();
+
+        //
+
+
+    }
+
+
+};
+
+
+
+
 
 #endif

@@ -80,6 +80,7 @@ int main() {
         schedules[s] = new Schedule(sections, numSections);
         schedules[s]->generateSchedule();
 
+        // Is this the functionality that we would wrap up in the optimizer's fitness function? (I.e. is this what the fitness function would essentially be responsible for)
         // Then, get fitness of shedule (in incorrect way for now)
         sameTimeRule.getFitness(*schedules[s]);
         std::cout << "Fitness of schedule #" <<  s << " : " << sameTimeRule.fitnessValue() << std::endl;
