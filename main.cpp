@@ -73,12 +73,13 @@ int main() {
 
     Rule_TimeConflict sameTimeRule;
     Rule_BackToBack backToBackRule;
+    Rule_CampusTime campusTimeRule;
 
     long overallFitness = 0;
 
-    Schedule** schedules = new Schedule* [1000];
+    Schedule** schedules = new Schedule* [100];
 
-    for(int s = 0; s < 1000; ++s) {
+    for(int s = 0; s < 100; ++s) {
 
         schedules[s] = new Schedule(sections, numSections);
         schedules[s]->generateSchedule();
@@ -87,9 +88,10 @@ int main() {
         // Then, get fitness of shedule (in incorrect way for now)
         sameTimeRule.getFitness(schedules[s]);
         backToBackRule.getFitness(schedules[s]);
+        campusTimeRule.getFitness(schedules[s]);
 
         // overallFitness = sameTimeRule.fitnessValue();
-        overallFitness = sameTimeRule.fitnessValue() + backToBackRule.fitnessValue();
+        overallFitness = sameTimeRule.fitnessValue() + backToBackRule.fitnessValue() + campusTimeRule.fitnessValue();
         
 
         std::cout << "Fitness of schedule #" <<  s << " : " << overallFitness << std::endl;

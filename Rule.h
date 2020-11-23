@@ -7,6 +7,7 @@
 
 #include "Schedule.h"
 #include "Section.h"
+#include "Time.h"
 
 class Rule {
 
@@ -277,10 +278,96 @@ public:
     }
 
     virtual void getFitness(Schedule* schedule) {
-        
+
+        // Reset fitness value to evaluate schedule
+        fitness = 0;
+
+        // Get collections of sections from provided schedule
+        Section** sections = schedule->getSections();
+        int numSections = schedule->getNumSections();
+
+
+        int currSectMC = 0;             // Current section meeting count.
+        int othSectMC = 0;              // Other section meeting count.
+
+        Meeting* currSectMeeting;       // Pointer to point to one of the current section's meeting object.
+        Meeting* othSectMeeting;        // Pointer to point to one of the other sections' meeting object.
+
+
+        Time earliestStart;
+        Time latestEnd;
+
+
+        // For each section
+        for(int cs = 0; cs < numSections; ++cs) {
+
+            currSectMC = sections[cs]->getMeetingCount();
+
+            std::cout << sections[cs]->getInstructorLName() << std::endl;
+
+            // For each MEETING in that section
+            for(int csm = 0; csm < currSectMC; ++csm) {
+
+                // Look for other sections with same instructor that have meetings on the same day. Find earliest start time and latest end time on same day
+                currSectMeeting = sections[cs]->getMeetings()[csm];
+
+                // Initialze earliest Start time and latest Start time from current section meeting (the first one we examine)
+                earliestStart = currSectMeeting->getStartTime();
+                latestEnd = currSectMeeting->getEndTime();
+
+
+                std::cout << "Day: " << currSectMeeting->toString() << std::endl;
+                std::cout << sections[cs]->getSectionId() << ": " << currSectMeeting->getStartTime().get24HourTime() << "-" << currSectMeeting->getEndTime().get24HourTime() << std::endl;            
+                
+
+                // For each other section
+                for(int os = cs + 1; os < numSections; ++os) {
+                    
+                    // Only examine section's meetings if it is same instructor's section
+                    if(sections[cs]->getInstructorLName() == sections[os]->getInstructorLName()) {
+
+                        othSectMC = sections[os]->getMeetingCount();
+
+                        // For each meeting in this other section
+                        for(int osm = 0; osm < othSectMC; ++osm) {
+
+                            othSectMeeting = sections[os]->getMeetings()[osm];
+
+                            if(othSectMeeting->getDay() == currSectMeeting->getDay()) {
+
+                                std::cout << sections[os]->getSectionId() << ": " << othSectMeeting->getStartTime().get24HourTime() << "-" << othSectMeeting->getEndTime().get24HourTime() << std::endl;
+
+
+                                // HERE, IMPLEMENT LOGIC TO COMPARE THIS MEETINGS START AND 
+
+
+
+                            }
+
+                        }
+
+                    }
+
+                    
+
+                }
+
+
+
+            }
+
+
+            std::cout << std::endl;
+
+        }
+
+
+        // THEN, determine amount of time actually spent from earliest Start to latest end (duration)
+        // COULD MAYBE make a new time object, and then call the duration function!
+
     }
 
-}
+};
 
 
 
