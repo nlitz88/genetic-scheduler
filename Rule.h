@@ -340,7 +340,6 @@ public:
                         // Must be a section of that instructor
                         if(sections[cs]->getInstructorLName() == currName) {
 
-                            ++sectionsUsed;
                             currSectMC = sections[cs]->getMeetingCount();
 
                             // For each meeting of this section of the instructor
@@ -349,6 +348,9 @@ public:
                                 currSectMeeting = sections[cs]->getMeetings()[csm];
 
                                 if(currSectMeeting->getDay() == day) {
+                                    
+                                    // This section has been "used" if it has a meeting on the day we're currently examining.
+                                    ++sectionsUsed;
                                     
                                     // HERE, compare this meeting's time to that of the earliest and latest times.
 
@@ -399,17 +401,26 @@ public:
 
                             }
 
+
                         }
 
                     }
 
+                    // Need to keep this from printing out on days with no meetings. If MC == 0? That might not work though if the last of the sections have no meetings
+                    // Make another variable to keep track of this, OR USE SECTIONSUSED. Only do this stuff below if sectionsUsed != 0
+                    if(sectionsUsed != 0) {
+                        
+                        // For each day here, calculate duration that which the instructor's section's meeings span.
+                        std::cout << "Earliest Start: " << earliestStart.t() << ". Latest End: " << latestEnd.t() << std::endl;
+                        duration = latestEnd.t() - earliestStart.t();
+                        if(duration > 540) {
+                            fitness += 50;
+                            std::cout << sections[s]->getInstructorLName() << " is on campus for more than 9 hours: first Starts @ " << earliestStart.get24HourTime() << ", last ends @ " << latestEnd.get24HourTime() << std::endl;
+                        }
 
-                    // For each day here, calculate duration that which the instructor's section's meeings span.
-                    duration = latestEnd.t() - earliestStart.t();
-                    if(currSectMC != 0 && duration > 540) {
-                        fitness += 50;
-                        std::cout << sections[s]->getInstructorLName() << " is on campus for more than 9 hours: first Starts @ " << earliestStart.get24HourTime() << ", last ends @ " << latestEnd.get24HourTime() << std::endl;
                     }
+
+                    
 
 
                 }
