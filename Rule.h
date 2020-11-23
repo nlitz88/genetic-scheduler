@@ -406,8 +406,7 @@ public:
 
                     }
 
-                    // Need to keep this from printing out on days with no meetings. If MC == 0? That might not work though if the last of the sections have no meetings
-                    // Make another variable to keep track of this, OR USE SECTIONSUSED. Only do this stuff below if sectionsUsed != 0
+                    // Only examine duration if any sections occurred on the day currentl being examined.
                     if(sectionsUsed != 0) {
                         
                         // For each day here, calculate duration that which the instructor's section's meeings span.
