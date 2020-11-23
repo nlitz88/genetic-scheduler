@@ -165,10 +165,10 @@ public:
 
 
 
-const int BACKTOBACK_WEIGHT = 50;
+const int WEIGHT_BACKTOBACK = 50;
 
 // Rule that determines fitness according to whether or not meetings of sections of the same professor occur back-to-back
-// NOTE: Currently configured to add BACKTOBACK_WEIGHT for every occurrence of this (every two  meetings on every day that this might occur)
+// NOTE: Currently configured to add WEIGHT_BACKTOBACK for every occurrence of this (every two  meetings on every day that this might occur)
 //
 class Rule_BackToBack : public Rule {
 
@@ -227,7 +227,7 @@ public:
                                 if(currSectMeeting->getEndTime() == othSectMeeting->getStartTime() ||
                                    othSectMeeting->getEndTime() == currSectMeeting->getStartTime()) {
                                     
-                                       fitness += BACKTOBACK_WEIGHT;
+                                       fitness += WEIGHT_BACKTOBACK;
 #ifdef DEBUG
                                         // Report occurence
                                         std::cout << "BACK TO BACK MEETINGS BETWEEN SECTIONS!\n";
@@ -260,10 +260,27 @@ public:
 
     }
 
-
 };
 
 
+
+const int WEIGHT_CAMPUSTIME = 100;
+
+// Rule that determines fitness according to whether or not the instructor must be on the campus for more than 9 hours
+//
+class Rule_CampusTime : public Rule {
+
+public:
+
+    Rule_CampusTime() {
+        fitness = 0;
+    }
+
+    virtual void getFitness(Schedule* schedule) {
+        
+    }
+
+}
 
 
 
