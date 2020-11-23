@@ -77,9 +77,9 @@ int main() {
 
     long overallFitness = 0;
 
-    Schedule** schedules = new Schedule* [100];
+    Schedule** schedules = new Schedule* [1];
 
-    for(int s = 0; s < 100; ++s) {
+    for(int s = 0; s < 1; ++s) {
 
         schedules[s] = new Schedule(sections, numSections);
         schedules[s]->generateSchedule();

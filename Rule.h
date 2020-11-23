@@ -4,10 +4,14 @@
 // #define DEBUG
 
 #include <iostream>
+#include <string>       // CampusTime
+#include <vector>       // CampusTime
+#include <algorithm>    // CampusTime
 
 #include "Schedule.h"
 #include "Section.h"
-#include "Time.h"
+#include "Time.h"       // CampusTime
+#include "Meeting.h"    // CampusTime
 
 class Rule {
 
@@ -286,60 +290,109 @@ public:
         Section** sections = schedule->getSections();
         int numSections = schedule->getNumSections();
 
+        
 
         int currSectMC = 0;             // Current section meeting count.
         int othSectMC = 0;              // Other section meeting count.
 
         Meeting* currSectMeeting;       // Pointer to point to one of the current section's meeting object.
         Meeting* othSectMeeting;        // Pointer to point to one of the other sections' meeting object.
-
+        
 
         Time earliestStart;
         Time latestEnd;
+        int sectionsUsed;               // Will be used to determine when to initialize earliest and latest.
+        Time tempMeetingEnd;
+
+        std::string currName;
+
+        std::vector<std::string> instructors;
 
 
-        // For each section
-        for(int cs = 0; cs < numSections; ++cs) {
+        // For each Section. This outer loop only really serves as a means of generating a list of instructors from the sections provided.
+        // OR, think of it as "for each instructor"
+        // NOTE: this could be avoided if this list was generated before hand, like in main. This is a very redundant 
+        for(int s = 0; s < numSections; ++s) {
 
-            currSectMC = sections[cs]->getMeetingCount();
-
-            std::cout << sections[cs]->getInstructorLName() << std::endl;
-
-            // For each MEETING in that section
-            for(int csm = 0; csm < currSectMC; ++csm) {
-
-                // Look for other sections with same instructor that have meetings on the same day. Find earliest start time and latest end time on same day
-                currSectMeeting = sections[cs]->getMeetings()[csm];
-
-                // Initialze earliest Start time and latest Start time from current section meeting (the first one we examine)
-                earliestStart = currSectMeeting->getStartTime();
-                latestEnd = currSectMeeting->getEndTime();
-
-
-                std::cout << "Day: " << currSectMeeting->toString() << std::endl;
-                std::cout << sections[cs]->getSectionId() << ": " << currSectMeeting->getStartTime().get24HourTime() << "-" << currSectMeeting->getEndTime().get24HourTime() << std::endl;            
+            currName = sections[s]->getInstructorLName();
+            
+            // As long as we haven't already seen this instructor, add them to the vector and analyze all of their sections.
+            if(std::find(instructors.begin(), instructors.end(), currName) == instructors.end()) {
                 
+                // Add instructor's name to the vector
+                instructors.push_back(currName);
 
-                // For each other section
-                for(int os = cs + 1; os < numSections; ++os) {
-                    
-                    // Only examine section's meetings if it is same instructor's section
-                    if(sections[cs]->getInstructorLName() == sections[os]->getInstructorLName()) {
-
-                        othSectMC = sections[os]->getMeetingCount();
-
-                        // For each meeting in this other section
-                        for(int osm = 0; osm < othSectMC; ++osm) {
-
-                            othSectMeeting = sections[os]->getMeetings()[osm];
-
-                            if(othSectMeeting->getDay() == currSectMeeting->getDay()) {
-
-                                std::cout << sections[os]->getSectionId() << ": " << othSectMeeting->getStartTime().get24HourTime() << "-" << othSectMeeting->getEndTime().get24HourTime() << std::endl;
+                std::cout << "# " << instructors.size() << " - " << currName << ": \n";
 
 
-                                // HERE, IMPLEMENT LOGIC TO COMPARE THIS MEETINGS START AND 
+                // For each day of the week, we want to examine all meetings of that day that the instructor has.
+                for(int day = M; day <= F; ++day) {
 
+                    std::string dayNames[] = {"M", "T", "W", "R", "F", "S", "U"};
+                    std::cout << dayNames[day] << std::endl;
+
+                    sectionsUsed = 0;
+
+                    // For each section that the instructor has.
+                    for(int cs = 0; cs < numSections; ++cs) {
+
+                        // Must be a section of that instructor
+                        if(sections[cs]->getInstructorLName() == currName) {
+
+                            ++sectionsUsed;
+                            currSectMC = sections[cs]->getMeetingCount();
+
+                            // For each meeting of this section of the instructor
+                            for(int csm = 0; csm < currSectMC; ++csm) {
+
+                                currSectMeeting = sections[cs]->getMeetings()[csm];
+
+                                if(currSectMeeting->getDay() == day) {
+                                    
+                                    // HERE, compare this meeting's time to that of the earliest and latest times.
+
+                                    // If first section we're looking at, then initialize earliest and latest with only meeting's values.
+                                    if(sectionsUsed == 1) {
+
+                                        earliestStart = currSectMeeting->getStartTime();
+                                        latestEnd = currSectMeeting->getEndTime();
+
+                                    }
+
+                                    // Otherwise, compare.
+                                    else {
+
+                                        // EarliestStartTime Comparisons
+                                        if(currSectMeeting->getStartTime() < earliestStart) {
+                                            earliestStart = currSectMeeting->getStartTime();
+                                        }
+
+                                        // LatestEndTime Comparisons
+
+                                        // MUST ACCOUNT FOR WHEN ENDTIME BLEEDS OVER INTO NEXT DAY (UNREALISTIC, but will still occur)
+                                        if(currSectMeeting->getStartTime() + currSectMeeting->getMeetingDuration() > 1440) {
+                                            tempMeetingEnd = currSectMeeting->getStartTime() + currSectMeeting->getMeetingDuration();
+                                        }
+                                        else {
+                                            tempMeetingEnd = currSectMeeting->getEndTime();
+                                        }
+
+                                        if(tempMeetingEnd > latestEnd) {
+                                            latestEnd = tempMeetingEnd;
+                                        }
+
+
+                                    }
+
+
+
+                                    std::cout << sections[cs]->getSectionId() << ": ";
+                                    std::cout << currSectMeeting->getStartTime().get24HourTime() << "-" << currSectMeeting->getEndTime().get24HourTime() << std::endl;
+                                    
+                                    // No need to examine any other meetings of this section. We only care about the meeting on the particular day.
+                                    break;
+
+                                }
 
 
                             }
@@ -348,22 +401,15 @@ public:
 
                     }
 
-                    
+
+                    // For each day here, calculate duration that which the instructor's section's meeings span.
 
                 }
 
-
-
             }
-
-
-            std::cout << std::endl;
 
         }
 
-
-        // THEN, determine amount of time actually spent from earliest Start to latest end (duration)
-        // COULD MAYBE make a new time object, and then call the duration function!
 
     }
 

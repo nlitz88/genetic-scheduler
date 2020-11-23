@@ -1,7 +1,7 @@
 #ifndef MEETING_H
 #define MEETING_H
 
-// #include <string>
+#include <string>
 
 #include "Time.h"
 
@@ -103,8 +103,9 @@ public:
     virtual std::string toString() const {
 
         std::string result;
-        std::string dayNames[] {"M", "T", "W", "R", "F", "S", "U"};
+        
         // result = dayNames[day] + "\n" + startTime.get24HourTime() + "-" + endTime.get24HourTime();
+        std::string dayNames[] = {"M", "T", "W", "R", "F", "S", "U"};
         result = dayNames[day];
 
         return result;
@@ -113,5 +114,6 @@ public:
 
 
 };
+
 
 #endif
