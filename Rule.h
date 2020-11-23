@@ -35,12 +35,12 @@ const int WEIGHT_SAMETIME = 1000000;
 // Rule that determines fitness according to whether or not the meetings of sections of the same professor overlap (the times at which they occur)
 // NOTE: currently, this rule is only configured to add WEIGHT_SAMETIME to the calculated fitness ONCE (as soon as it finds an instance of this in a schedule)
 //
-class Rule_SameTime : public Rule {
+class Rule_TimeConflict : public Rule {
 
 
 public:
 
-    Rule_SameTime() {
+    Rule_TimeConflict() {
         fitness = 0;
     }
 

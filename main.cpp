@@ -71,14 +71,14 @@ int main() {
 
 
 
-    Rule_SameTime sameTimeRule;
+    Rule_TimeConflict sameTimeRule;
     Rule_BackToBack backToBackRule;
 
     long overallFitness = 0;
 
-    Schedule** schedules = new Schedule* [20000];
+    Schedule** schedules = new Schedule* [1000];
 
-    for(int s = 0; s < 20000; ++s) {
+    for(int s = 0; s < 1000; ++s) {
 
         schedules[s] = new Schedule(sections, numSections);
         schedules[s]->generateSchedule();
