@@ -95,8 +95,24 @@ public:
     // Returns time ellapsed of meeting in minutes
     //
     virtual int getMeetingDuration() const {
-        int d;
-        return d = endTime.MM() - startTime.MM() < 0 ? (-1 * d) : d;
+
+        int duration;
+
+        int i_endTime = endTime.t();
+        int i_startTime = startTime.t();
+
+        if(i_endTime - i_startTime < 0) {
+
+            duration = i_endTime + (1440 - i_startTime);
+            
+        }
+        else {
+
+            duration = i_endTime - i_startTime;
+
+        }
+        
+        return duration;
     }
 
 

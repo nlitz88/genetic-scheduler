@@ -303,6 +303,7 @@ public:
         Time latestEnd;
         int sectionsUsed;               // Will be used to determine when to initialize earliest and latest.
         Time tempMeetingEnd;
+        int duration;
 
         std::string currName;
 
@@ -370,6 +371,7 @@ public:
                                         // LatestEndTime Comparisons
 
                                         // MUST ACCOUNT FOR WHEN ENDTIME BLEEDS OVER INTO NEXT DAY (UNREALISTIC, but will still occur)
+                                        // UNLESS the generated times for meetings are adjusted and no longer roll over.
                                         if(currSectMeeting->getStartTime() + currSectMeeting->getMeetingDuration() > 1440) {
                                             tempMeetingEnd = currSectMeeting->getStartTime() + currSectMeeting->getMeetingDuration();
                                         }
@@ -403,6 +405,12 @@ public:
 
 
                     // For each day here, calculate duration that which the instructor's section's meeings span.
+                    duration = latestEnd.t() - earliestStart.t();
+                    if(currSectMC != 0 && duration > 540) {
+                        fitness += 50;
+                        std::cout << sections[s]->getInstructorLName() << " is on campus for more than 9 hours: first Starts @ " << earliestStart.get24HourTime() << ", last ends @ " << latestEnd.get24HourTime() << std::endl;
+                    }
+
 
                 }
 
