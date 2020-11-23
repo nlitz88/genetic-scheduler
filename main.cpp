@@ -76,17 +76,17 @@ int main() {
 
     long overallFitness = 0;
 
-    Schedule** schedules = new Schedule* [10];
+    Schedule** schedules = new Schedule* [20000];
 
-    for(int s = 0; s < 10; ++s) {
+    for(int s = 0; s < 20000; ++s) {
 
         schedules[s] = new Schedule(sections, numSections);
         schedules[s]->generateSchedule();
 
         // Is this the functionality that we would wrap up in the optimizer's fitness function? (I.e. is this what the fitness function would essentially be responsible for)
         // Then, get fitness of shedule (in incorrect way for now)
-        // sameTimeRule.getFitness(*schedules[s]);
-        backToBackRule.getFitness(*schedules[s]);
+        sameTimeRule.getFitness(schedules[s]);
+        backToBackRule.getFitness(schedules[s]);
 
         // overallFitness = sameTimeRule.fitnessValue();
         overallFitness = sameTimeRule.fitnessValue() + backToBackRule.fitnessValue();
@@ -112,5 +112,8 @@ int main() {
     std::cout << "Main execution time: " << duration.count() << std::endl;
 
     return 0;
+
+    // old: 9107634 microseconds
+    // new: 
 
 }

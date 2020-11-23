@@ -1,6 +1,8 @@
 #ifndef RULE_H
 #define RULE_H
 
+// #define DEBUG
+
 #include <iostream>
 
 #include "Schedule.h"
@@ -15,7 +17,7 @@ protected:
 public:
 
     // Can we make this a pointer to a schedule? Might be kind of a heavy copy?
-    virtual void getFitness(Schedule schedule) = 0;
+    virtual void getFitness(Schedule* schedule) = 0;
 
 
     // Operation that returns fitness value of a particular rule
@@ -42,13 +44,13 @@ public:
         fitness = 0;
     }
 
-    virtual void getFitness(Schedule schedule) {
+    virtual void getFitness(Schedule* schedule) {
 
         // Reset fitness value to evaluate schedule
         fitness = 0;
 
-        Section** sections = schedule.getSections();
-        int numSections = schedule.getNumSections();
+        Section** sections = schedule->getSections();
+        int numSections = schedule->getNumSections();
 
         int currSectMC = 0;             // Current section meeting count.
         int othSectMC = 0;              // Other section meeting count.
@@ -122,7 +124,7 @@ public:
                                    (currSectMeeting->getStartTime() > othSectMeeting->getStartTime() && currSectMeeting->getStartTime() < othSectMeeting->getEndTime())) {
 
                                     fitness = WEIGHT_SAMETIME;
-
+#ifdef DEBUG
                                     std::cout << "TIME CONFLICT: BAD SCHEDULE!\n";
                                     std::cout << sections[cs]->getInstructorLName() << " teaches " << sections[cs]->getSectionId() << " on day "
                                           << currSectMeeting->toString() << " at "
@@ -131,7 +133,7 @@ public:
                                     std::cout << sections[os]->getInstructorLName() << " teaches " << sections[os]->getSectionId() << " on day "
                                           << othSectMeeting->toString() << " at "
                                           << othSectMeeting->getStartTime().get24HourTime() << "-" << othSectMeeting->getEndTime().get24HourTime() << std::endl;
-
+#endif
                                     tc = true;  // time conflict = true --> will break all outer loops. No more fitness evaluation needed
 
 
@@ -176,14 +178,14 @@ public:
         fitness = 0;
     }
 
-    virtual void getFitness(Schedule schedule) {
+    virtual void getFitness(Schedule* schedule) {
 
         // Reset fitness value to evaluate schedule
         fitness = 0;
 
         // Get collections of sections from provided schedule
-        Section** sections = schedule.getSections();
-        int numSections = schedule.getNumSections();
+        Section** sections = schedule->getSections();
+        int numSections = schedule->getNumSections();
 
         int currSectMC = 0;             // Current section meeting count.
         int othSectMC = 0;              // Other section meeting count.
@@ -194,8 +196,9 @@ public:
 
         // Compare each section with each subsequent section
         for(int cs = 0; cs < numSections; ++cs) {
-
+            
             for(int os = cs + 1; os < numSections; ++os) {
+
 
                 // Only concerned with analyzing sections of the same instructor. Check that here.
                 if(sections[cs]->getInstructorLName() == sections[os]->getInstructorLName()) {
@@ -225,7 +228,7 @@ public:
                                    othSectMeeting->getEndTime() == currSectMeeting->getStartTime()) {
                                     
                                        fitness += BACKTOBACK_WEIGHT;
-
+#ifdef DEBUG
                                         // Report occurence
                                         std::cout << "BACK TO BACK MEETINGS BETWEEN SECTIONS!\n";
                                         std::cout << sections[cs]->getInstructorLName() << " teaches " << sections[cs]->getSectionId() << " on day "
@@ -235,7 +238,7 @@ public:
                                         std::cout << sections[os]->getInstructorLName() << " teaches " << sections[os]->getSectionId() << " on day "
                                                   << othSectMeeting->toString() << " at "
                                                   << othSectMeeting->getStartTime().get24HourTime() << "-" << othSectMeeting->getEndTime().get24HourTime() << std::endl;
-
+#endif
                                 }
 
 
