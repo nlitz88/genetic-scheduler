@@ -11,8 +11,6 @@ private:
     Rule** rules;
     int ruleCount;
 
-    long fitness;
-
 
 public:
 

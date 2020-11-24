@@ -7,7 +7,8 @@
 
 #include "Section.h"
 #include "Schedule.h"
-#include "Rule.h"
+// #include "Rule.h"
+#include "Optimizer.h"
 
 
 // This is where the various classes and scheduler optimization aglorithm will be tested.
@@ -71,32 +72,45 @@ int main() {
 
 
 
-    Rule_TimeConflict sameTimeRule;
-    Rule_BackToBack backToBackRule;
-    Rule_CampusTime campusTimeRule;
+    // Rule_TimeConflict sameTimeRule;
+    // Rule_BackToBack backToBackRule;
+    // Rule_CampusTime campusTimeRule;
 
     long overallFitness = 0;
+    int numBad = 0;
+    int numGood = 0;
 
-    Schedule** schedules = new Schedule* [1];
+    Optimizer opt;
 
-    for(int s = 0; s < 1; ++s) {
+    Schedule** schedules = new Schedule* [100];
+
+    for(int s = 0; s < 100; ++s) {
 
         schedules[s] = new Schedule(sections, numSections);
         schedules[s]->generateSchedule();
 
         // Is this the functionality that we would wrap up in the optimizer's fitness function? (I.e. is this what the fitness function would essentially be responsible for)
         // Then, get fitness of shedule (in incorrect way for now)
-        sameTimeRule.getFitness(schedules[s]);
-        backToBackRule.getFitness(schedules[s]);
-        campusTimeRule.getFitness(schedules[s]);
+        // sameTimeRule.getFitness(schedules[s]);
+        // backToBackRule.getFitness(schedules[s]);
+        // campusTimeRule.getFitness(schedules[s]);
 
         // overallFitness = sameTimeRule.fitnessValue();
-        overallFitness = sameTimeRule.fitnessValue() + backToBackRule.fitnessValue() + campusTimeRule.fitnessValue();
-        
+        // overallFitness = sameTimeRule.fitnessValue() + backToBackRule.fitnessValue() + campusTimeRule.fitnessValue();
+
+        overallFitness = opt.getScheduleFitness(schedules[s]);
+
+        if(overallFitness >= 1000000) {
+            ++numBad;
+        } else {
+            ++numGood;
+        }
 
         std::cout << "Fitness of schedule #" <<  s << " : " << overallFitness << std::endl;
 
     }
+
+    std::cout << "Probability to getting schedule w/o time conflict: " << numGood << "\\" << numBad + numGood << "  ==  " << static_cast<double>(numGood)/(numBad + numGood) * 100 << "%" << std::endl;
 
 
 

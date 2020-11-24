@@ -25,7 +25,7 @@ Optimizer::~Optimizer() {
 long Optimizer::getScheduleFitness(Schedule* schedule) {
 
     // Reset fitnes value
-    fitness = 0;
+    long fitness = 0;
 
     // Then, calculate fitness value using each rule
     for(int r = 0; r < ruleCount; ++r) {
