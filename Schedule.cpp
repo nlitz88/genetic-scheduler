@@ -133,8 +133,7 @@ void Schedule::removeAllSections() {
 
 
 
-// Operation that will generate non-overlapping, limited number of sections that will comprise the schedule (STUDENT SCHEDULE)
-// UPDATE: NOT EXACTLY SURE WHAT KIND OF SCHEDULE THIS IS SUPPOSED TO BE YET
+// Operation that will generate a schedule by generating Meetings for each new schedule object that it has.
 //
 void Schedule::generateSchedule() {
 

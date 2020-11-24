@@ -445,4 +445,7 @@ public:
 
 
 
+// Also implement rule of my own that adds a significant amount whenever a course ends after 9pm or starts before 7 AM
+
+
 #endif
