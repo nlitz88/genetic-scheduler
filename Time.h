@@ -61,10 +61,19 @@ public:
 
 
     // Returns string representation of time
-    virtual std::string get24HourTime() const {
+    // Proper parameter dictates whether get24HourTime returns hours mod 24. By default true.
+    virtual std::string get24HourTime(bool proper = true) const {
 
         std::string result;
-        result = (this->HH() < 10 ? "0" + std::to_string(this->HH()) : std::to_string(this->HH()))
+
+        int hh;
+        if(proper) {
+            hh = this->HH() % 24;
+        } else {
+            hh = this->HH();
+        }
+
+        result = (hh < 10 ? "0" + std::to_string(hh) : std::to_string(hh))
                + ":"
                + (this->MM() < 10 ? "0" + std::to_string(this->MM()) : std::to_string(this->MM()));
         

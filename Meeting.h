@@ -98,20 +98,23 @@ public:
 
         int duration;
 
-        int i_endTime = endTime.t();
-        int i_startTime = startTime.t();
+        // int i_endTime = endTime.t();
+        // int i_startTime = startTime.t();
 
-        if(i_endTime - i_startTime < 0) {
+        // if(i_endTime - i_startTime < 0) {
 
-            duration = i_endTime + (1440 - i_startTime);
+        //     duration = i_endTime + (1440 - i_startTime);
             
-        }
-        else {
+        // }
+        // else {
 
-            duration = i_endTime - i_startTime;
+        //     duration = i_endTime - i_startTime;
 
-        }
-        
+        // }
+
+        // With new, "continuous" time, endtime will ALWAYS be greater than startTime
+        duration = endTime.t() - startTime.t();
+
         return duration;
     }
 

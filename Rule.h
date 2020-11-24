@@ -323,14 +323,18 @@ public:
                 // Add instructor's name to the vector
                 instructors.push_back(currName);
 
+#ifdef DEBUG
                 std::cout << "# " << instructors.size() << " - " << currName << ": \n";
+#endif
 
 
                 // For each day of the week, we want to examine all meetings of that day that the instructor has.
                 for(int day = M; day <= F; ++day) {
 
+#ifdef DEBUG
                     std::string dayNames[] = {"M", "T", "W", "R", "F", "S", "U"};
                     std::cout << dayNames[day] << std::endl;
+#endif
 
                     sectionsUsed = 0;
 
@@ -371,28 +375,31 @@ public:
                                         }
 
                                         // LatestEndTime Comparisons
-
-                                        // MUST ACCOUNT FOR WHEN ENDTIME BLEEDS OVER INTO NEXT DAY (UNREALISTIC, but will still occur)
-                                        // UNLESS the generated times for meetings are adjusted and no longer roll over.
-                                        if(currSectMeeting->getStartTime() + currSectMeeting->getMeetingDuration() > 1440) {
-                                            tempMeetingEnd = currSectMeeting->getStartTime() + currSectMeeting->getMeetingDuration();
-                                        }
-                                        else {
-                                            tempMeetingEnd = currSectMeeting->getEndTime();
+                                        if(currSectMeeting->getEndTime() > latestEnd) {
+                                            latestEnd = currSectMeeting->getEndTime();
                                         }
 
-                                        if(tempMeetingEnd > latestEnd) {
-                                            latestEnd = tempMeetingEnd;
-                                        }
+                                        // // MUST ACCOUNT FOR WHEN ENDTIME BLEEDS OVER INTO NEXT DAY (UNREALISTIC, but will still occur)
+                                        // // UNLESS the generated times for meetings are adjusted and no longer roll over.             ---> NOW IMPLEMENTED
+                                        // if(currSectMeeting->getStartTime() + currSectMeeting->getMeetingDuration() > 1440) {
+                                        //     tempMeetingEnd = currSectMeeting->getStartTime() + currSectMeeting->getMeetingDuration();
+                                        // }
+                                        // else {
+                                        //     tempMeetingEnd = currSectMeeting->getEndTime();
+                                        // }
+
+                                        // if(tempMeetingEnd > latestEnd) {
+                                        //     latestEnd = tempMeetingEnd;
+                                        // }
 
 
                                     }
 
 
-
+#ifdef DEBUG
                                     std::cout << sections[cs]->getSectionId() << ": ";
-                                    std::cout << currSectMeeting->getStartTime().get24HourTime() << "-" << currSectMeeting->getEndTime().get24HourTime() << std::endl;
-                                    
+                                    std::cout << currSectMeeting->getStartTime().get24HourTime(false) << "-" << currSectMeeting->getEndTime().get24HourTime(false) << std::endl;
+#endif
                                     // No need to examine any other meetings of this section. We only care about the meeting on the particular day.
                                     break;
 
@@ -410,16 +417,18 @@ public:
                     if(sectionsUsed != 0) {
                         
                         // For each day here, calculate duration that which the instructor's section's meeings span.
-                        std::cout << "Earliest Start: " << earliestStart.t() << ". Latest End: " << latestEnd.t() << std::endl;
+#ifdef DEBUG
+                        std::cout << "Earliest Start: " << earliestStart.get24HourTime(false) << ". Latest End: " << latestEnd.get24HourTime(false) << std::endl;
+#endif
                         duration = latestEnd.t() - earliestStart.t();
                         if(duration > 540) {
                             fitness += 50;
-                            std::cout << sections[s]->getInstructorLName() << " is on campus for more than 9 hours: first Starts @ " << earliestStart.get24HourTime() << ", last ends @ " << latestEnd.get24HourTime() << std::endl;
+#ifdef DEBUG
+                            std::cout << sections[s]->getInstructorLName() << " is on campus for more than 9 hours: first Starts @ " << earliestStart.get24HourTime(false) << ", last ends @ " << latestEnd.get24HourTime(false) << std::endl;
+#endif
                         }
 
-                    }
-
-                    
+                    } 
 
 
                 }
