@@ -30,6 +30,11 @@ long Optimizer::getScheduleFitness(Schedule* schedule) {
     // Then, calculate fitness value using each rule
     for(int r = 0; r < ruleCount; ++r) {
 
+        // Optimization; once schedule's fitness exceeds the weight provided by a TIME CONFLICT, don't waste any more time running through other fitness calculations.
+        if(fitness >= WEIGHT_SAMETIME) {
+            break;
+        }
+
         rules[r]->getFitness(schedule);
         fitness += rules[r]->fitnessValue();
 
