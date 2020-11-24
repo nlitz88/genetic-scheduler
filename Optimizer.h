@@ -11,6 +11,8 @@ private:
     Rule** rules;
     int ruleCount;
 
+    long fitness;
+
 
 public:
 
@@ -20,7 +22,7 @@ public:
 
 
     // I think this functions job will be to find the sum of all of the rule objects getFitness() functions
-    virtual double fitness();
+    virtual long getScheduleFitness(Schedule* schedule);
 
 };
 
