@@ -170,105 +170,6 @@ public:
 
 
 
-const int WEIGHT_BACKTOBACK = 50;
-
-// Rule that determines fitness according to whether or not meetings of sections of the same professor occur back-to-back
-// NOTE: Currently configured to add WEIGHT_BACKTOBACK for every occurrence of this (every two  meetings on every day that this might occur)
-//
-class Rule_BackToBack : public Rule {
-
-public:
-
-    Rule_BackToBack() {
-        fitness = 0;
-    }
-
-    virtual void getFitness(Schedule* schedule) {
-
-        // Reset fitness value to evaluate schedule
-        fitness = 0;
-
-        // Get collections of sections from provided schedule
-        Section** sections = schedule->getSections();
-        int numSections = schedule->getNumSections();
-
-        int currSectMC = 0;             // Current section meeting count.
-        int othSectMC = 0;              // Other section meeting count.
-
-        Meeting* currSectMeeting;       // Pointer to point to one of the current section's meeting object.
-        Meeting* othSectMeeting;        // Pointer to point to one of the other sections' meeting object.
-
-
-        // Compare each section with each subsequent section
-        for(int cs = 0; cs < numSections; ++cs) {
-            
-            for(int os = cs + 1; os < numSections; ++os) {
-
-
-                // Only concerned with analyzing sections of the same instructor. Check that here.
-                if(sections[cs]->getInstructorLName() == sections[os]->getInstructorLName()) {
-
-                    // Classes can only occur back to back if they're on the same day. Thus, must find meetings of each section that occur on the same day,
-                    // and then can determine if they occur back to back.
-
-                    currSectMC = sections[cs]->getMeetingCount();
-                    othSectMC = sections[os]->getMeetingCount();
-
-                    // To do this, compare each meeting of the current section to each other meeting of the other section
-                    for(int csm = 0; csm < currSectMC; ++csm) {
-
-                        for(int osm = 0; osm < othSectMC; ++osm) {
-
-
-                            // Store current section meeting and other section meeting in pointers for further referencing
-                            currSectMeeting = sections[cs]->getMeetings()[csm];
-                            othSectMeeting = sections[os]->getMeetings()[osm];
-                            
-                            // Compare the meetings' days from each section
-                            if(currSectMeeting->getDay() == othSectMeeting->getDay()) {
-
-                                // Now, if they occur on the same day, determine if they determine back to back.
-
-                                if(currSectMeeting->getEndTime() == othSectMeeting->getStartTime() ||
-                                   othSectMeeting->getEndTime() == currSectMeeting->getStartTime()) {
-                                    
-                                       fitness += WEIGHT_BACKTOBACK;
-#ifdef DEBUG
-                                        // Report occurence
-                                        std::cout << "BACK TO BACK MEETINGS BETWEEN SECTIONS!\n";
-                                        std::cout << sections[cs]->getInstructorLName() << " teaches " << sections[cs]->getSectionId() << " on day "
-                                                  << currSectMeeting->toString() << " at "
-                                                  << currSectMeeting->getStartTime().get24HourTime() << "-" << currSectMeeting->getEndTime().get24HourTime() << std::endl;
-
-                                        std::cout << sections[os]->getInstructorLName() << " teaches " << sections[os]->getSectionId() << " on day "
-                                                  << othSectMeeting->toString() << " at "
-                                                  << othSectMeeting->getStartTime().get24HourTime() << "-" << othSectMeeting->getEndTime().get24HourTime() << std::endl;
-#endif
-                                }
-
-
-                            }
-
-
-                        }
-
-                    }
-
-
-                }
-
-
-            }
-
-        }
-
-
-    }
-
-};
-
-
-
 const int WEIGHT_CAMPUSTIME = 100;
 
 // Rule that determines fitness according to whether or not the instructor must be on the campus for more than 9 hours
@@ -441,6 +342,106 @@ public:
     }
 
 };
+
+
+
+const int WEIGHT_BACKTOBACK = 50;
+
+// Rule that determines fitness according to whether or not meetings of sections of the same professor occur back-to-back
+// NOTE: Currently configured to add WEIGHT_BACKTOBACK for every occurrence of this (every two  meetings on every day that this might occur)
+//
+class Rule_BackToBack : public Rule {
+
+public:
+
+    Rule_BackToBack() {
+        fitness = 0;
+    }
+
+    virtual void getFitness(Schedule* schedule) {
+
+        // Reset fitness value to evaluate schedule
+        fitness = 0;
+
+        // Get collections of sections from provided schedule
+        Section** sections = schedule->getSections();
+        int numSections = schedule->getNumSections();
+
+        int currSectMC = 0;             // Current section meeting count.
+        int othSectMC = 0;              // Other section meeting count.
+
+        Meeting* currSectMeeting;       // Pointer to point to one of the current section's meeting object.
+        Meeting* othSectMeeting;        // Pointer to point to one of the other sections' meeting object.
+
+
+        // Compare each section with each subsequent section
+        for(int cs = 0; cs < numSections; ++cs) {
+            
+            for(int os = cs + 1; os < numSections; ++os) {
+
+
+                // Only concerned with analyzing sections of the same instructor. Check that here.
+                if(sections[cs]->getInstructorLName() == sections[os]->getInstructorLName()) {
+
+                    // Classes can only occur back to back if they're on the same day. Thus, must find meetings of each section that occur on the same day,
+                    // and then can determine if they occur back to back.
+
+                    currSectMC = sections[cs]->getMeetingCount();
+                    othSectMC = sections[os]->getMeetingCount();
+
+                    // To do this, compare each meeting of the current section to each other meeting of the other section
+                    for(int csm = 0; csm < currSectMC; ++csm) {
+
+                        for(int osm = 0; osm < othSectMC; ++osm) {
+
+
+                            // Store current section meeting and other section meeting in pointers for further referencing
+                            currSectMeeting = sections[cs]->getMeetings()[csm];
+                            othSectMeeting = sections[os]->getMeetings()[osm];
+                            
+                            // Compare the meetings' days from each section
+                            if(currSectMeeting->getDay() == othSectMeeting->getDay()) {
+
+                                // Now, if they occur on the same day, determine if they determine back to back.
+
+                                if(currSectMeeting->getEndTime() == othSectMeeting->getStartTime() ||
+                                   othSectMeeting->getEndTime() == currSectMeeting->getStartTime()) {
+                                    
+                                       fitness += WEIGHT_BACKTOBACK;
+#ifdef DEBUG
+                                        // Report occurence
+                                        std::cout << "BACK TO BACK MEETINGS BETWEEN SECTIONS!\n";
+                                        std::cout << sections[cs]->getInstructorLName() << " teaches " << sections[cs]->getSectionId() << " on day "
+                                                  << currSectMeeting->toString() << " at "
+                                                  << currSectMeeting->getStartTime().get24HourTime() << "-" << currSectMeeting->getEndTime().get24HourTime() << std::endl;
+
+                                        std::cout << sections[os]->getInstructorLName() << " teaches " << sections[os]->getSectionId() << " on day "
+                                                  << othSectMeeting->toString() << " at "
+                                                  << othSectMeeting->getStartTime().get24HourTime() << "-" << othSectMeeting->getEndTime().get24HourTime() << std::endl;
+#endif
+                                }
+
+
+                            }
+
+
+                        }
+
+                    }
+
+
+                }
+
+
+            }
+
+        }
+
+
+    }
+
+};
+
 
 
 
