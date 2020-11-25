@@ -12,8 +12,8 @@ private:
     int ruleCount;
 
     // TEMPORARY FOR DEBUGGING
-    int ruleFitnesses[6];
-    std::string ruleNames[6] {"Rule_TimeConflict", "Rule_CampusTime", "Rule_NextDay", "Rule_TwoEvenings", "Rule_BackToBack", "Rule_AroundCommon"};
+    int ruleFitnesses[7];
+    std::string ruleNames[7] {"Rule_TimeConflict", "Rule_CampusTime", "Rule_NextDay", "Rule_TwoEvenings", "Rule_BackToBack", "Rule_AroundCommon", "Rule_ClassesPerDay"};
 
 
 public:

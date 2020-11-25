@@ -1,7 +1,7 @@
 #ifndef RULE_H
 #define RULE_H
 
-// #define DEBUG
+#define DEBUG
 
 #include <iostream>
 #include <string>       // CampusTime
@@ -579,7 +579,7 @@ public:
 
 const int WEIGHT_BACKTOBACK = 50;
 
-// Rule that determines fitness according to whether or not meetings of sections of the same professor occur back-to-back
+// Rule that determines fitness according to whether or not meetings of sections of the same professor occur back-to-back.
 // NOTE: Currently configured to add WEIGHT_BACKTOBACK for every occurrence of this (every two  meetings on every day that this might occur)
 //
 class Rule_BackToBack : public Rule {
@@ -825,6 +825,135 @@ public:
     }
 
 };
+
+
+
+const int WEIGHT_CLASSESPERDAY = 50;
+const int CLASSESPERDAY = 3;
+
+// Rule that determines fitness according to whether or not there are more than CLASSESPERDAY classes on a given day for a particular instructor.
+//
+class Rule_ClassesPerDay : public Rule {
+
+public:
+
+    Rule_ClassesPerDay() {
+        fitness = 0;
+    }
+
+    virtual void getFitness(Schedule* schedule) {
+
+
+        // Reset fitness value to evaluate schedule
+        fitness = 0;
+
+        // Get collections of sections from provided schedule
+        Section** sections = schedule->getSections();
+        int numSections = schedule->getNumSections();
+
+        int currSectMC = 0;             // Current section meeting count.
+
+        Meeting* currSectMeeting;       // Pointer to point to one of the current section's meeting object.
+
+
+        int classCount;                 // Tracks number of sections recorded to have meetings on a particular day
+
+        std::string currName;
+        std::vector<std::string> instructors;
+
+
+        // For each Section. This outer loop only really serves as a means of generating a list of instructors from the sections provided.
+        // OR, think of it as "for each instructor"
+        for(int s = 0; s < numSections; ++s) {
+
+
+            currName = sections[s]->getInstructorLName();
+            
+            // As long as we haven't already seen this instructor, add them to the vector and analyze all of their sections.
+            if(std::find(instructors.begin(), instructors.end(), currName) == instructors.end()) {
+                
+                // Add instructor's name to the vector
+                instructors.push_back(currName);
+
+                // For each day of the week, we want to examine all meetings of that day that the instructor has.
+                for(int day = M; day <= F; ++day) {
+
+
+                    // Reset classCount for each day.
+                    classCount = 0;
+
+                    // For each section that the instructor has.
+                    // Only continue looking for more sections that might have meetings on this day while classCount hasn't reached CLASSESPERDAY yet.
+                    int cs = 0;
+                    while(cs < numSections && classCount <= CLASSESPERDAY) {
+
+                        
+                        // Only exame sections by the current instructor.
+                        if(sections[cs]->getInstructorLName() == currName) {
+
+                            // Get number of meetings in current section.
+                            currSectMC = sections[cs]->getMeetingCount();
+
+                            int csm = 0;
+                            bool meetingOnDayFound = false;
+                            while(csm < currSectMC && !meetingOnDayFound) {
+
+
+                                // Get current meeting from current section.
+                                currSectMeeting = sections[cs]->getMeetings()[csm];
+
+                                // Only examine times of meeting if it occurs on current day.
+                                if(currSectMeeting->getDay() == day) {
+
+                                    // No need to examine any other meetings of this section once we found one on the day we are currently looking at.
+                                    meetingOnDayFound = true;
+
+                                    // Increment classCount if a meeting of this section occurs on this particular day.
+                                    ++classCount;
+
+                                }
+
+                                ++csm;
+
+
+                            }
+
+
+
+                        }
+
+                        ++cs;
+
+
+                    }
+
+                    // Once gone through all sections for a particular instructor for a given day, add to fitness if they have more than CLASSESPERDAY classes.
+                    if(classCount > CLASSESPERDAY) {
+
+                        fitness += WEIGHT_CLASSESPERDAY;
+
+#ifdef DEBUG
+                        std::string dayNames[] = {"M", "T", "W", "R", "F", "S", "U"};
+                        std::cout << sections[s]->getInstructorLName() << " HAS " << classCount << " CLASS ON " << dayNames[day] << ". MORE THAN " << CLASSESPERDAY << "!" << std::endl;
+#endif
+
+                    }
+
+                
+
+                }
+
+            }
+
+
+        }
+
+    }
+
+
+};
+
+
 
 
 

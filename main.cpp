@@ -77,7 +77,7 @@ int main() {
     // Rule_CampusTime campusTimeRule;
     Rule_AroundCommon aroundCommon;
 
-    const int POPULATION_SIZE = 10000;
+    const int POPULATION_SIZE = 1;
 
     long overallFitness = 0;
     int numBad = 0;
