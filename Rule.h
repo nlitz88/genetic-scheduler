@@ -1,7 +1,7 @@
 #ifndef RULE_H
 #define RULE_H
 
-// #define DEBUG
+#define DEBUG
 
 #include <iostream>
 #include <string>       // CampusTime
@@ -35,10 +35,10 @@ public:
 
 
 
-const int WEIGHT_SAMETIME = 1000000;
+const int WEIGHT_TIMECONFLICT = 1000000;
 
 // Rule that determines fitness according to whether or not the meetings of sections of the same professor overlap (the times at which they occur)
-// NOTE: currently, this rule is only configured to add WEIGHT_SAMETIME to the calculated fitness ONCE (as soon as it finds an instance of this in a schedule)
+// NOTE: currently, this rule is only configured to add WEIGHT_TIMECONFLICT to the calculated fitness ONCE (as soon as it finds an instance of this in a schedule)
 //
 class Rule_TimeConflict : public Rule {
 
@@ -128,7 +128,7 @@ public:
                                    (currSectMeeting->getStartTime() < othSectMeeting->getStartTime() && currSectMeeting->getEndTime() > othSectMeeting->getStartTime()) ||
                                    (currSectMeeting->getStartTime() > othSectMeeting->getStartTime() && currSectMeeting->getStartTime() < othSectMeeting->getEndTime())) {
 
-                                    fitness = WEIGHT_SAMETIME;
+                                    fitness = WEIGHT_TIMECONFLICT;
 #ifdef DEBUG
                                     std::cout << "TIME CONFLICT: BAD SCHEDULE!\n";
                                     std::cout << sections[cs]->getInstructorLName() << " teaches " << sections[cs]->getSectionId() << " on day "
@@ -173,7 +173,7 @@ public:
 const int WEIGHT_CAMPUSTIME = 100;
 
 // Rule that determines fitness according to whether or not the instructor must be on the campus for more than 9 hours
-// Should add 100 for EVERY AFTER beyond 9 hours that they're on campus (**************** FIX THIS *******************)
+// Should add 100 for EVERY AFTER beyond 9 hours that they're on campus
 //
 class Rule_CampusTime : public Rule {
 
@@ -350,7 +350,7 @@ public:
 const int WEIGHT_NEXTDAY = 100;
 
 // Rule that determines fitness based on if instructor is on campus after 6 pm and there the next morning before 11 am
-// Adds 100 for EVERY HOUR before 11 AM that an instructor must arrive if they teach at 6pm the day before.
+// Adds WEIGHT_NEXTDAY for EVERY HOUR before 11 AM that an instructor must arrive if they teach at 6pm the day before.
 //
 class Rule_NextDay : public Rule {
 
@@ -388,11 +388,11 @@ public:
                 currSectMeeting = sections[cs]->getMeetings()[csm];
 
                 // Check if this meeting starts at or goes past 6 PM (1080) (BUT NOT IF THE MEETING IS ON FRIDAY)
-                if(currSectMeeting->getStartTime() >= 1080 ||
-                   currSectMeeting->getStartTime() + currSectMeeting->getMeetingDuration() > 1080) {
+                if(currSectMeeting->getDay() != F && (currSectMeeting->getStartTime() >= 1080 ||
+                   currSectMeeting->getStartTime() + currSectMeeting->getMeetingDuration() > 1080)) {
 
                     
-                    // Now, we want to check if any other sections of the same instructor have meetings on the NEXT day.
+                    // Now, we want to check if any other sections of the SAME INSTRUCTOR have meetings on the NEXT day.
                     for(int os = 0; os < numSections; ++os) {       // All other sections (not just those after current)
 
                         // Don't bother examining if same section as current (they will never have meetings on back to back days) (Remove if this rule changed);
@@ -460,6 +460,53 @@ public:
 
 };
 
+
+
+const int WEIGHT_TWOEVENINGS = 50;
+
+// Rule that determines fitness according to how many evenings an instructor is scheduled.
+// Adds WEIGHT_TWOEVENINGS for every evening beyond two that an instructor is schedule.
+class Rule_TwoEvenings : public Rule {
+
+
+public:
+    
+    Rule_TwoEvenings() {
+        fitness = 0;
+    }
+
+    virtual void getFitness(Schedule* schedule) {
+
+        // Reset fitness value to evaluate schedule.
+        fitness = 0;
+
+        Section** sections = schedule->getSections();
+        int numSections = schedule->getNumSections();
+
+        int currSectMC = 0;             // Current section meeting count.
+        int othSectMC = 0;              // Other section meeting count.
+
+        Meeting* currSectMeeting;       // Pointer to point to one of the current section's meeting object.
+        Meeting* othSectMeeting;        // Pointer to point to one of the other sections' meeting object.
+
+
+
+
+
+        // For each section.
+        for(int cs = 0; cs < numSections; ++cs) {
+
+
+            
+
+
+        }
+
+
+    }
+
+
+};
 
 
 
@@ -559,10 +606,7 @@ public:
     }
 
 };
-
-
-
-
+ 
 
 
 // Also implement rule of my own that adds a significant amount whenever a course ends after 9pm or starts before 7 AM

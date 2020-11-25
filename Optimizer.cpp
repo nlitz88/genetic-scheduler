@@ -32,7 +32,7 @@ long Optimizer::getScheduleFitness(Schedule* schedule) {
 
         // Optimization; once schedule's fitness exceeds the weight provided by a TIME CONFLICT, don't waste any more time running through other fitness calculations.
         // NOTE: MUST EXCLUDE THIS FOR DEBUGGING OTHER RULES;
-        if(fitness >= WEIGHT_SAMETIME) {
+        if(fitness >= WEIGHT_TIMECONFLICT) {
             break;
         }
 
@@ -42,7 +42,7 @@ long Optimizer::getScheduleFitness(Schedule* schedule) {
 #ifdef DEBUG
         // print out fitness contributed by each Rule
         ruleFitnesses[r] = rules[r]->fitnessValue();
-        std::cout << "Fitness contributed by " << ruleNames[r] << ": " << ruleFitnesses[r] << std::endl << std::endl;#
+        std::cout << "Fitness contributed by " << ruleNames[r] << ": " << ruleFitnesses[r] << std::endl << std::endl;
 #endif
 
     }
