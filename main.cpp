@@ -82,9 +82,9 @@ int main() {
 
     Optimizer opt;
 
-    Schedule** schedules = new Schedule* [20000];
+    Schedule** schedules = new Schedule* [1];
 
-    for(int s = 0; s < 20000; ++s) {
+    for(int s = 0; s < 1; ++s) {
 
         schedules[s] = new Schedule(sections, numSections);
         schedules[s]->generateSchedule();
@@ -106,7 +106,7 @@ int main() {
             ++numGood;
         }
 
-        // std::cout << "Fitness of schedule #" <<  s << " : " << overallFitness << std::endl;
+        std::cout << "Fitness of schedule #" <<  s << " : " << overallFitness << std::endl;
 
     }
 

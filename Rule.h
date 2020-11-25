@@ -1,7 +1,7 @@
 #ifndef RULE_H
 #define RULE_H
 
-// #define DEBUG
+#define DEBUG
 
 #include <iostream>
 #include <string>       // CampusTime
@@ -173,6 +173,7 @@ public:
 const int WEIGHT_CAMPUSTIME = 100;
 
 // Rule that determines fitness according to whether or not the instructor must be on the campus for more than 9 hours
+// Should add 100 for EVERY AFTER beyond 9 hours that they're on campus (**************** FIX THIS *******************)
 //
 class Rule_CampusTime : public Rule {
 
@@ -345,6 +346,122 @@ public:
 
 
 
+const int WEIGHT_NEXTDAY = 100;
+
+// Rule that determines fitness based on if instructor is on campus after 6 pm and there the next morning before 11 am
+// Adds 100 for EVERY HOUR before 11 AM that an instructor must arrive if they teach at 6pm the day before.
+//
+class Rule_NextDay : public Rule {
+
+public:
+
+    Rule_NextDay() {
+        fitness = 0;
+    }
+
+    virtual void getFitness(Schedule* schedule) {
+
+        // Reset fitness value to evaluate schedule.
+        fitness = 0;
+
+        Section** sections = schedule->getSections();
+        int numSections = schedule->getNumSections();
+
+        int currSectMC = 0;             // Current section meeting count.
+        int othSectMC = 0;              // Other section meeting count.
+
+        Meeting* currSectMeeting;       // Pointer to point to one of the current section's meeting object.
+        Meeting* othSectMeeting;        // Pointer to point to one of the other sections' meeting object.
+
+
+        for(int cs = 0; cs < numSections; ++cs) {
+
+
+            // Get number of meetings in current section.
+            currSectMC = sections[cs]->getMeetingCount();
+
+            for(int csm = 0; csm < currSectMC; ++csm) {
+
+
+                // Get meeting of current section.
+                currSectMeeting = sections[cs]->getMeetings()[csm];
+
+                // Check if this meeting starts at or goes past 6 PM (1080) (BUT NOT IF THE MEETING IS ON FRIDAY)
+                if(currSectMeeting->getStartTime() >= 1080 ||
+                   currSectMeeting->getStartTime() + currSectMeeting->getMeetingDuration() > 1080) {
+
+                    
+                    // Now, we want to check if any other sections of the same instructor have meetings on the NEXT day.
+                    for(int os = 0; os < numSections; ++os) {       // All other sections (not just those after current)
+
+                        // Don't bother examining if same section as current (they will never have meetings on back to back days) (Remove if this rule changed);
+                        // if(os == cs) {continue;}
+
+                        if(sections[os]->getInstructorLName() == sections[cs]->getInstructorLName()) {
+
+                            othSectMC = sections[os]->getMeetingCount();
+
+                            // For each meeting in other section.
+                            for(int osm = 0; osm < othSectMC; ++osm) {
+
+
+                                othSectMeeting = sections[os]->getMeetings()[osm];
+
+                                // If day of other section is one past the day of the current section (the next day).
+                                if(othSectMeeting->getDay() == currSectMeeting->getDay() + 1) {
+
+                                    // Then, check if this meeting the next day occurs before 11 AM (660).
+                                    if(othSectMeeting->getStartTime() < 660) {
+
+                                        // If so, add WEIGHT_NEXTDAY to fitness for every hour before 11 that it occurs.
+                                        fitness += (660 - othSectMeeting->getStartTime().t()) * WEIGHT_NEXTDAY;
+
+#ifdef DEBUG
+
+                                        // Report details of occurence.
+                                        // REPORT:
+                                        //      Instructor First
+                                        //      Section: Current meeting that occurs after 6PM and the day that it occurs on:
+                                        //      Section: Other meeting that occurs (the day after)
+                                        std::cout << "COURSE OCCURS AFTER 6PM DAY BEFORE\n";
+                                        std::cout << sections[cs]->getInstructorLName() << " teaches " << sections[cs]->getSectionId() << " on day "
+                                                  << currSectMeeting->toString() << " at "
+                                                  << currSectMeeting->getStartTime().get24HourTime() << "-" << currSectMeeting->getEndTime().get24HourTime() << std::endl;
+
+                                        std::cout << sections[os]->getInstructorLName() << " teaches " << sections[os]->getSectionId() << " on day "
+                                                  << othSectMeeting->toString() << " at "
+                                                  << othSectMeeting->getStartTime().get24HourTime() << "-" << othSectMeeting->getEndTime().get24HourTime() << std::endl;
+
+#endif
+
+                                    }
+
+                                }
+
+
+                            }
+
+                        }
+
+
+                    }
+
+
+                }
+
+
+            }
+
+
+        }
+
+    }
+
+};
+
+
+
+
 const int WEIGHT_BACKTOBACK = 50;
 
 // Rule that determines fitness according to whether or not meetings of sections of the same professor occur back-to-back
@@ -441,6 +558,8 @@ public:
     }
 
 };
+
+
 
 
 
