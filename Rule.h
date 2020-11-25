@@ -700,64 +700,122 @@ public:
         int numSections = schedule->getNumSections();
 
         int currSectMC = 0;             // Current section meeting count.
-        int othSectMC = 0;              // Other section meeting count.
 
         Meeting* currSectMeeting;       // Pointer to point to one of the current section's meeting object.
-        Meeting* othSectMeeting;        // Pointer to point to one of the other sections' meeting object.
 
 
-        // For each section.
-        for(int cs = 0; cs < numSections; ++cs) {
+        bool before;
+        bool after;
+
+        std::string currName;
+        std::vector<std::string> instructors;
 
 
-            // For each other section.
-            for(int os = 0; os < numSections; ++os) {
+        // For each Section. This outer loop only really serves as a means of generating a list of instructors from the sections provided.
+        // OR, think of it as "for each instructor"
+        for(int s = 0; s < numSections; ++s) {
 
+
+            currName = sections[s]->getInstructorLName();
+            
+            // As long as we haven't already seen this instructor, add them to the vector and analyze all of their sections.
+            if(std::find(instructors.begin(), instructors.end(), currName) == instructors.end()) {
                 
-                // If sections are from the same instructor.
-                if(sections[os]->getInstructorLName() == sections[cs]->getInstructorLName()) {
+                // Add instructor's name to the vector
+                instructors.push_back(currName);
 
-                    // Get meeting counts for the current section and other section.
-                    currSectMC = sections[cs]->getMeetingCount();
-                    othSectMC = sections[os]->getMeetingCount();
-                    
-                    // Now, compare all meetings of current section to all meetings of other section. Want to examine the times of meetings of the two sections that occur on the SAME DAY.
-                    for(int csm = 0; csm < currSectMC; ++csm) {
+#ifdef DEBUG
+                std::cout << "# " << instructors.size() << " - " << currName << ": \n";
+#endif
 
 
-                        for(int osm = 0; osm < othSectMC; ++osm) {
-                            
-                            // Get current meeting and other meeting.
-                            currSectMeeting = sections[cs]->getMeetings()[csm];
-                            othSectMeeting = sections[os]->getMeetings()[osm];
-
-                            // Only want to compare times of meeings if they occur on the same day.
-                            if(othSectMeeting->getDay() == currSectMeeting->getDay()) {
+                // For each day of the week, we want to examine all meetings of that day that the instructor has.
+                for(int day = M; day <= F; ++day) {
 
 
-                                // If csm ends immediately before common hour and osm starts immediately after OR vice versa, add WEIGHT_AROUNDCOMMON to fitness.
-                                // Note: this will only occur once for a particular day. Thus, add WEIGHT_AROUNDCOMMON for that day.
+#ifdef DEBUG
+                    std::string dayNames[] = {"M", "T", "W", "R", "F", "S", "U"};
+                    std::cout << dayNames[day] << std::endl;
+#endif
 
-                                if((currSectMeeting->getEndTime() == COMMONHOURSTART && othSectMeeting->getStartTime() == COMMONHOUREND) ||
-                                    (othSectMeeting->getEndTime() == COMMONHOURSTART && currSectMeeting->getStartTime() == COMMONHOUREND)) {
+                    // Reset before and after for each day.
+                    before = after = false;
 
-                                    fitness += WEIGHT_AROUNDCOMMON;
-                                        
+                    // For each section that the instructor has.
+                    int cs = 0;
+                    while(cs < numSections && (!before || !after)) {
+
+                        
+                        if(sections[cs]->getInstructorLName() == currName) {
+
+                            // Get number of meetings in current section.
+                            currSectMC = sections[cs]->getMeetingCount();
+
+                            int csm = 0;
+                            bool meetingOnDayFound = false;
+                            while(csm < currSectMC && !meetingOnDayFound) {
+
+                                
+                                // Get current meeting from current section
+                                currSectMeeting = sections[cs]->getMeetings()[csm];
+
+                                // Only examine times of meeting if it occurs on current day 
+                                if(currSectMeeting->getDay() == day) {
+                                    
+                                    // No need to examine any other meetings of this section once we found one on the day we are currently looking at.
+                                    meetingOnDayFound = true;
+
+                                    // Determine if meeting ended when common hour starts or starts when common hour ends
+                                    if(currSectMeeting->getEndTime() == COMMONHOURSTART) {
+                                        before = true;
+
+#ifdef DEBUG
+                                    std::cout << sections[cs]->getSectionId() << ": ENDS RIGHT BEFORE COMMON HOUR";
+                                    std::cout << currSectMeeting->getStartTime().get24HourTime(false) << "-" << currSectMeeting->getEndTime().get24HourTime(false) << std::endl;
+#endif
+
+                                    }
+                                    else if(currSectMeeting->getStartTime() == COMMONHOUREND) {
+                                        after = true;
+
+#ifdef DEBUG
+                                    std::cout << sections[cs]->getSectionId() << ": " << "STARTS RIGHT AFTER COMMON HOUR";
+                                    std::cout << currSectMeeting->getStartTime().get24HourTime(false) << "-" << currSectMeeting->getEndTime().get24HourTime(false) << std::endl;
+#endif
+
+                                    }
+
                                 }
 
+
+                                ++csm;
 
 
                             }
 
-
                         }
+
+                        // Increment cs after each section
+                        ++cs;
+
+
+                    }
+
+
+                    // Add to fitness if a meeting ended when common hour starts and started when common hour ends
+                    if(before && after) {
+                        
+                        fitness += WEIGHT_AROUNDCOMMON;
+
+#ifdef DEBUG
+                        std::cout << sections[s]->getInstructorLName() << " has class BEFORE AND AFTER COMMON HOUR" << std::endl;
+#endif
 
 
                     }
 
 
                 }
-
 
             }
 

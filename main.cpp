@@ -75,6 +75,9 @@ int main() {
     // Rule_TimeConflict sameTimeRule;
     // Rule_BackToBack backToBackRule;
     // Rule_CampusTime campusTimeRule;
+    Rule_AroundCommon aroundCommon;
+
+    const int POPULATION_SIZE = 10000;
 
     long overallFitness = 0;
     int numBad = 0;
@@ -82,9 +85,9 @@ int main() {
 
     Optimizer opt;
 
-    Schedule** schedules = new Schedule* [10000];
+    Schedule** schedules = new Schedule* [POPULATION_SIZE];
 
-    for(int s = 0; s < 10000; ++s) {
+    for(int s = 0; s < POPULATION_SIZE; ++s) {
 
         schedules[s] = new Schedule(sections, numSections);
         schedules[s]->generateSchedule();
@@ -94,8 +97,9 @@ int main() {
         // sameTimeRule.getFitness(schedules[s]);
         // backToBackRule.getFitness(schedules[s]);
         // campusTimeRule.getFitness(schedules[s]);
+        // aroundCommon.getFitness(schedules[s]);
 
-        // overallFitness = sameTimeRule.fitnessValue();
+        // overallFitness = aroundCommon.fitnessValue();
         // overallFitness = sameTimeRule.fitnessValue() + backToBackRule.fitnessValue() + campusTimeRule.fitnessValue();
 
         overallFitness = opt.getScheduleFitness(schedules[s]);
@@ -106,7 +110,7 @@ int main() {
             ++numGood;
         }
 
-        // std::cout << "Fitness of schedule #" <<  s << " : " << overallFitness << std::endl;
+        std::cout << "Fitness of schedule #" <<  s << " : " << overallFitness << std::endl;
 
     }
 

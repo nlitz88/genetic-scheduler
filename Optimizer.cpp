@@ -4,8 +4,8 @@
 Optimizer::Optimizer() {
 
     // Predetermined number of rules. Must use pointers, however, in order to take advantage of polymorphic nature of rule.
-    ruleCount = 5;
-    rules = new Rule* [ruleCount] {new Rule_TimeConflict(), new Rule_CampusTime(), new Rule_NextDay(), new Rule_TwoEvenings(), new Rule_BackToBack()};
+    ruleCount = 6;
+    rules = new Rule* [ruleCount] {new Rule_TimeConflict(), new Rule_CampusTime(), new Rule_NextDay(), new Rule_TwoEvenings(), new Rule_BackToBack(), new Rule_AroundCommon()};
 
 }
 
@@ -32,9 +32,9 @@ long Optimizer::getScheduleFitness(Schedule* schedule) {
 
         // Optimization; once schedule's fitness exceeds the weight provided by a TIME CONFLICT, don't waste any more time running through other fitness calculations.
         // NOTE: MUST EXCLUDE THIS FOR DEBUGGING OTHER RULES;
-        if(fitness >= WEIGHT_TIMECONFLICT) {
-            break;
-        }
+        // if(fitness >= WEIGHT_TIMECONFLICT) {
+        //     break;
+        // }
 
         rules[r]->getFitness(schedule);
         fitness += rules[r]->fitnessValue();
