@@ -673,10 +673,104 @@ public:
     }
 
 };
- 
 
 
-// Also implement rule of my own that adds a significant amount whenever a course ends after 9pm or starts before 7 AM
+
+const int WEIGHT_AROUNDCOMMON = 50;
+const int COMMONHOURSTART = 720;
+const int COMMONHOUREND = 780;
+
+// Rule that determines fitness according to if they teach (have meetings from two different sections) before AND after common hour.
+//
+class Rule_AroundCommon : public Rule {
+
+public:
+
+    Rule_AroundCommon() {
+        fitness = 0;
+    }
+
+    virtual void getFitness(Schedule* schedule) {
+
+        // Reset fitness value to evaluate schedule
+        fitness = 0;
+
+        // Get collections of sections from provided schedule
+        Section** sections = schedule->getSections();
+        int numSections = schedule->getNumSections();
+
+        int currSectMC = 0;             // Current section meeting count.
+        int othSectMC = 0;              // Other section meeting count.
+
+        Meeting* currSectMeeting;       // Pointer to point to one of the current section's meeting object.
+        Meeting* othSectMeeting;        // Pointer to point to one of the other sections' meeting object.
+
+
+        // For each section.
+        for(int cs = 0; cs < numSections; ++cs) {
+
+
+            // For each other section.
+            for(int os = 0; os < numSections; ++os) {
+
+                
+                // If sections are from the same instructor.
+                if(sections[os]->getInstructorLName() == sections[cs]->getInstructorLName()) {
+
+                    // Get meeting counts for the current section and other section.
+                    currSectMC = sections[cs]->getMeetingCount();
+                    othSectMC = sections[os]->getMeetingCount();
+                    
+                    // Now, compare all meetings of current section to all meetings of other section. Want to examine the times of meetings of the two sections that occur on the SAME DAY.
+                    for(int csm = 0; csm < currSectMC; ++csm) {
+
+
+                        for(int osm = 0; osm < othSectMC; ++osm) {
+                            
+                            // Get current meeting and other meeting.
+                            currSectMeeting = sections[cs]->getMeetings()[csm];
+                            othSectMeeting = sections[os]->getMeetings()[osm];
+
+                            // Only want to compare times of meeings if they occur on the same day.
+                            if(othSectMeeting->getDay() == currSectMeeting->getDay()) {
+
+
+                                // If csm ends immediately before common hour and osm starts immediately after OR vice versa, add WEIGHT_AROUNDCOMMON to fitness.
+                                // Note: this will only occur once for a particular day. Thus, add WEIGHT_AROUNDCOMMON for that day.
+
+                                if((currSectMeeting->getEndTime() == COMMONHOURSTART && othSectMeeting->getStartTime() == COMMONHOUREND) ||
+                                    (othSectMeeting->getEndTime() == COMMONHOURSTART && currSectMeeting->getStartTime() == COMMONHOUREND)) {
+
+                                    fitness += WEIGHT_AROUNDCOMMON;
+                                        
+                                }
+
+
+
+                            }
+
+
+                        }
+
+
+                    }
+
+
+                }
+
+
+            }
+
+
+        }
+   
+    }
+
+};
+
+
+
+// Also implement rule of my own that adds a significant amount whenever a course ends after 9pm or starts before 7 AM (no matter the instructor, just in general)
 
 
 #endif
