@@ -1,7 +1,7 @@
 #ifndef RULE_H
 #define RULE_H
 
-#define DEBUG
+// #define DEBUG
 
 #include <iostream>
 #include <string>       // CampusTime
@@ -488,10 +488,8 @@ public:
         int numSections = schedule->getNumSections();
 
         int currSectMC = 0;             // Current section meeting count.
-        int othSectMC = 0;              // Other section meeting count.
 
         Meeting* currSectMeeting;       // Pointer to point to one of the current section's meeting object.
-        Meeting* othSectMeeting;        // Pointer to point to one of the other sections' meeting object.
 
         std::string currName;
         std::vector<std::string> instructors;
@@ -510,27 +508,39 @@ public:
                 // Add instructor's name to the vector
                 instructors.push_back(currName);
 
-
-            // For each section.
-            for(int cs = 0; cs < numSections; ++cs) {
-
-
-                // If section is by the current instructor.
-                if(sections[cs]->getInstructorLName() == currName) {
-
-                    currSectMC = sections[cs]->getMeetingCount();
-                    
-                    // For each meeting in current section.
-                    for(int csm = 0; csm < currSectMC; ++csm) {
+#ifdef DEBUG
+                std::cout << "# " << instructors.size() << " - " << currName << ": \n";
+#endif
 
 
-                        // Get current meeting.
-                        currSectMeeting = sections[cs]->getMeetings()[csm];
+                // For each section.
+                for(int cs = 0; cs < numSections; ++cs) {
+
+
+                    // If section is by the current instructor.
+                    if(sections[cs]->getInstructorLName() == currName) {
+
+                        currSectMC = sections[cs]->getMeetingCount();
                         
-                        // If current meeting starts at or after 6 PM (1080).
-                        if(currSectMeeting->getStartTime() >= EVENINGTIME) {
+                        // For each meeting in current section.
+                        for(int csm = 0; csm < currSectMC; ++csm) {
 
-                            ++eveCount;
+
+                            // Get current meeting.
+                            currSectMeeting = sections[cs]->getMeetings()[csm];
+                            
+                            // If current meeting starts at or after 6 PM (1080).
+                            if(currSectMeeting->getStartTime() >= EVENINGTIME) {
+
+                                ++eveCount;
+
+#ifdef DEBUG
+                                std::cout << sections[cs]->getSectionId() << ": ";
+                                std::cout << currSectMeeting->getStartTime().get24HourTime(false) << "-" << currSectMeeting->getEndTime().get24HourTime(false) << std::endl;
+#endif
+
+                            }
+
 
                         }
 
@@ -538,38 +548,26 @@ public:
                     }
 
 
+                }
+
+                // Once all sections that an instructor could have are examined, determine number of evenings they must be on campus. If > 2,
+                // add WEIGHT_TWOEVENINGS for each after 2.
+                if(eveCount > EVENINGTHRESHOLD) {
+
+                    fitness += (eveCount - EVENINGTHRESHOLD) * WEIGHT_TWOEVENINGS;
+
+#ifdef DEBUG
+                    std::cout << currName << " is on campus " << eveCount << " days at/after 6PM\n"; 
+#endif
 
                 }
 
-
+                // Reset eveCount to continue examining sections of other instructors.
+                eveCount = 0;
+                
             }
-
-            // Once all sections that an instructor could have are examined, determine number of evenings they must be on campus. If > 2,
-            // add WEIGHT_TWOEVENINGS for each after 2.
-            if(eveCount > EVENINGTHRESHOLD) {
-
-                fitness += (eveCount - EVENINGTHRESHOLD) * WEIGHT_TWOEVENINGS;
-
-            }
-
-            // Reset eveCount to continue examining sections of other instructors.
-            eveCount = 0;
-
 
         }
-
-
-        // For each instructor
-        // For each section
-        // if section is by instructor
-        // For each meeting in that section
-        // Check if meeting starts at or after 6
-        // If so
-
-        // For each section
-        // for each meeting in that section
-        // if meeting starts at or after 6
-        // For 
 
 
     }
