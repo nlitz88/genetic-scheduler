@@ -5,7 +5,7 @@ Optimizer::Optimizer() {
 
     // Predetermined number of rules. Must use pointers, however, in order to take advantage of polymorphic nature of rule.
     ruleCount = 4;
-    rules = new Rule* [ruleCount] {new Rule_TimeConflict(), new Rule_CampusTime(), new Rule_BackToBack(), new Rule_NextDay()};
+    rules = new Rule* [ruleCount] {new Rule_TimeConflict(), new Rule_CampusTime(), new Rule_NextDay(), new Rule_BackToBack()};
 
 }
 
@@ -38,6 +38,10 @@ long Optimizer::getScheduleFitness(Schedule* schedule) {
 
         rules[r]->getFitness(schedule);
         fitness += rules[r]->fitnessValue();
+
+        // print out fitness contributed by each Rule
+        ruleFitnesses[r] = rules[r]->fitnessValue();
+        std::cout << "Fitness contributed by " << ruleNames[r] << ": " << ruleFitnesses[r] << std::endl << std::endl;
 
     }
 

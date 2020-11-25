@@ -1,7 +1,7 @@
 #ifndef RULE_H
 #define RULE_H
 
-#define DEBUG
+// #define DEBUG
 
 #include <iostream>
 #include <string>       // CampusTime
@@ -324,9 +324,10 @@ public:
 #endif
                         duration = latestEnd.t() - earliestStart.t();
                         if(duration > 540) {
-                            fitness += 50;
+                            // Must add WEIGHT_CAMPUSTIME for EVERY HOUR BEYOND 9 hours.
+                            fitness += ((duration - 540) / 60) * WEIGHT_CAMPUSTIME;
 #ifdef DEBUG
-                            std::cout << sections[s]->getInstructorLName() << " is on campus for more than 9 hours: first Starts @ " << earliestStart.get24HourTime(false) << ", last ends @ " << latestEnd.get24HourTime(false) << std::endl;
+                            std::cout << sections[s]->getInstructorLName() << " is on campus for more than 9 hours: " << duration << " - first Starts @ " << earliestStart.get24HourTime(false) << ", last ends @ " << latestEnd.get24HourTime(false) << std::endl;
 #endif
                         }
 
@@ -414,7 +415,7 @@ public:
                                     if(othSectMeeting->getStartTime() < 660) {
 
                                         // If so, add WEIGHT_NEXTDAY to fitness for every hour before 11 that it occurs.
-                                        fitness += (660 - othSectMeeting->getStartTime().t()) * WEIGHT_NEXTDAY;
+                                        fitness += ((660 - othSectMeeting->getStartTime().t()) / 60) * WEIGHT_NEXTDAY;
 
 #ifdef DEBUG
 
