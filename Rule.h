@@ -208,7 +208,6 @@ public:
         int duration;
 
         std::string currName;
-
         std::vector<std::string> instructors;
 
 
@@ -463,9 +462,14 @@ public:
 
 
 const int WEIGHT_TWOEVENINGS = 50;
+const int EVENINGTIME = 1080;
+const int EVENINGTHRESHOLD = 2;
+
+// Consider adding functionality to extend this Rule so that it can have different weights past different times.
 
 // Rule that determines fitness according to how many evenings an instructor is scheduled.
 // Adds WEIGHT_TWOEVENINGS for every evening beyond two that an instructor is schedule.
+//
 class Rule_TwoEvenings : public Rule {
 
 
@@ -489,18 +493,83 @@ public:
         Meeting* currSectMeeting;       // Pointer to point to one of the current section's meeting object.
         Meeting* othSectMeeting;        // Pointer to point to one of the other sections' meeting object.
 
+        std::string currName;
+        std::vector<std::string> instructors;
 
+        int eveCount = 0;
+        
 
+        // For each instructor. This outer loop serves as a means of generating a list of professors. This could be avoided if this was generated beforehand.
+        for(int s = 0; s < numSections; ++s) {
 
-
-        // For each section.
-        for(int cs = 0; cs < numSections; ++cs) {
-
-
+            currName = sections[s]->getInstructorLName();
             
+            // As long as we haven't already seen this instructor, add them to the vector and analyze all of their sections.
+            if(std::find(instructors.begin(), instructors.end(), currName) == instructors.end()) {
+                
+                // Add instructor's name to the vector
+                instructors.push_back(currName);
+
+
+            // For each section.
+            for(int cs = 0; cs < numSections; ++cs) {
+
+
+                // If section is by the current instructor.
+                if(sections[cs]->getInstructorLName() == currName) {
+
+                    currSectMC = sections[cs]->getMeetingCount();
+                    
+                    // For each meeting in current section.
+                    for(int csm = 0; csm < currSectMC; ++csm) {
+
+
+                        // Get current meeting.
+                        currSectMeeting = sections[cs]->getMeetings()[csm];
+                        
+                        // If current meeting starts at or after 6 PM (1080).
+                        if(currSectMeeting->getStartTime() >= EVENINGTIME) {
+
+                            ++eveCount;
+
+                        }
+
+
+                    }
+
+
+
+                }
+
+
+            }
+
+            // Once all sections that an instructor could have are examined, determine number of evenings they must be on campus. If > 2,
+            // add WEIGHT_TWOEVENINGS for each after 2.
+            if(eveCount > EVENINGTHRESHOLD) {
+
+                fitness += (eveCount - EVENINGTHRESHOLD) * WEIGHT_TWOEVENINGS;
+
+            }
+
+            // Reset eveCount to continue examining sections of other instructors.
+            eveCount = 0;
 
 
         }
+
+
+        // For each instructor
+        // For each section
+        // if section is by instructor
+        // For each meeting in that section
+        // Check if meeting starts at or after 6
+        // If so
+
+        // For each section
+        // for each meeting in that section
+        // if meeting starts at or after 6
+        // For 
 
 
     }

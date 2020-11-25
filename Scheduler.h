@@ -2,6 +2,8 @@
 #define SCHEDULER_H
 
 #include <string>
+#include <vector>
+#include <algorithm>
 #include <fstream>
 #include <random>
 #include <time.h>
@@ -188,6 +190,9 @@ public:
         }
 
     }
+
+    
+    static std::vector<std::string> instructors;
 
 
 };
