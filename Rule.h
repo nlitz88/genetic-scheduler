@@ -4,20 +4,20 @@
 // #define DEBUG_RULE
 
 #include <iostream>
-#include <string>       // CampusTime
-#include <vector>       // CampusTime
-#include <algorithm>    // CampusTime
+#include <string>
+#include <vector>
+#include <algorithm>
 
 #include "Schedule.h"
 #include "Section.h"
-#include "Time.h"       // CampusTime
-#include "Meeting.h"    // CampusTime
+#include "Time.h"
+#include "Meeting.h"
 
 class Rule {
 
 protected:
 
-    long fitness;
+    int fitness;
 
 public:
 
@@ -26,7 +26,7 @@ public:
 
 
     // Operation that returns fitness value of a particular rule
-    virtual long fitnessValue() const {
+    virtual int fitnessValue() const {
         return fitness;
     }
 
