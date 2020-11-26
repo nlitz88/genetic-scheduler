@@ -14,7 +14,13 @@
 #include "Optimizer.h"
 
 
+
 const int SECTION_STEP = 50;
+
+// Define static Vector of instructors.
+//
+std::vector<std::string> Scheduler::instructors;
+
 
 
 // Default Constructor.
@@ -31,16 +37,18 @@ Scheduler::Scheduler() {
 //
 Scheduler::Scheduler(std::string sectionsFile) {
 
-
+    Scheduler();
+    importSectionsFromFile(sectionsFile);
 
 }
 
 
 // Constructor that accepts pointer to collection of pre-existing sections.
 //
-Scheduler::Scheduler(Section** initSections) {
+Scheduler::Scheduler(Section** initSections, int numSections) {
 
-
+    Scheduler();
+    setNewSections(initSections, numSections);
 
 }
 
@@ -49,6 +57,27 @@ Scheduler::Scheduler(Section** initSections) {
 //
 Scheduler::~Scheduler() {
 
+    destroyAllSections();
+    delete [] baseSections;
+
+}
+
+
+
+// Operation that will release all memory maintaining sections maintained in baseSections collection.
+//
+void Scheduler::destroyAllSections() {
+
+
+    while(sectionCount > 0) {
+
+        // This should call Section destructor
+        delete baseSections[sectionCount--];
+
+    }
+
+    // Clear instructors vector.
+    instructors.clear();
 
 
 }
@@ -80,15 +109,36 @@ void Scheduler::addSection(Section* newSection) {
     baseSections[sectionCount++] = newSection;
 
 
+    // Add instructor name to vector of names if it doesn't already exist.
+    if(std::find(instructors.begin(), instructors.end(), newSection->getInstructorLName()) == instructors.end()) {
+
+        instructors.push_back(newSection->getInstructorLName());
+
+    }
+     
+
 }
 
 
 // Operation that will import sections from file.
 //
-void Scheduler::importSectionsFromFile(std::string filename) {
+void Scheduler::importSectionsFromFile(std::string sectionsFile) {
 
 
+    std::ifstream fin;
+    fin.open(sectionsFile);
 
+    std::string id, lname;
+
+    while(!fin.eof()) {
+        
+        // Read in id and lname of each new section.
+        fin >> id >> lname;
+
+        // Add new section to collection of baseSections using addSection operation.
+        addSection(new Section(id, lname));
+
+    }
 
 
 }
@@ -96,10 +146,14 @@ void Scheduler::importSectionsFromFile(std::string filename) {
 
 // Operation that will set sections to other collection provided by pointer
 //
-void Scheduler::setNewSections(Section** newSections) {
+void Scheduler::setNewSections(Section** newSections, int numSections) {
 
-
-
+    // Release memory maintaining old sections first.
+    destroyAllSections();
+    
+    // Then, assign baseSections to new collection and set new count.
+    baseSections = newSections;
+    sectionCount = numSections;
 
 }
 
