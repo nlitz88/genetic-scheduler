@@ -140,14 +140,13 @@ void Schedule::generateSchedule() {
 
     // ATTEMPT 1: COULD BE TOTALLY WRONG
 
-    // 1.) When the schedule is first created, a sectionList (from main, imported from file) can be passed in to import those "shell" sections to the schedule
+    // 1.) When the schedule is first created, a sectionList (from main, imported from file) can be passed in to import those "shell"/base sections to the schedule
     //     OR, these can be imported using an external call as well.
 
     // 2.) THEN, within here, we generate meetings for all of those schedules in our sectons collection.
 
-
-    // 2.) Generate meetings for each of the sections pulled in
-    //
+    // 3.) Generate meetings for each of the sections pulled in
+    
     for(int s = 0; s < sectionCount; ++s) {
         // std::cout << "Generate meetings for " << sections[s]->getSectionId() << std::endl;
         // Generate meetings for each section
@@ -156,8 +155,6 @@ void Schedule::generateSchedule() {
 
 
 }
-
-
 
 
 std::string Schedule::toString() const {

@@ -1,4 +1,4 @@
-#define DEBUG_OPTIMIZER
+// #define DEBUG_OPTIMIZER
 
 #include "Optimizer.h"
 
@@ -34,9 +34,9 @@ long Optimizer::getScheduleFitness(Schedule* schedule) {
 
         // Optimization; once schedule's fitness exceeds the weight provided by a TIME CONFLICT, don't waste any more time running through other fitness calculations.
         // NOTE: MUST EXCLUDE THIS FOR DEBUGGING OTHER RULES;
-        // if(fitness >= WEIGHT_TIMECONFLICT) {
-        //     break;
-        // }
+        if(fitness >= WEIGHT_TIMECONFLICT) {
+            break;
+        }
 
         rules[r]->getFitness(schedule);
         fitness += rules[r]->fitnessValue();
