@@ -1,11 +1,13 @@
+#define DEBUG_OPTIMIZER
+
 #include "Optimizer.h"
 
 
 Optimizer::Optimizer() {
 
     // Predetermined number of rules. Must use pointers, however, in order to take advantage of polymorphic nature of rule.
-    ruleCount = 7;
-    rules = new Rule* [ruleCount] {new Rule_TimeConflict(), new Rule_CampusTime(), new Rule_NextDay(), new Rule_TwoEvenings(), new Rule_BackToBack(), new Rule_AroundCommon(), new Rule_ClassesPerDay()};
+    ruleCount = 8;
+    rules = new Rule* [ruleCount] {new Rule_TimeConflict(), new Rule_CampusTime(), new Rule_NextDay(), new Rule_TwoEvenings(), new Rule_BackToBack(), new Rule_AroundCommon(), new Rule_ClassesPerDay(), new Rule_LongClassesPerDay()};
 
 }
 
@@ -39,10 +41,10 @@ long Optimizer::getScheduleFitness(Schedule* schedule) {
         rules[r]->getFitness(schedule);
         fitness += rules[r]->fitnessValue();
 
-#ifdef DEBUG
+#ifdef DEBUG_OPTIMIZER
         // print out fitness contributed by each Rule
         ruleFitnesses[r] = rules[r]->fitnessValue();
-        std::cout << "Fitness contributed by " << ruleNames[r] << ": " << ruleFitnesses[r] << std::endl << std::endl;
+        std::cout << "Fitness contributed by " << ruleNames[r] << ": " << ruleFitnesses[r] << std::endl;
 #endif
 
     }

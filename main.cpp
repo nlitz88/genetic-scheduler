@@ -75,9 +75,9 @@ int main() {
     // Rule_TimeConflict sameTimeRule;
     // Rule_BackToBack backToBackRule;
     // Rule_CampusTime campusTimeRule;
-    Rule_AroundCommon aroundCommon;
+    Rule_LongClassesPerDay longClassesPerDay;
 
-    const int POPULATION_SIZE = 1;
+    const int POPULATION_SIZE = 10000;
 
     long overallFitness = 0;
     int numBad = 0;
@@ -97,9 +97,9 @@ int main() {
         // sameTimeRule.getFitness(schedules[s]);
         // backToBackRule.getFitness(schedules[s]);
         // campusTimeRule.getFitness(schedules[s]);
-        // aroundCommon.getFitness(schedules[s]);
+        // longClassesPerDay.getFitness(schedules[s]);
 
-        // overallFitness = aroundCommon.fitnessValue();
+        // overallFitness = longClassesPerDay.fitnessValue();
         // overallFitness = sameTimeRule.fitnessValue() + backToBackRule.fitnessValue() + campusTimeRule.fitnessValue();
 
         overallFitness = opt.getScheduleFitness(schedules[s]);

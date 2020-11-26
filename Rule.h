@@ -1,7 +1,7 @@
 #ifndef RULE_H
 #define RULE_H
 
-#define DEBUG
+// #define DEBUG_RULE
 
 #include <iostream>
 #include <string>       // CampusTime
@@ -129,7 +129,7 @@ public:
                                    (currSectMeeting->getStartTime() > othSectMeeting->getStartTime() && currSectMeeting->getStartTime() < othSectMeeting->getEndTime())) {
 
                                     fitness = WEIGHT_TIMECONFLICT;
-#ifdef DEBUG
+#ifdef DEBUG_RULE
                                     std::cout << "TIME CONFLICT: BAD SCHEDULE!\n";
                                     std::cout << sections[cs]->getInstructorLName() << " teaches " << sections[cs]->getSectionId() << " on day "
                                           << currSectMeeting->toString() << " at "
@@ -224,7 +224,7 @@ public:
                 // Add instructor's name to the vector
                 instructors.push_back(currName);
 
-#ifdef DEBUG
+#ifdef DEBUG_RULE
                 std::cout << "# " << instructors.size() << " - " << currName << ": \n";
 #endif
 
@@ -232,7 +232,7 @@ public:
                 // For each day of the week, we want to examine all meetings of that day that the instructor has.
                 for(int day = M; day <= F; ++day) {
 
-#ifdef DEBUG
+#ifdef DEBUG_RULE
                     std::string dayNames[] = {"M", "T", "W", "R", "F", "S", "U"};
                     std::cout << dayNames[day] << std::endl;
 #endif
@@ -297,7 +297,7 @@ public:
                                     }
 
 
-#ifdef DEBUG
+#ifdef DEBUG_RULE
                                     std::cout << sections[cs]->getSectionId() << ": ";
                                     std::cout << currSectMeeting->getStartTime().get24HourTime(false) << "-" << currSectMeeting->getEndTime().get24HourTime(false) << std::endl;
 #endif
@@ -318,14 +318,14 @@ public:
                     if(sectionsUsed != 0) {
                         
                         // For each day here, calculate duration that which the instructor's section's meeings span.
-#ifdef DEBUG
+#ifdef DEBUG_RULE
                         std::cout << "Earliest Start: " << earliestStart.get24HourTime(false) << ". Latest End: " << latestEnd.get24HourTime(false) << std::endl;
 #endif
                         duration = latestEnd.t() - earliestStart.t();
                         if(duration > 540) {
                             // Must add WEIGHT_CAMPUSTIME for EVERY HOUR BEYOND 9 hours.
                             fitness += ((duration - 540) / 60) * WEIGHT_CAMPUSTIME;
-#ifdef DEBUG
+#ifdef DEBUG_RULE
                             std::cout << sections[s]->getInstructorLName() << " is on campus for more than 9 hours: " << duration << " - first Starts @ " << earliestStart.get24HourTime(false) << ", last ends @ " << latestEnd.get24HourTime(false) << std::endl;
 #endif
                         }
@@ -416,7 +416,7 @@ public:
                                         // If so, add WEIGHT_NEXTDAY to fitness for every hour before 11 that it occurs.
                                         fitness += ((660 - othSectMeeting->getStartTime().t()) / 60) * WEIGHT_NEXTDAY;
 
-#ifdef DEBUG
+#ifdef DEBUG_RULE
 
                                         // Report details of occurence.
                                         // REPORT:
@@ -508,7 +508,7 @@ public:
                 // Add instructor's name to the vector
                 instructors.push_back(currName);
 
-#ifdef DEBUG
+#ifdef DEBUG_RULE
                 std::cout << "# " << instructors.size() << " - " << currName << ": \n";
 #endif
 
@@ -534,7 +534,7 @@ public:
 
                                 ++eveCount;
 
-#ifdef DEBUG
+#ifdef DEBUG_RULE
                                 std::cout << sections[cs]->getSectionId() << ": ";
                                 std::cout << currSectMeeting->getStartTime().get24HourTime(false) << "-" << currSectMeeting->getEndTime().get24HourTime(false) << std::endl;
 #endif
@@ -556,7 +556,7 @@ public:
 
                     fitness += (eveCount - EVENINGTHRESHOLD) * WEIGHT_TWOEVENINGS;
 
-#ifdef DEBUG
+#ifdef DEBUG_RULE
                     std::cout << currName << " is on campus " << eveCount << " days at/after 6PM\n"; 
 #endif
 
@@ -640,7 +640,7 @@ public:
                                    othSectMeeting->getEndTime() == currSectMeeting->getStartTime()) {
                                     
                                        fitness += WEIGHT_BACKTOBACK;
-#ifdef DEBUG
+#ifdef DEBUG_RULE
                                         // Report occurence
                                         std::cout << "BACK TO BACK MEETINGS BETWEEN SECTIONS!\n";
                                         std::cout << sections[cs]->getInstructorLName() << " teaches " << sections[cs]->getSectionId() << " on day "
@@ -724,7 +724,7 @@ public:
                 // Add instructor's name to the vector
                 instructors.push_back(currName);
 
-#ifdef DEBUG
+#ifdef DEBUG_RULE
                 std::cout << "# " << instructors.size() << " - " << currName << ": \n";
 #endif
 
@@ -733,7 +733,7 @@ public:
                 for(int day = M; day <= F; ++day) {
 
 
-#ifdef DEBUG
+#ifdef DEBUG_RULE
                     std::string dayNames[] = {"M", "T", "W", "R", "F", "S", "U"};
                     std::cout << dayNames[day] << std::endl;
 #endif
@@ -769,7 +769,7 @@ public:
                                     if(currSectMeeting->getEndTime() == COMMONHOURSTART) {
                                         before = true;
 
-#ifdef DEBUG
+#ifdef DEBUG_RULE
                                     std::cout << sections[cs]->getSectionId() << ": ENDS RIGHT BEFORE COMMON HOUR";
                                     std::cout << currSectMeeting->getStartTime().get24HourTime(false) << "-" << currSectMeeting->getEndTime().get24HourTime(false) << std::endl;
 #endif
@@ -778,7 +778,7 @@ public:
                                     else if(currSectMeeting->getStartTime() == COMMONHOUREND) {
                                         after = true;
 
-#ifdef DEBUG
+#ifdef DEBUG_RULE
                                     std::cout << sections[cs]->getSectionId() << ": " << "STARTS RIGHT AFTER COMMON HOUR";
                                     std::cout << currSectMeeting->getStartTime().get24HourTime(false) << "-" << currSectMeeting->getEndTime().get24HourTime(false) << std::endl;
 #endif
@@ -807,7 +807,7 @@ public:
                         
                         fitness += WEIGHT_AROUNDCOMMON;
 
-#ifdef DEBUG
+#ifdef DEBUG_RULE
                         std::cout << sections[s]->getInstructorLName() << " has class BEFORE AND AFTER COMMON HOUR" << std::endl;
 #endif
 
@@ -932,9 +932,9 @@ public:
 
                         fitness += WEIGHT_CLASSESPERDAY;
 
-#ifdef DEBUG
+#ifdef DEBUG_RULE
                         std::string dayNames[] = {"M", "T", "W", "R", "F", "S", "U"};
-                        std::cout << sections[s]->getInstructorLName() << " HAS " << classCount << " CLASS ON " << dayNames[day] << ". MORE THAN " << CLASSESPERDAY << "!" << std::endl;
+                        std::cout << sections[s]->getInstructorLName() << " HAS " << classCount << " CLASSES ON " << dayNames[day] << ". MORE THAN " << CLASSESPERDAY << "!" << std::endl;
 #endif
 
                     }
@@ -955,6 +955,151 @@ public:
 
 
 
+const int WEIGHT_LONGCLASSESPERDAY = 1000;
+const int LONGCLASSLENGTH = 180;
+const int LONGCLASSESPERDAY = 1;
+
+// Rule that determines fitness according to whether or not there are more than CLASSESPERDAY LONG classes (have length LONGCLASSLENGTH or more) on a given day for a particular instructor.
+//
+class Rule_LongClassesPerDay : public Rule {
+
+public:
+
+    Rule_LongClassesPerDay() {
+        fitness = 0;
+    }
+
+    virtual void getFitness(Schedule* schedule) {
+
+
+        // Reset fitness value to evaluate schedule
+        fitness = 0;
+
+        // Get collections of sections from provided schedule
+        Section** sections = schedule->getSections();
+        int numSections = schedule->getNumSections();
+
+        int currSectMC = 0;             // Current section meeting count.
+
+        Meeting* currSectMeeting;       // Pointer to point to one of the current section's meeting object.
+
+
+        int classCount;                 // Tracks number of sections recorded to have meetings on a particular day
+
+        std::string currName;
+        std::vector<std::string> instructors;
+
+
+        // For each Section. This outer loop only really serves as a means of generating a list of instructors from the sections provided.
+        // OR, think of it as "for each instructor"
+        for(int s = 0; s < numSections; ++s) {
+
+
+            currName = sections[s]->getInstructorLName();
+            
+            // As long as we haven't already seen this instructor, add them to the vector and analyze all of their sections.
+            if(std::find(instructors.begin(), instructors.end(), currName) == instructors.end()) {
+                
+                // Add instructor's name to the vector
+                instructors.push_back(currName);
+
+#ifdef DEBUG_RULE
+                std::cout << "# " << instructors.size() << " - " << currName << ": \n";
+#endif
+
+                // For each day of the week, we want to examine all meetings of that day that the instructor has.
+                for(int day = M; day <= F; ++day) {
+
+
+#ifdef DEBUG_RULE
+                    std::string dayNames[] = {"M", "T", "W", "R", "F", "S", "U"};
+                    std::cout << dayNames[day] << std::endl;
+#endif
+
+                    // Reset classCount for each day.
+                    classCount = 0;
+
+                    // For each section that the instructor has.
+                    // Only continue looking for more sections that might have meetings on this day while classCount hasn't reached CLASSESPERDAY yet.
+                    int cs = 0;
+                    while(cs < numSections && classCount <= CLASSESPERDAY) {
+
+                        
+                        // Only exame sections by the current instructor.
+                        if(sections[cs]->getInstructorLName() == currName) {
+
+                            // Get number of meetings in current section.
+                            currSectMC = sections[cs]->getMeetingCount();
+
+                            int csm = 0;
+                            bool meetingOnDayFound = false;
+                            while(csm < currSectMC && !meetingOnDayFound) {
+
+
+                                // Get current meeting from current section.
+                                currSectMeeting = sections[cs]->getMeetings()[csm];
+
+                                // Only examine times of meeting if it occurs on current day.
+                                if(currSectMeeting->getDay() == day) {
+
+                                    // No need to examine any other meetings of this section once we found one on the day we are currently looking at.
+                                    meetingOnDayFound = true;
+
+                                    // Only if class LONGCLASSLENGTH or longer will it be counted.
+                                    if(currSectMeeting->getMeetingDuration() >= LONGCLASSLENGTH) {
+
+                                        // Increment classCount if a LONG meeting of this section occurs on this particular day.
+                                        ++classCount;
+
+#ifdef DEBUG_RULE
+                                    std::cout << sections[cs]->getSectionId() << ": ";
+                                    std::cout << currSectMeeting->getStartTime().get24HourTime(false) << "-" << currSectMeeting->getEndTime().get24HourTime(false) << std::endl;
+#endif
+
+                                    }
+
+
+                                }
+
+                                ++csm;
+
+
+                            }
+
+
+
+                        }
+
+                        ++cs;
+
+
+                    }
+
+                    // Once gone through all sections for a particular instructor for a given day, add to fitness if they have more than CLASSESPERDAY classes.
+                    if(classCount > LONGCLASSESPERDAY) {
+
+                        fitness += WEIGHT_LONGCLASSESPERDAY;
+
+#ifdef DEBUG_RULE
+                        std::string dayNames[] = {"M", "T", "W", "R", "F", "S", "U"};
+                        std::cout << sections[s]->getInstructorLName() << " HAS " << classCount << " LONG CLASSES ON " << dayNames[day] << ". MORE THAN " << LONGCLASSESPERDAY << "!" << std::endl;
+#endif
+
+                    }
+
+                
+
+                }
+
+            }
+
+
+        }
+
+    }
+
+
+};
 
 
 // Also implement rule of my own that adds a significant amount whenever a course ends after 9pm or starts before 7 AM (no matter the instructor, just in general)
