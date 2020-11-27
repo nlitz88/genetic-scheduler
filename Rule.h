@@ -173,7 +173,7 @@ public:
 const int WEIGHT_CAMPUSTIME = 100;
 
 // Rule that determines fitness according to whether or not the instructor must be on the campus for more than 9 hours
-// Should add 100 for EVERY AFTER beyond 9 hours that they're on campus
+// Should add 100 for EVERY HOUR AFTER 9 hours that they're on campus
 //
 class Rule_CampusTime : public Rule {
 

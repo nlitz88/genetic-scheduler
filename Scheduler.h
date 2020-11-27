@@ -92,6 +92,11 @@ public:
 
 
     // ALSO, GENETIC ALGORITHMS WILL BE DOWN HERE AS WELL IN SOME FORM.
+    // Would need 
+    //  A.) Population Vector
+    //  B.) Elite Vector
+    //  C.) Would need a sorting algorithm.
+    //  D.) Would need an optimizer object to rank all of the schedules of the population vector/collection.
     
     
 
