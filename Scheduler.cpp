@@ -17,11 +17,6 @@
 
 const int SECTION_STEP = 50;
 
-// Define static Vector of instructors.
-//
-std::vector<std::string> Scheduler::instructors;
-
-
 
 // Default Constructor.
 //

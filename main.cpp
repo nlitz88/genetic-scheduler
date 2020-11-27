@@ -79,7 +79,7 @@ int main() {
 
     const int POPULATION_SIZE = 10000;
 
-    long overallFitness = 0;
+    int overallFitness = 0;
     int numBad = 0;
     int numGood = 0;
 

@@ -24,7 +24,7 @@ public:
 
 
     // I think this functions job will be to find the sum of all of the rule objects getFitness() functions
-    virtual long getScheduleFitness(Schedule* schedule);
+    virtual int getScheduleFitness(Schedule* schedule);
 
 };
 

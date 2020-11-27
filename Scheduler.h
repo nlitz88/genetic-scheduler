@@ -24,6 +24,11 @@ private:
     Schedule** schedules;
     int scheduleCount;
 
+    // Vector of instructors that will be populated with each new collection of sections.
+    // May be used internally or externally. Externally used by a few Rule classes.
+    //
+    std::vector<std::string> instructors;
+
 public:
 
     // Default Constructor.
@@ -56,12 +61,6 @@ public:
     // No meetings will be generated for them (that is only done for those copies of these that belong to a collection of sections within a schedule).
     //
     virtual void addSection(Section* newSection);
-
-
-    // Vector of instructors that will be populated with each new collection of sections.
-    // May be used internally or externally. Externally used by a few Rule classes.
-    //
-    static std::vector<std::string> instructors;
 
 
     // Operation that will import sections from file.

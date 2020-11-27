@@ -24,7 +24,7 @@ Optimizer::~Optimizer() {
 }
 
 
-long Optimizer::getScheduleFitness(Schedule* schedule) {
+int Optimizer::getScheduleFitness(Schedule* schedule) {
 
     // Reset fitnes value
     long fitness = 0;
