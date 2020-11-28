@@ -54,20 +54,6 @@ public:
     virtual int getMeetingCount() const;
 
 
-    // Also, get Num meetings?
-
-
-
-
-    
-    // DEVELOPMENTAL: This operation will, according to certain criteria, randomly generate meetings for this section
-    //
-    virtual void generateMeetings();
-
-
-
-
-
     virtual std::string getSectionId() const;
     virtual void setSectionId(std::string newId);
 

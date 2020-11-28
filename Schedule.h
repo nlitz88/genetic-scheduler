@@ -90,16 +90,6 @@ public:
     virtual std::vector<std::string> getInstructors();
 
 
-
-    // Operation that will generate a schedule by generating Meetings for each new schedule object that it has.
-    //
-    virtual void generateSchedule();
-
-
-    // EXPERIMENTAL: Operation that will generate an overlapping, nearly infinite number of sections that will comprise the schedule (SCHOOLWIDE MASTER SCHEDULE)
-    //
-
-
     virtual std::string toString() const;
     
 

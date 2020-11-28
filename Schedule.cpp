@@ -176,30 +176,6 @@ std::vector<std::string> Schedule::getInstructors() {
 
 
 
-// Operation that will generate a schedule by generating Meetings for each new schedule object that it has.
-//
-void Schedule::generateSchedule() {
-
-
-    // ATTEMPT 1: COULD BE TOTALLY WRONG
-
-    // 1.) When the schedule is first created, a sectionList (from main, imported from file) can be passed in to import those "shell"/base sections to the schedule
-    //     OR, these can be imported using an external call as well.
-
-    // 2.) THEN, within here, we generate meetings for all of those schedules in our sectons collection.
-
-    // 3.) Generate meetings for each of the sections pulled in
-    
-    for(int s = 0; s < sectionCount; ++s) {
-        // std::cout << "Generate meetings for " << sections[s]->getSectionId() << std::endl;
-        // Generate meetings for each section
-        sections[s]->generateMeetings();
-    }
-
-
-}
-
-
 std::string Schedule::toString() const {
 
     std::string result;
