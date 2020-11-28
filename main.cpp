@@ -273,6 +273,30 @@ int main() {
         //          Maybe this is how it works???
 
 
+        // First, (this is unecessary, but) place elites at top of population
+        for(int e = 0; e < ELITE_SIZE; ++e) {
+
+            population[e] = elite[e];
+
+        }
+
+        // Then, this is where we REGENERATE the rest of the population with new, hopefully BETTER schedules.
+        for(int p = ELITE_SIZE - 1; p < POPULATION_SIZE; ++p) {
+
+
+            // First, release memory of old schedule objects
+            delete population[p];
+
+            // Then, crossover. Maybe if I have time introduce mutations somewhere in the algo.
+
+
+            // Also, if I'm going to do crossover on alphabetical basis, then I would sort the sections by UNIQUE course ID in the SCHEDULER.
+            // This way they're already sorted in each Schedule.
+
+
+        }
+
+
 
 
         ++iterations;
