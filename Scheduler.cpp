@@ -22,8 +22,7 @@ const int SECTION_STEP = 50;
 //
 Scheduler::Scheduler() {
 
-    baseSections = new Section* [SECTION_STEP];
-    sectionCount = 0;
+    baseConstructor();
 
 }
 
@@ -32,7 +31,8 @@ Scheduler::Scheduler() {
 //
 Scheduler::Scheduler(std::string sectionsFile) {
 
-    Scheduler();
+    baseConstructor();
+
     importSectionsFromFile(sectionsFile);
 
 }
@@ -42,8 +42,21 @@ Scheduler::Scheduler(std::string sectionsFile) {
 //
 Scheduler::Scheduler(Section** initSections, int numSections) {
 
-    Scheduler();
+    baseConstructor();
     setNewSections(initSections, numSections);
+
+}
+
+
+
+// Operation that provides base functionality for all other constructors.
+//
+void Scheduler::baseConstructor() {
+
+
+    baseSections = new Section* [SECTION_STEP];
+    sectionCount = 0;
+
 
 }
 

@@ -47,6 +47,11 @@ public:
     Scheduler(Section** initSections, int numSections);
 
 
+    // Operation that provides base functionality for all other constructors.
+    //
+    virtual void baseConstructor();
+
+
     // Destructor (should this destroy collections of sections that belong to it? I think so).
     //
     ~Scheduler();

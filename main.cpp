@@ -5,9 +5,8 @@
 #include <time.h>
 #include <chrono>
 
-#include "Section.h"
 #include "Schedule.h"
-// #include "Rule.h"
+#include "Scheduler.h"
 #include "Optimizer.h"
 
 
@@ -77,7 +76,7 @@ int main() {
     // Rule_CampusTime campusTimeRule;
     Rule_LongClassesPerDay longClassesPerDay;
 
-    const int POPULATION_SIZE = 10000;
+    const int POPULATION_SIZE = 1;
 
     int overallFitness = 0;
     int numBad = 0;
@@ -118,9 +117,13 @@ int main() {
 
 
 
-    // for(int s = 0; s < sched1->getNumSections(); ++s) {
-    //     std::cout << "Section " << s << " of sched1 has " << sched1->getSections()[s]->getMeetingCount() << " meetings\n";
-    // }
+
+
+    std::cout << "Now testing Scheduler\n";
+
+
+    // Create new Scheduler. Pass in filename so that it can generate collection of sections.
+    Scheduler scheduler = Scheduler("sections.txt");
 
     
 
