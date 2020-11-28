@@ -30,6 +30,16 @@ private:
     std::vector<std::string> instructors;
 
 
+    // Operation that provides base functionality for all other constructors.
+    //
+    virtual void baseConstructor();
+
+
+    // Operation that will destroy all base section objects. Will also clear instructor vector along with it.
+    //
+    virtual void destroyAllSections();
+
+
 public:
 
     // Default Constructor.
@@ -47,20 +57,9 @@ public:
     Scheduler(Section** initSections, int numSections);
 
 
-    // Operation that provides base functionality for all other constructors.
-    //
-    virtual void baseConstructor();
-
-
     // Destructor (should this destroy collections of sections that belong to it? I think so).
     //
     ~Scheduler();
-
-
-
-    // Operation that will destroy all base section objects. Will also clear instructor vector along with it.
-    //
-    virtual void destroyAllSections();
 
 
     // Operation that will add new section object to collection of sections. These sections, however, will only serve as "base"/"shell" sections;

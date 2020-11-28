@@ -124,6 +124,7 @@ int main() {
 
     // Create new Scheduler. Pass in filename so that it can generate collection of sections.
     Scheduler scheduler = Scheduler("sections.txt");
+    
 
     
 
