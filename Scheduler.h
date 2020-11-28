@@ -22,9 +22,6 @@ private:
     Section** baseSections;
     int sectionCount;
 
-    // Population of schedules. (This may change)
-    Schedule** schedules;
-    int scheduleCount;
 
     // Vector of instructor names. This vector will be passed along to each schedule in order that Optimizer's rules can use it later.
     std::vector<std::string> instructors;
@@ -90,6 +87,17 @@ public:
     virtual void generateScheduleSections(Schedule* schedule);
 
 
+
+    // Operation that will create new schedule objects AND generate sections for that schedule. This is a comprehensive "Generate Schedule" operation.
+    //
+    virtual Schedule* generateSchedule();
+
+
+    // Operation that generates and returns multiple schedules. May convert this to return vector of schedules at some point in the future.
+    //
+    virtual Schedule** generateSchedules(int numSchedules);
+
+
     
     // SOMEWHERE DOWN HERE, IMPLEMENT OPERATION THAT WILL ACTUALLY GENERATE A POPULATION AND WHAT NOT.
     // ALSO, not sure how I want to maintain the contants yet. Maybe make them private members, or static members?
@@ -103,6 +111,7 @@ public:
     //  D.) Would need an optimizer object to rank all of the schedules of the population vector/collection.
     
     
+
 
 
 };

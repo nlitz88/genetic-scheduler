@@ -306,3 +306,50 @@ void Scheduler::generateScheduleSections(Schedule* schedule) {
 
 
 }
+
+
+
+// Operation that will create new schedule objects AND generate sections for that schedule. This is a comprehensive "Generate Schedule" operation.
+//
+Schedule* Scheduler::generateSchedule() {
+
+
+    // Instantiate new Schedule Object with collection of base Sections.
+    // Upon creation using this Schedule constructor, a collection of of COPIES of these provided sections will be provided.
+    // These will be the Schedule's sections, which we can then generate meetings for.
+    Schedule* newSchedule = new Schedule(baseSections, sectionCount);
+
+    // Generate the meetings for the sections of schedule.
+    generateScheduleSections(newSchedule);
+
+    // Then, return pointer to new Schedule object.
+    return newSchedule;
+
+
+}
+
+
+// Operation that generates and returns multiple schedules.
+//
+Schedule** Scheduler::generateSchedules(int numSchedules) {
+
+
+    // Pointer to maintain collection of new Schedule objects.
+    Schedule** newSchedules = new Schedule* [numSchedules];
+
+    // Pointer to maintain address of new Schedule objects.
+    Schedule* newSchedule;
+
+    for(int s = 0; s < numSchedules; ++s) {
+
+        // Generate new schedule.
+        newSchedule = generateSchedule();
+        // Add it to collection of new Schedules.
+        newSchedules[s] = newSchedule;
+
+    }
+
+    return newSchedules;
+
+
+}

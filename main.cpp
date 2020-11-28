@@ -22,23 +22,23 @@ int main() {
 
 
     // Test reading in from file a collection of sections
-    Section** sections = new Section* [50];
-    int numSections = 0;
+    // Section** sections = new Section* [50];
+    // int numSections = 0;
 
-    std::ifstream fin;
-    fin.open("sections.txt");
+    // std::ifstream fin;
+    // fin.open("sections.txt");
     
-    std::string id, lname;
-    while(!fin.eof()) {
+    // std::string id, lname;
+    // while(!fin.eof()) {
         
-        fin >> id >> lname;
+    //     fin >> id >> lname;
 
-        sections[numSections++] = new Section(id, lname);
+    //     sections[numSections++] = new Section(id, lname);
 
-        // NOTE: Should I check for duplicate sections in the provided list?
-        //       I would imagine these should be ignored. Ask Hal about this later.
+    //     // NOTE: Should I check for duplicate sections in the provided list?
+    //     //       I would imagine these should be ignored. Ask Hal about this later.
 
-    }
+    // }
 
 
     // for(int i = 0; i < s; ++i) {
@@ -46,7 +46,7 @@ int main() {
     // }
 
     // Pointer to test section
-    Section* s1 = sections[0];
+    // Section* s1 = sections[0];
 
     // std::cout << s1->getSectionId() << " meetings: \n\n";
     // s1->addMeeting(new Meeting(T, Time(9,05), Time(9,55)));
@@ -56,9 +56,9 @@ int main() {
 
 
 
-    Schedule* sched1 = new Schedule(sections, numSections);
+    // Schedule* sched1 = new Schedule(sections, numSections);
 
-    sched1->generateSchedule();
+    // sched1->generateSchedule();
     // std::cout << sched1->toString();
 
     // sched1->~Schedule();
@@ -74,60 +74,133 @@ int main() {
     // Rule_TimeConflict sameTimeRule;
     // Rule_BackToBack backToBackRule;
     // Rule_CampusTime campusTimeRule;
-    Rule_LongClassesPerDay longClassesPerDay;
-
-    const int POPULATION_SIZE = 1;
-
-    int overallFitness = 0;
-    int numBad = 0;
-    int numGood = 0;
-
-    Optimizer opt;
-
-    Schedule** schedules = new Schedule* [POPULATION_SIZE];
-
-    for(int s = 0; s < POPULATION_SIZE; ++s) {
-
-        schedules[s] = new Schedule(sections, numSections);
-        schedules[s]->generateSchedule();
-
-        // Is this the functionality that we would wrap up in the optimizer's fitness function? (I.e. is this what the fitness function would essentially be responsible for)
-        // Then, get fitness of shedule (in incorrect way for now)
-        // sameTimeRule.getFitness(schedules[s]);
-        // backToBackRule.getFitness(schedules[s]);
-        // campusTimeRule.getFitness(schedules[s]);
-        // longClassesPerDay.getFitness(schedules[s]);
-
-        // overallFitness = longClassesPerDay.fitnessValue();
-        // overallFitness = sameTimeRule.fitnessValue() + backToBackRule.fitnessValue() + campusTimeRule.fitnessValue();
-
-        overallFitness = opt.getScheduleFitness(schedules[s]);
-
-        if(overallFitness >= 1000000) {
-            ++numBad;
-        } else {
-            ++numGood;
-        }
-
-        std::cout << "Fitness of schedule #" <<  s << " : " << overallFitness << std::endl;
-
-    }
-
-    std::cout << "Probability to getting schedule w/o time conflict: " << numGood << "\\" << numBad + numGood << "  ==  " << static_cast<double>(numGood)/(numBad + numGood) * 100 << "%" << std::endl;
+    // Rule_LongClassesPerDay longClassesPerDay;
 
 
 
 
 
-    std::cout << "Now testing Scheduler\n";
 
+
+
+    // const int POPULATION_SIZE = 1;
+
+    // int overallFitness = 0;
+    // int numBad = 0;
+    // int numGood = 0;
+
+    // Optimizer opt;
+
+    // Schedule** schedules = new Schedule* [POPULATION_SIZE];
+
+    // for(int s = 0; s < POPULATION_SIZE; ++s) {
+
+    //     schedules[s] = new Schedule(sections, numSections);
+    //     schedules[s]->generateSchedule();
+
+    //     // Is this the functionality that we would wrap up in the optimizer's fitness function? (I.e. is this what the fitness function would essentially be responsible for)
+    //     // Then, get fitness of shedule (in incorrect way for now)
+    //     // sameTimeRule.getFitness(schedules[s]);
+    //     // backToBackRule.getFitness(schedules[s]);
+    //     // campusTimeRule.getFitness(schedules[s]);
+    //     // longClassesPerDay.getFitness(schedules[s]);
+
+    //     // overallFitness = longClassesPerDay.fitnessValue();
+    //     // overallFitness = sameTimeRule.fitnessValue() + backToBackRule.fitnessValue() + campusTimeRule.fitnessValue();
+
+    //     overallFitness = opt.getScheduleFitness(schedules[s]);
+
+    //     if(overallFitness >= 1000000) {
+    //         ++numBad;
+    //     } else {
+    //         ++numGood;
+    //     }
+
+    //     std::cout << "Fitness of schedule #" <<  s << " : " << overallFitness << std::endl;
+
+    // }
+
+    // std::cout << "Probability to getting schedule w/o time conflict: " << numGood << "\\" << numBad + numGood << "  ==  " << static_cast<double>(numGood)/(numBad + numGood) * 100 << "%" << std::endl;
+
+
+
+
+
+    // *******************************************************************************
+    //
+    //                             Testing Scheduler
+    //
+    // *******************************************************************************
+
+
+
+    std::cout << "\nNow testing Scheduler\n\n";
+
+
+    // ************************** ALGORITHM CONSTANTS **************************
+
+
+    // Defines how large a population should be. Initially this is how many random schedules to initially generate and then how many schedules need to be generated by the elite.
+    const int POPULATION_SIZE = 1000;
+
+    // Defines the number in the elite population to be used to create the next generation.
+    const int ELITE_SIZE = 20;
+
+    // Defines the number of times a new generation should be created in the event an optimal solution is not found.
+    const int MAX_ITERATIONS = 1000;
+
+    // Defines the maximum number of times a new population is created when there is no improvement in fitness. That is, if the same best fitness value occurs STABLE_ITERATIONS times in a row, the algorithm with terminate regardless if MAX_ITERATIONS is reached.
+    const int STABLE_ITERATIONS = 5;
+
+
+
+
+
+
+    // Optimizer object that will calculate fitness for each schedule.
+    Optimizer optimizer;
 
     // Create new Scheduler. Pass in filename so that it can generate collection of sections.
     Scheduler scheduler = Scheduler("sections.txt");
+
+    // Collection of Schedules for POPULATION and ELITE.
+    Schedule** population = new Schedule* [POPULATION_SIZE];
+    Schedule** elite = new Schedule* [ELITE_SIZE];
     
 
-    
+    // Use scheduler to generate population of schedules (use it to generate multiple schedules).
+    population = scheduler.generateSchedules(POPULATION_SIZE);
 
+
+    for(int s = 0; s < POPULATION_SIZE; ++s) {
+        std::cout << "Fitness of Schedule " << s << ": " << optimizer.getScheduleFitness(population[s]) << std::endl;
+    }
+
+
+    // Sort population by fitness from greatest to least.
+    int maxIndex = 0;
+
+    for(int start = 0; start < POPULATION_SIZE; ++start) {
+
+        maxIndex = start;
+
+        for(int e = start; e < POPULATION_SIZE - 1; ++e) {
+
+            // Compare item at Max-Index against all other items. Trying to find another item that is greater than the one at START.
+            // if MaxIndex != start after going through all, then must swap. If maxIndex STILL == start, no swap necessary.
+
+            // THOUGHT: I'm thinking I might need to add a "fitness" member variable to the schedule class. Otherwise I might have to pursue some less convenient means.
+
+        }
+
+    }
+    
+    // Extract elite
+    
+    // Also, depending on how this works, should I release memory of all other schedules left in the population?? (this should subequently have each's sections and meetings destroyed).
+
+
+    // Then, perform crossover on schedules.
 
 
     auto stopTime = std::chrono::high_resolution_clock::now();

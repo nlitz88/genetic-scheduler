@@ -1,4 +1,4 @@
-#define DEBUG_OPTIMIZER
+// #define DEBUG_OPTIMIZER
 
 #include "Optimizer.h"
 
