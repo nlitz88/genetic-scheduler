@@ -105,17 +105,6 @@ public:
                                 
                                 
                                 // std::cout << "Two meetings of different sections occur on same day! Will compare the times of the meetings now!" << std::endl;
- 
-
-                                // std::cout << sections[cs]->getInstructorLName() << " teaches " << sections[cs]->getSectionId() << " on day "
-                                //           << currSectMeeting->toString() << " at "
-                                //           << currSectMeeting->getStartTime().get24HourTime() << "-" << currSectMeeting->getEndTime().get24HourTime() << std::endl;
-
-                                // std::cout << sections[os]->getInstructorLName() << " teaches " << sections[os]->getSectionId() << " on day "
-                                //           << othSectMeeting->toString() << " at "
-                                //           << othSectMeeting->getStartTime().get24HourTime() << "-" << othSectMeeting->getEndTime().get24HourTime() << std::endl;
-
-
 
                                 // NOW, compare the times of the two meetings to see if they overlap
 
@@ -145,7 +134,35 @@ public:
                                 }
                                 
 
+                            }
 
+
+                            // ALSO, if current section's meeting bleeds into next day (ends after 24:00 == 1440), then check to see if this instructor has any sections with meetings
+                            // on the next day that might overlap with this current one from the previous day.
+
+                            else if((othSectMeeting->getDay() == currSectMeeting->getDay() + 1) && (currSectMeeting->getEndTime() > 1440)) {
+
+
+                                // The only real condition we have to consider here is if the OTHER section's meeting on the next day starts before the current section of the previous day ends.
+                                if(othSectMeeting->getStartTime() < (currSectMeeting->getEndTime() % 1440)) {
+
+                                    fitness = WEIGHT_TIMECONFLICT;
+
+#ifdef DEBUG_RULE
+                                    std::cout << "TIME CONFLICT BETWEEN DAYS!!: \n";
+                                    std::cout << sections[cs]->getInstructorLName() << " teaches " << sections[cs]->getSectionId() << " on day "
+                                              << currSectMeeting->toString() << " at "
+                                              << currSectMeeting->getStartTime().get24HourTime() << "-" << currSectMeeting->getEndTime().get24HourTime() << std::endl;
+
+                                    std::cout << sections[os]->getInstructorLName() << " teaches " << sections[os]->getSectionId() << " on day "
+                                              << othSectMeeting->toString() << " at "
+                                              << othSectMeeting->getStartTime().get24HourTime() << "-" << othSectMeeting->getEndTime().get24HourTime() << std::endl;
+#endif
+                                    tc = true;
+
+                                }
+
+                                
                             }
 
 
