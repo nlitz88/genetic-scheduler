@@ -41,8 +41,9 @@ int Optimizer::getScheduleFitness(Schedule* schedule) {
         rules[r]->getFitness(schedule);
         fitness += rules[r]->fitnessValue();
 
-        // Set Schedule's fitness.
-        schedule->setFitness(fitness);
+
+        // // Set Schedule's fitness. (UPDATE: Just going to use return value for now)
+        // schedule->setFitness(fitness);
 
 
 #ifdef DEBUG_OPTIMIZER

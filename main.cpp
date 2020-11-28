@@ -170,19 +170,30 @@ int main() {
 
     // Use scheduler to generate population of schedules (use it to generate multiple schedules).
     population = scheduler.generateSchedules(POPULATION_SIZE);
+    
 
-
+    // Use Optimizer to get/assign fitness to each schedule.
     for(int s = 0; s < POPULATION_SIZE; ++s) {
-        std::cout << "Fitness of Schedule " << s << ": " << optimizer.getScheduleFitness(population[s]) << std::endl;
+
+        population[s]->setFitness(optimizer.getScheduleFitness(population[s]));
+
     }
 
 
-    // Sort population by fitness from greatest to least.
-    int maxIndex = 0;
+    // Print out unsorted result.
+    for(int s = 0; s < POPULATION_SIZE; ++s) {
+        std::cout << "Fitness of Schedule " << s << ": " << population[s]->getFitness() << std::endl;
+    }
+    std::cout << "\n\n";
+
+
+    // Sort population by fitness from most fit --> least fit (i.e., smallest fitness to largest) (Selection sort)
+    int mostFitIndex = 0;
+    Schedule* temp;
 
     for(int start = 0; start < POPULATION_SIZE; ++start) {
 
-        maxIndex = start;
+        mostFitIndex = start;
 
         for(int e = start; e < POPULATION_SIZE - 1; ++e) {
 
@@ -192,9 +203,30 @@ int main() {
             // THOUGHT: I'm thinking I might need to add a "fitness" member variable to the schedule class. Otherwise I might have to pursue some less convenient means.
             // Then, the optimizer will assign this fitness value.
 
+            if(population[e]->getFitness() < population[mostFitIndex]->getFitness()) {
+                mostFitIndex = e;
+            }
+
         }
 
+        // If maxIndex != start, then a more fit schedule (smaller fitness) has been found, and a swap must be performed.
+        if(mostFitIndex != start) {
+
+            temp = population[start];
+            population[start] = population[mostFitIndex];
+            population[mostFitIndex] = temp;
+
+        }
+        
     }
+
+    // Print out sorted result.
+    for(int s = 0; s < POPULATION_SIZE; ++s) {
+        std::cout << "Fitness of Schedule " << s << ": " << population[s]->getFitness() << std::endl;
+    }
+
+    
+
     
     // Extract elite
     
