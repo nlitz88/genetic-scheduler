@@ -1019,7 +1019,98 @@ public:
 };
 
 
-// Also implement rule of my own that adds a significant amount whenever a course ends after 9pm or starts before 7 AM (no matter the instructor, just in general)
+
+const int WEIGHT_BADTIME = 100;
+const int EARLY_THRESHOLD = 420;
+const int LATE_THRESHOLD = 1260;
+
+// Rule that determines fitness according to how late before or after early and late thresholds respectively the start and end times of a meeting are.
+// Will add WEIGHT_BADTIME for every hour before the EARLY_THRESHOLD that a section's meeting starts OR for every hour after LATE_THRESHOLD a section ends.
+
+class Rule_BadTime : public Rule {
+
+public:
+
+    Rule_BadTime() {
+        fitness = 0;
+    }
+
+    virtual void getFitness(Schedule* schedule) {
+
+
+        // Reset fitness value to evaluate schedule
+        fitness = 0;
+
+        // Get collections of sections from provided schedule
+        Section** sections = schedule->getSections();
+        int numSections = schedule->getNumSections();
+
+        int currSectMC = 0;             // Current section meeting count.
+
+        Meeting* currSectMeeting;       // Pointer to point to one of the current section's meeting object.
+
+
+        // This Rule:
+        //      for any meeting of any section (doesn't matter for a particular instructor)
+        // For each section
+        //      For each meeting in that section
+        //          If that meeting starts before EARLY_THRESHOLD
+        //          Else if that meeting ends after LATE_THRESHOLD
+
+
+        // For each section.
+        for(int cs = 0; cs < numSections; ++cs) {
+
+            
+            // Get number of meetings in current section.
+            currSectMC = sections[cs]->getMeetingCount();
+
+            // For each meeting in this section.
+            for(int csm = 0; csm < currSectMC; ++csm) {
+
+
+                // Get current meeting of current section.
+                currSectMeeting = sections[cs]->getMeetings()[csm];
+
+                
+                // Analyze when meeting occurs.
+                
+                // If meeting starts before EARLY_THRESHOLD
+                if(currSectMeeting->getStartTime() < EARLY_THRESHOLD) {
+
+                    // Add WEIGHT_BADTIME for every hour before EARLY_THRESHOLD meeting starts.
+                    fitness += ((EARLY_THRESHOLD - currSectMeeting->getStartTime().t()) / 60) * WEIGHT_BADTIME;
+
+#ifdef DEBUG_RULE
+                std::cout << sections[cs]->getSectionId() << " starts " << ((EARLY_THRESHOLD - currSectMeeting->getStartTime().t()) / 60) << " hours before " << Time(EARLY_THRESHOLD).get24HourTime() << std::endl;
+                std::cout << currSectMeeting->getStartTime().get24HourTime(false) << "-" << currSectMeeting->getEndTime().get24HourTime(false) << std::endl;
+#endif
+
+                } else if(currSectMeeting->getEndTime() > LATE_THRESHOLD) {
+
+                    // Add WEIGHT_BADTIME for every hour after LATE_THRESHOLD meeting ends.
+                    fitness += ((currSectMeeting->getEndTime().t() - LATE_THRESHOLD) / 60) * WEIGHT_BADTIME;
+
+#ifdef DEBUG_RULE
+                std::cout << sections[cs]->getSectionId() << " ends " << ((currSectMeeting->getEndTime().t() - LATE_THRESHOLD) / 60) << " hours after " << Time(LATE_THRESHOLD).get24HourTime() << std::endl;
+                std::cout << currSectMeeting->getStartTime().get24HourTime(false) << "-" << currSectMeeting->getEndTime().get24HourTime(false) << std::endl;
+#endif
+
+                }
+
+
+            }
+
+
+        }
+
+
+
+    }
+
+
+};
+
 
 
 #endif

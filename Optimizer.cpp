@@ -6,8 +6,8 @@
 Optimizer::Optimizer() {
 
     // Predetermined number of rules. Must use pointers, however, in order to take advantage of polymorphic nature of rule.
-    ruleCount = 8;
-    rules = new Rule* [ruleCount] {new Rule_TimeConflict(), new Rule_CampusTime(), new Rule_NextDay(), new Rule_TwoEvenings(), new Rule_BackToBack(), new Rule_AroundCommon(), new Rule_ClassesPerDay(), new Rule_LongClassesPerDay()};
+    ruleCount = 9;
+    rules = new Rule* [ruleCount] {new Rule_TimeConflict(), new Rule_CampusTime(), new Rule_NextDay(), new Rule_TwoEvenings(), new Rule_BackToBack(), new Rule_AroundCommon(), new Rule_ClassesPerDay(), new Rule_LongClassesPerDay(), new Rule_BadTime()};
 
 }
 
