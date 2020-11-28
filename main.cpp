@@ -282,6 +282,15 @@ int main() {
 
         }
 
+
+        // Two Schedule pointers to maintain the two new Schedules that will be spliced together.
+        Schedule* newSchedA = nullptr;
+        Schedule* newSchedB = nullptr;
+
+        // Two Schedule pointers to maintain the two random elites selected to take sections from.
+        Schedule* eliteA = nullptr;
+        Schedule* eliteB = nullptr;
+
         // Then, this is where we REGENERATE the rest of the population with new, hopefully BETTER schedules.
         // p += 2 here, as with each crossover, two new schedules are being created. Therefore, step through population and regenerate two at a time.
         for(int p = ELITE_SIZE - 1; p < POPULATION_SIZE; p += 2) {
@@ -293,8 +302,34 @@ int main() {
             // Then, crossover. Maybe if I have time introduce mutations somewhere in the algo.
 
 
-            // Also, if I'm going to do crossover on alphabetical basis, then I would sort the sections by UNIQUE course ID in the SCHEDULER.
-            // This way they're already sorted in each Schedule.
+            // Create new Schedule objects (this instructor just creates a Schedule with a blank collection of pointers to sections) (Use addSection to add).
+            newSchedA = new Schedule();
+            newSchedB = new Schedule();
+
+            // Get two random elite Schedules.
+            eliteA = elite[(rand() % ELITE_SIZE)];
+            do {
+                eliteB = elite[(rand() % ELITE_SIZE)];
+            } while(eliteB == eliteA);
+            
+
+            // First, get a random section to act as the "split point."
+            int splitPoint = rand() % eliteA->getNumSections();        // Just use one of the elites to get num sections.
+
+
+            // Give newSchedA all sections from eliteA up to section splitPoint, and then all the rest after (and including) splitPoint to newSchedA from eliteB
+            // And vice versa for newSchedB
+            for(int s = 0; s < splitPoint; ++s) {
+
+                // Give COPIES of sections to new Schedule.
+                newSchedA->addSection(new Section(*(eliteA->getSections()[s])));
+                // Will have to manually copy meetings over from each section to new section of newSchedA
+                // Is it safe to make copy constructor handle this? Or should I make a custom function in Section that does this.
+
+                // I think making a new Operation in Section to "CopyMeetingsFromOtherSection" or something like that would be good.
+                // But BE CAREFUL; it would also have to create copies of each meeting. Otherwise, when sections get destroyed, then everything below them gets destroyed.
+
+            }
 
 
         }
