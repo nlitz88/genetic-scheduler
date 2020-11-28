@@ -18,16 +18,17 @@ class Scheduler {
 
 private:
 
+    // Collection of base "shell" sections that each schedule will stem from.
     Section** baseSections;
     int sectionCount;
 
+    // Population of schedules. (This may change)
     Schedule** schedules;
     int scheduleCount;
 
-    // Vector of instructors that will be populated with each new collection of sections.
-    // May be used internally or externally. Externally used by a few Rule classes.
-    //
+    // Vector of instructor names. This vector will be passed along to each schedule in order that Optimizer's rules can use it later.
     std::vector<std::string> instructors;
+
 
 public:
 

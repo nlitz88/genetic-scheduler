@@ -1,6 +1,8 @@
 #include "Schedule.h"
 
 #include <iostream>
+#include <vector>
+#include <algorithm>
 
 
 const int SECTION_STEP = 6;
@@ -130,6 +132,24 @@ void Schedule::removeAllSections() {
 
 }
 
+
+
+// Operation that will set vector of instructors provided vector. This may be changed mechanically slightly in future.
+//
+void Schedule::setInstructors(std::vector<std::string> newInstructors) {
+
+    instructors = newInstructors;
+
+}
+
+
+// Operation that will return vector of instructors.
+//
+std::vector<std::string> Schedule::getInstructors() {
+
+    return instructors;
+
+}
 
 
 

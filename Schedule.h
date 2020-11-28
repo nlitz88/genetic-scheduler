@@ -2,6 +2,7 @@
 #define SCHEDULE_H
 
 #include <string>
+#include <vector>
 
 #include "Section.h"
 
@@ -11,6 +12,10 @@ private:
 
     Section** sections;
     int sectionCount;
+
+    // List of instructors from sections that a schedule will be generated from. This will later be used by Optimizer's rules.
+    // For now, I think it would be copied from Scheduler (where it originates) to each schedule object.
+    std::vector<std::string> instructors;
 
 public:
 
@@ -28,6 +33,7 @@ public:
     // Could reuse sections to conserve memory, but that might be too much complexity for at the moment.
     //
     virtual ~Schedule();
+
 
 
     // Operation that will add section to collection of sections.
@@ -61,9 +67,18 @@ public:
 
 
 
+    // Operation that will set vector of instructors provided vector. This may be changed mechanically slightly in future.
+    //
+    virtual void setInstructors(std::vector<std::string> newInstructors);
 
-    // Operation that will generate non-overlapping, limited number of sections that will comprise the schedule (STUDENT SCHEDULE)
-    // UPDATE: NOT EXACTLY SURE WHAT KIND OF SCHEDULE THIS IS SUPPOSED TO BE YET
+
+    // Operation that will return vector of instructors.
+    //
+    virtual std::vector<std::string> getInstructors();
+
+
+
+    // Operation that will generate a schedule by generating Meetings for each new schedule object that it has.
     //
     virtual void generateSchedule();
 

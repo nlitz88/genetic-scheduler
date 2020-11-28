@@ -211,6 +211,15 @@ public:
         std::vector<std::string> instructors;
 
 
+        // TEST
+        // for(auto instructor : schedule->getInstructors()) {
+        //     std::cout << instructor << " ";
+        // }
+        // std::cout << std::endl;
+
+        // IF LATER I WANT TO USE VECTOR OF INSTRUCTORS, ALL I HAVE TO DO IS IMPLEMENT THAT LIKE I DO ABOVE HERE.
+
+
         // For each Section. This outer loop only really serves as a means of generating a list of instructors from the sections provided.
         // OR, think of it as "for each instructor"
         // NOTE: this could be avoided if this list was generated before hand, like in main. This is a very redundant 
