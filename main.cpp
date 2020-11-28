@@ -168,73 +168,126 @@ int main() {
     Schedule** elite = new Schedule* [ELITE_SIZE];
     
 
-    // Use scheduler to generate population of schedules (use it to generate multiple schedules).
+    // Generate initial population.
     population = scheduler.generateSchedules(POPULATION_SIZE);
     
 
-    // Use Optimizer to get/assign fitness to each schedule.
-    for(int s = 0; s < POPULATION_SIZE; ++s) {
-
-        population[s]->setFitness(optimizer.getScheduleFitness(population[s]));
-
-    }
-
-
-    // Print out unsorted result.
-    // for(int s = 0; s < POPULATION_SIZE; ++s) {
-    //     std::cout << "Fitness of Schedule " << s << ": " << population[s]->getFitness() << std::endl;
-    // }
-    // std::cout << "\n\n";
+    // Initial bestFit = population[0]
+    Schedule* bestFit = population[0];
+    
+    int iterations = 0;
+    int timesSame = 0;
 
 
-    // Sort population by fitness from most fit --> least fit (i.e., smallest fitness to largest) (Selection sort)
-    int mostFitIndex = 0;
-    Schedule* temp;
+    while(bestFit > 0 && iterations < MAX_ITERATIONS && timesSame < STABLE_ITERATIONS) {
 
-    for(int start = 0; start < POPULATION_SIZE - 1; ++start) {
 
-        mostFitIndex = start;
+        // Use Optimizer to get/assign fitness to each schedule.
+        for(int s = 0; s < POPULATION_SIZE; ++s) {
+            population[s]->setFitness(optimizer.getScheduleFitness(population[s]));
+        }
 
-        for(int e = start; e < POPULATION_SIZE; ++e) {
 
-            // Compare item at Max-Index against all other items. Trying to find another item that is greater than the one at START.
-            // if MaxIndex != start after going through all, then must swap. If maxIndex STILL == start, no swap necessary.
+        // Sort population by fitness from most fit --> least fit (i.e., smallest fitness to largest) (Selection sort)
+        int mostFitIndex = 0;
+        Schedule* temp;
 
-            // THOUGHT: I'm thinking I might need to add a "fitness" member variable to the schedule class. Otherwise I might have to pursue some less convenient means.
-            // Then, the optimizer will assign this fitness value.
+        for(int start = 0; start < POPULATION_SIZE - 1; ++start) {
 
-            if(population[e]->getFitness() < population[mostFitIndex]->getFitness()) {
-                mostFitIndex = e;
+            mostFitIndex = start;
+
+            for(int e = start; e < POPULATION_SIZE; ++e) {
+
+                if(population[e]->getFitness() < population[mostFitIndex]->getFitness()) {
+                    mostFitIndex = e;
+                }
+
+            }
+
+            // If maxIndex != start, then a more fit schedule (smaller fitness) has been found, and a swap must be performed.
+            if(mostFitIndex != start) {
+
+                temp = population[start];
+                population[start] = population[mostFitIndex];
+                population[mostFitIndex] = temp;
+
+            }
+            
+        }
+
+        // Print out sorted result.
+        // for(int s = 0; s < POPULATION_SIZE; ++s) {
+        //     std::cout << "Fitness of Schedule " << s << ": " << population[s]->getFitness() << std::endl;
+        // }
+        // std::cout << std::endl << population[0]->toString() << std::endl;
+        // std::cout << "Most Fit: " << population[0]->getFitness() << std::endl << std::endl;
+
+
+        // Extract elite.
+        for(int e = 0; e < ELITE_SIZE; ++e) {
+            elite[e] = population[e];
+        }
+        // Print out Elite.
+        std::cout << "Elite Schedule Fitnesses: \n";
+        for(int e = 0; e < ELITE_SIZE; ++e) {
+            std::cout << e << " : " << elite[e]->getFitness() << std::endl;
+        }
+        std::cout << "\n\n";
+
+
+        // NOW, compare fitness of this generation's best to that of previous.
+
+        // If best of newest generation same as last, ++timesSame.
+        if(elite[0]->getFitness() == bestFit->getFitness()) {
+            ++timesSame;
+        } 
+        // Otherwise, reset timesSame and examine the new best.
+        else {
+
+            timesSame = 0;
+
+            // If most fit of newest generation is better than the rest so far, then set it as the new best.
+            if(elite[0]->getFitness() < bestFit->getFitness()) {
+                bestFit = elite[0];
             }
 
         }
 
-        // If maxIndex != start, then a more fit schedule (smaller fitness) has been found, and a swap must be performed.
-        if(mostFitIndex != start) {
 
-            temp = population[start];
-            population[start] = population[mostFitIndex];
-            population[mostFitIndex] = temp;
 
-        }
+
+
+        // THEN, HERE IS WHERE THE ACTUAL CROSSOVER/MUTATIONS SHOULD OCCUR. That way, when it loops around again, it will be examining the new population.
         
+
+
+        // Also, depending on how this works, should I release memory of all other schedules left in the population?? (this should subequently have each's sections and meetings destroyed).
+
+
+        // Then, perform crossover on schedules.
+
+
+        // Crossover:
+        //      For each elite schedule, choose another random schedule (from the elites (that's not the current)).
+        //          Take one half of that other schedule (alphabetically) and give it to the current elite, and give the second half of the current to the other
+        //          Maybe this is how it works???
+
+
+
+
+        ++iterations;
+
+
     }
 
-    // Print out sorted result.
-    for(int s = 0; s < POPULATION_SIZE; ++s) {
-        std::cout << "Fitness of Schedule " << s << ": " << population[s]->getFitness() << std::endl;
-    }
-    std::cout << std::endl << population[0]->toString() << std::endl;
-
-    
-
-    
-    // Extract elite
-    
-    // Also, depending on how this works, should I release memory of all other schedules left in the population?? (this should subequently have each's sections and meetings destroyed).
 
 
-    // Then, perform crossover on schedules.
+
+
+
+
+
+
 
 
     auto stopTime = std::chrono::high_resolution_clock::now();
