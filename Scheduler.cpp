@@ -92,6 +92,47 @@ void Scheduler::destroyAllSections() {
 
 
 
+// Operation that will sort sections alphabetically based on sectionId.
+//
+void Scheduler::sortSections(Section** sections, int numSections) {
+
+
+    Section* temp;
+    int leastIndex;
+
+    for(int start = 0; start < numSections - 1; ++start) {
+
+        leastIndex = start;
+
+        for(int e = start; e < numSections; ++e) {
+
+            if(sections[e]->getSectionId() < sections[leastIndex]->getSectionId()) {
+                leastIndex = e;
+            }
+
+        }
+
+        if(leastIndex != start) {
+
+            temp = sections[start];
+            sections[start] = sections[leastIndex];
+            sections[leastIndex] = temp;
+
+        }
+
+    }
+
+
+    // Test: print out sorted sections.
+    for(int s = 0; s < numSections; ++s) {
+        std::cout << sections[s]->getSectionId() << std::endl;
+    }
+
+
+}
+
+
+
 // Operation that will add section to collection of sections.
 //
 void Scheduler::addSection(Section* newSection) {
@@ -148,6 +189,9 @@ void Scheduler::importSectionsFromFile(std::string sectionsFile) {
 
     }
 
+    // Then, sort sections alphabetically.
+    sortSections(baseSections, sectionCount);
+
 
 }
 
@@ -156,12 +200,17 @@ void Scheduler::importSectionsFromFile(std::string sectionsFile) {
 //
 void Scheduler::setNewSections(Section** newSections, int numSections) {
 
+
     // Release memory maintaining old sections first.
     destroyAllSections();
     
     // Then, assign baseSections to new collection and set new count.
     baseSections = newSections;
     sectionCount = numSections;
+
+    // Then, sort sections alphabetically.
+    sortSections(baseSections, sectionCount);
+
 
 }
 

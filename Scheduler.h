@@ -37,6 +37,11 @@ private:
     virtual void destroyAllSections();
 
 
+    // Operation that will sort sections alphabetically based on course_id.
+    //
+    virtual void sortSections(Section** sections, int numSections);
+
+
 public:
 
     // Default Constructor.

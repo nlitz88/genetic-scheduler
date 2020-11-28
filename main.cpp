@@ -235,7 +235,9 @@ int main() {
         std::cout << "\n\n";
 
 
-        // NOW, compare fitness of this generation's best to that of previous.
+
+
+        // NOW, compare fitness of this generation's best to that of previous. Sort of just an intermediary step to track the progress of the genetic algorithm.
 
         // If best of newest generation same as last, ++timesSame.
         if(elite[0]->getFitness() == bestFit->getFitness()) {
@@ -281,7 +283,8 @@ int main() {
         }
 
         // Then, this is where we REGENERATE the rest of the population with new, hopefully BETTER schedules.
-        for(int p = ELITE_SIZE - 1; p < POPULATION_SIZE; ++p) {
+        // p += 2 here, as with each crossover, two new schedules are being created. Therefore, step through population and regenerate two at a time.
+        for(int p = ELITE_SIZE - 1; p < POPULATION_SIZE; p += 2) {
 
 
             // First, release memory of old schedule objects
