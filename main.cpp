@@ -181,21 +181,21 @@ int main() {
 
 
     // Print out unsorted result.
-    for(int s = 0; s < POPULATION_SIZE; ++s) {
-        std::cout << "Fitness of Schedule " << s << ": " << population[s]->getFitness() << std::endl;
-    }
-    std::cout << "\n\n";
+    // for(int s = 0; s < POPULATION_SIZE; ++s) {
+    //     std::cout << "Fitness of Schedule " << s << ": " << population[s]->getFitness() << std::endl;
+    // }
+    // std::cout << "\n\n";
 
 
     // Sort population by fitness from most fit --> least fit (i.e., smallest fitness to largest) (Selection sort)
     int mostFitIndex = 0;
     Schedule* temp;
 
-    for(int start = 0; start < POPULATION_SIZE; ++start) {
+    for(int start = 0; start < POPULATION_SIZE - 1; ++start) {
 
         mostFitIndex = start;
 
-        for(int e = start; e < POPULATION_SIZE - 1; ++e) {
+        for(int e = start; e < POPULATION_SIZE; ++e) {
 
             // Compare item at Max-Index against all other items. Trying to find another item that is greater than the one at START.
             // if MaxIndex != start after going through all, then must swap. If maxIndex STILL == start, no swap necessary.
@@ -224,6 +224,7 @@ int main() {
     for(int s = 0; s < POPULATION_SIZE; ++s) {
         std::cout << "Fitness of Schedule " << s << ": " << population[s]->getFitness() << std::endl;
     }
+    std::cout << std::endl << population[0]->toString() << std::endl;
 
     
 
