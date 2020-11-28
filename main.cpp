@@ -190,6 +190,7 @@ int main() {
             // if MaxIndex != start after going through all, then must swap. If maxIndex STILL == start, no swap necessary.
 
             // THOUGHT: I'm thinking I might need to add a "fitness" member variable to the schedule class. Otherwise I might have to pursue some less convenient means.
+            // Then, the optimizer will assign this fitness value.
 
         }
 

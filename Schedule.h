@@ -13,6 +13,8 @@ private:
     Section** sections;
     int sectionCount;
 
+    int fitness;
+
     // List of instructors from sections that a schedule will be generated from. This will later be used by Optimizer's rules.
     // For now, I think it would be copied from Scheduler (where it originates) to each schedule object.
     std::vector<std::string> instructors;
@@ -64,6 +66,17 @@ public:
     // Operation that will remove all sections from schedule
     //
     virtual void removeAllSections();
+
+
+    
+    // Operation that will set the schedule's fitness value.
+    //
+    virtual void setFitness(int newFitness);
+
+
+    // Operation that will return schedule's fitness value.
+    //
+    virtual int getFitness() const;
 
 
 

@@ -16,6 +16,8 @@ Schedule::Schedule() {
     sections = new Section* [SECTION_STEP];
     sectionCount = 0;
 
+    fitness = 0;
+
 }
 
 
@@ -27,7 +29,9 @@ Schedule::Schedule(Section** importSectionList, int importCount) {
     sections = new Section* [SECTION_STEP];
     sectionCount = 0;
 
-   importSections(importSectionList, importCount);
+    fitness = 0;
+
+    importSections(importSectionList, importCount);
     
 }
 
@@ -129,6 +133,25 @@ void Schedule::removeAllSections() {
         delete sections[sectionCount--];
 
     }
+
+}
+
+
+
+// Operation that will set the schedule's fitness value.
+//
+void Schedule::setFitness(int newFitness) {
+    
+    fitness = newFitness;
+
+}
+
+
+// Operation that will return schedule's fitness value.
+//
+int Schedule::getFitness() const {
+
+    return fitness;
 
 }
 

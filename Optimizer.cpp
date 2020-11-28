@@ -27,7 +27,7 @@ Optimizer::~Optimizer() {
 int Optimizer::getScheduleFitness(Schedule* schedule) {
 
     // Reset fitnes value
-    long fitness = 0;
+    int fitness = 0;
 
     // Then, calculate fitness value using each rule
     for(int r = 0; r < ruleCount; ++r) {
@@ -40,6 +40,10 @@ int Optimizer::getScheduleFitness(Schedule* schedule) {
 
         rules[r]->getFitness(schedule);
         fitness += rules[r]->fitnessValue();
+
+        // Set Schedule's fitness.
+        schedule->setFitness(fitness);
+
 
 #ifdef DEBUG_OPTIMIZER
         // print out fitness contributed by each Rule
