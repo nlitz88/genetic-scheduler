@@ -35,6 +35,18 @@ public:
 
     }
 
+
+    // Copy Constructor
+    //
+    Meeting(const Meeting& otherMeeting) {
+
+        day = otherMeeting.day;
+        startTime = otherMeeting.startTime;
+        endTime = otherMeeting.endTime;
+
+    }
+
+
     // Meeting constructor for providing day, starTime, and endTime
     //
     Meeting(Day initDay, Time initStartTime, Time initEndTime) {

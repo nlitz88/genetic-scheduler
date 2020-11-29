@@ -321,8 +321,10 @@ int main() {
             // And vice versa for newSchedB
             for(int s = 0; s < splitPoint; ++s) {
 
-                // Give COPIES of sections to new Schedule.
+                // Add new Section object (copied from section of elite) to newSchedA.
                 newSchedA->addSection(new Section(*(eliteA->getSections()[s])));
+
+                
                 // Will have to manually copy meetings over from each section to new section of newSchedA
                 // Is it safe to make copy constructor handle this? Or should I make a custom function in Section that does this.
 

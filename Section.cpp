@@ -31,8 +31,17 @@ Section::Section(const Section& otherSection) {
     sectionId = otherSection.sectionId;
     instructorLName = otherSection.instructorLName;
 
-    meetings = new Meeting* [MEETING_STEP];
+    meetings = new Meeting* [otherSection.getMeetingCount()];
     meetingCount = 0;
+
+    // Copy over meetings from other section.
+    for(int m = 0; m < otherSection.getMeetingCount(); ++m) {
+
+        // Uses Meeting's copy constructor.
+        this->addMeeting(new Meeting(*(otherSection.getMeetings()[m])));
+
+    }
+    
 
 }
 

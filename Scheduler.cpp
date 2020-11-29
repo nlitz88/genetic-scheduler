@@ -124,9 +124,9 @@ void Scheduler::sortSections(Section** sections, int numSections) {
 
 
     // Test: print out sorted sections.
-    for(int s = 0; s < numSections; ++s) {
-        std::cout << sections[s]->getSectionId() << std::endl;
-    }
+    // for(int s = 0; s < numSections; ++s) {
+    //     std::cout << sections[s]->getSectionId() << std::endl;
+    // }
 
 
 }
