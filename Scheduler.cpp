@@ -65,8 +65,8 @@ void Scheduler::baseConstructor() {
 //
 Scheduler::~Scheduler() {
 
-    destroyAllSections();
-    delete [] baseSections;
+    // destroyAllSections();
+    // delete [] baseSections;
 
 }
 

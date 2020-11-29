@@ -141,7 +141,7 @@ int main() {
     const int POPULATION_SIZE = 1000;
 
     // Defines the number in the elite population to be used to create the next generation.
-    const int ELITE_SIZE = 20;
+    const int ELITE_SIZE = 50;
 
     // Defines the number of times a new generation should be created in the event an optimal solution is not found.
     const int MAX_ITERATIONS = 1000;
@@ -377,7 +377,7 @@ int main() {
         << ((timesSame == STABLE_ITERATIONS && bestFit->getFitness() > MAX_ACCEPTED_FITNESS) ? "SCHEDULE DID NOT MEET " + std::to_string(MAX_ACCEPTED_FITNESS) + "\n": "")
         << "Best schedule fitness: " << bestFit->getFitness() << std::endl
         << "Iterations: " << iterations << std::endl
-        << "Main execution time: " << duration.count() << " ms == " << duration.count() / 1000.0 << "s " << std::endl << std::endl
+        << "Main execution time: " << duration.count() << " ms == " << duration.count() / 1000.0 << " s" << std::endl << std::endl
         << "***********************************************\n\n";
 
 
@@ -387,7 +387,7 @@ int main() {
 
     optimizer.displayFitnessBreakdown(bestFit);
 
-    std::cout << "***********************************************\n\n";
+    std::cout << "\n***********************************************\n\n";
 
 
 
