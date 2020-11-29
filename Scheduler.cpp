@@ -84,10 +84,8 @@ void Scheduler::destroyAllSections() {
 
     }
 
-
     // Clear instructors vector.
     instructors.clear();
-
 
 }
 
