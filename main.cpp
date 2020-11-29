@@ -241,7 +241,9 @@ int main() {
 
         // Extract elite.
         for(int e = 0; e < ELITE_SIZE; ++e) {
+
             elite[e] = population[e];
+
         }
         // Print out Elite.
         // std::cout << "Elite Schedule Fitnesses: \n";
