@@ -65,8 +65,8 @@ void Scheduler::baseConstructor() {
 //
 Scheduler::~Scheduler() {
 
-    // destroyAllSections();
-    // delete [] baseSections;
+    destroyAllSections();
+    delete [] baseSections;
 
 }
 
@@ -76,13 +76,14 @@ Scheduler::~Scheduler() {
 //
 void Scheduler::destroyAllSections() {
 
-
+    --sectionCount;
     while(sectionCount > 0) {
 
         // This should call Section destructor
         delete baseSections[sectionCount--];
 
     }
+
 
     // Clear instructors vector.
     instructors.clear();
