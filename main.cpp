@@ -134,9 +134,6 @@ int main() {
 
 
 
-    std::cout << "\nNow testing Scheduler\n\n";
-
-
     // ************************** ALGORITHM CONSTANTS **************************
 
 
@@ -153,7 +150,7 @@ int main() {
     const int STABLE_ITERATIONS = 5;
 
     // Max acceptable fitness of a schedule generated.
-    const int MAX_ACCEPTED_FITNESS = 1000;
+    const int MAX_ACCEPTED_FITNESS = 500;
 
 
 
@@ -227,11 +224,12 @@ int main() {
         }
 
         // Print out sorted result.
-        for(int s = 0; s < POPULATION_SIZE; ++s) {
-            std::cout << "Schedule " << s << ": " << population[s]->getFitness() << std::endl;
-        }
+        // for(int s = 0; s < POPULATION_SIZE; ++s) {
+        //     std::cout << "Schedule " << s << ": " << population[s]->getFitness() << std::endl;
+        // }
         // std::cout << std::endl << population[0]->toString() << std::endl;
-        std::cout << "Iteration " << iterations + 1 << " | Most Fit: " << population[0]->getFitness() << std::endl << std::endl;
+        std::cout << "Iteration " << iterations + 1 << " - Best Schedule Fitness: " << population[0]->getFitness() << std::endl << std::endl;
+
 
 
         // Extract elite.
@@ -246,16 +244,17 @@ int main() {
         // std::cout << "\n\n";
 
 
-
-
         // NOW, compare fitness of this generation's best to that of previous. Sort of just an intermediary step to track the progress of the genetic algorithm.
 
         // If best of newest generation same as last, ++timesSame.
         if(elite[0]->getFitness() == bestFit->getFitness()) {
             ++timesSame;
+            std::cout << "Same fitness as last best!\n";
         } 
         // Otherwise, reset timesSame and examine the new best.
         else {
+
+            // std::cout << "NOT Same fitness as last best!\n";
 
             timesSame = 0;
 
@@ -311,7 +310,7 @@ int main() {
 
 
             // First, release memory of old schedule objects
-            delete population[p];
+            // delete population[p];                                THIS IS CAUSING A SEGMENTATION FAULT
 
             // Then, crossover. Maybe if I have time introduce mutations somewhere in the algo.
 
@@ -369,22 +368,21 @@ int main() {
 
 
 
-    std::cout << "Best schedule fitness: " << bestFit->getFitness() << std::endl;
-
-
-
-
-
-
-
-
-
-
 
     auto stopTime = std::chrono::high_resolution_clock::now();
-    auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stopTime - startTime);
+    auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(stopTime - startTime);
 
-    std::cout << "Main execution time: " << duration.count() << std::endl;
+
+
+    std::cout << std::endl
+              << "******************** RESULTS ******************\n\n"
+              << ((timesSame == STABLE_ITERATIONS && bestFit->getFitness() > MAX_ACCEPTED_FITNESS) ? "SCHEDULE DID NOT MEET " + std::to_string(MAX_ACCEPTED_FITNESS) + "\n": "")
+              << "Best schedule fitness: " << bestFit->getFitness() << std::endl
+              << "Iterations: " << iterations << std::endl
+              << "Main execution time: " << duration.count() << " ms == " << duration.count() / 1000.0 << "s " << std::endl << std::endl
+              << "***********************************************\n\n";
+
+
 
     return 0;
 
