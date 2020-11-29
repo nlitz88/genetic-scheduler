@@ -152,6 +152,9 @@ int main() {
     // Defines the maximum number of times a new population is created when there is no improvement in fitness. That is, if the same best fitness value occurs STABLE_ITERATIONS times in a row, the algorithm with terminate regardless if MAX_ITERATIONS is reached.
     const int STABLE_ITERATIONS = 5;
 
+    // Max acceptable fitness of a schedule generated.
+    const int MAX_ACCEPTED_FITNESS = 1000;
+
 
 
 
@@ -170,6 +173,14 @@ int main() {
 
     // Generate initial population.
     population = scheduler.generateSchedules(POPULATION_SIZE);
+
+    // Initially rank population. Use Optimizer to get/assign fitness to each schedule.
+    for(int s = 0; s < POPULATION_SIZE; ++s) {
+        population[s]->setFitness(optimizer.getScheduleFitness(population[s]));
+    }
+
+
+    // DO-WHILE???
     
 
     // Initial bestFit = population[0]
@@ -179,7 +190,7 @@ int main() {
     int timesSame = 0;
 
 
-    while(bestFit > 0 && iterations < MAX_ITERATIONS && timesSame < STABLE_ITERATIONS) {
+    while(bestFit->getFitness() > MAX_ACCEPTED_FITNESS && iterations < MAX_ITERATIONS && timesSame < STABLE_ITERATIONS) {
 
 
         // Use Optimizer to get/assign fitness to each schedule.
@@ -216,11 +227,11 @@ int main() {
         }
 
         // Print out sorted result.
-        // for(int s = 0; s < POPULATION_SIZE; ++s) {
-        //     std::cout << "Fitness of Schedule " << s << ": " << population[s]->getFitness() << std::endl;
-        // }
+        for(int s = 0; s < POPULATION_SIZE; ++s) {
+            std::cout << "Schedule " << s << ": " << population[s]->getFitness() << std::endl;
+        }
         // std::cout << std::endl << population[0]->toString() << std::endl;
-        // std::cout << "Most Fit: " << population[0]->getFitness() << std::endl << std::endl;
+        std::cout << "Iteration " << iterations + 1 << " | Most Fit: " << population[0]->getFitness() << std::endl << std::endl;
 
 
         // Extract elite.
@@ -228,11 +239,11 @@ int main() {
             elite[e] = population[e];
         }
         // Print out Elite.
-        std::cout << "Elite Schedule Fitnesses: \n";
-        for(int e = 0; e < ELITE_SIZE; ++e) {
-            std::cout << e << " : " << elite[e]->getFitness() << std::endl;
-        }
-        std::cout << "\n\n";
+        // std::cout << "Elite Schedule Fitnesses: \n";
+        // for(int e = 0; e < ELITE_SIZE; ++e) {
+        //     std::cout << e << " : " << elite[e]->getFitness() << std::endl;
+        // }
+        // std::cout << "\n\n";
 
 
 
@@ -291,6 +302,9 @@ int main() {
         Schedule* eliteA = nullptr;
         Schedule* eliteB = nullptr;
 
+        // Number of sections in either schedule.
+        int numSections = 0;
+
         // Then, this is where we REGENERATE the rest of the population with new, hopefully BETTER schedules.
         // p += 2 here, as with each crossover, two new schedules are being created. Therefore, step through population and regenerate two at a time.
         for(int p = ELITE_SIZE - 1; p < POPULATION_SIZE; p += 2) {
@@ -311,38 +325,51 @@ int main() {
             do {
                 eliteB = elite[(rand() % ELITE_SIZE)];
             } while(eliteB == eliteA);
+
+
+            // Get number of sections first. Just use one of the elites to get num sections.
+            numSections = eliteA->getNumSections();
             
 
             // First, get a random section to act as the "split point."
-            int splitPoint = rand() % eliteA->getNumSections();        // Just use one of the elites to get num sections.
+            int splitPoint = rand() % numSections;    
 
 
             // Give newSchedA all sections from eliteA up to section splitPoint, and then all the rest after (and including) splitPoint to newSchedA from eliteB
             // And vice versa for newSchedB
             for(int s = 0; s < splitPoint; ++s) {
 
-                // Add new Section object (copied from section of elite) to newSchedA.
+                // Add new Section object (copied from section of eliteA) to newSchedA.
                 newSchedA->addSection(new Section(*(eliteA->getSections()[s])));
+                // Do the same for newSchedB, but add the first SPLITPOINT sections from eliteB for newSchedB instead!
+                newSchedB->addSection(new Section(*(eliteB->getSections()[s])));
 
-                
-                // Will have to manually copy meetings over from each section to new section of newSchedA
-                // Is it safe to make copy constructor handle this? Or should I make a custom function in Section that does this.
+            }
 
-                // I think making a new Operation in Section to "CopyMeetingsFromOtherSection" or something like that would be good.
-                // But BE CAREFUL; it would also have to create copies of each meeting. Otherwise, when sections get destroyed, then everything below them gets destroyed.
+            // Give all the rest of the sections (including splitPoint section) from eliteB to newSchedA, and all the rest from eliteA to newSchedB
+            for(int s = splitPoint; s < numSections; ++s) {
+
+                newSchedA->addSection(new Section(*(eliteB->getSections()[s])));
+                newSchedB->addSection(new Section(*(eliteA->getSections()[s])));
 
             }
 
 
+            // Finally, add new schedules to population.
+            population[p] = newSchedA;
+            population[p+1] = newSchedB;
+
         }
-
-
 
 
         ++iterations;
 
 
     }
+
+
+
+    std::cout << "Best schedule fitness: " << bestFit->getFitness() << std::endl;
 
 
 

@@ -30,6 +30,9 @@ public:
     Schedule(Section** importSectionList, int importCount);
 
 
+    // Might consider implementing a copy constructor for later use.
+
+
     // Schedule destructor. Will deallocate all memory maintaining collection of sections.
     // Will also destroy the sections and meetings within those sections for now.
     // Could reuse sections to conserve memory, but that might be too much complexity for at the moment.
