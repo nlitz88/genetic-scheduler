@@ -304,11 +304,12 @@ int main() {
 
         // Then, this is where we REGENERATE the rest of the population with new, hopefully BETTER schedules.
         // p += 2 here, as with each crossover, two new schedules are being created. Therefore, step through population and regenerate two at a time.
-        for(int p = ELITE_SIZE - 1; p < POPULATION_SIZE; p += 2) {
+        for(int p = ELITE_SIZE; p < POPULATION_SIZE; p += 2) {
 
 
             // First, release memory of old schedule objects
-            // delete population[p];                                THIS IS CAUSING A SEGMENTATION FAULT
+            delete population[p];
+            delete population[p+1];
 
             // Then, crossover. Maybe if I have time introduce mutations somewhere in the algo.
 

@@ -127,12 +127,17 @@ void Schedule::removeSection(std::string idToRemove) {
 //
 void Schedule::removeAllSections() {
 
+    --sectionCount;
     while(sectionCount > 0) {
 
         // This should call Section destructor
         delete sections[sectionCount--];
 
     }
+
+    // for(int s = 0; s < sectionCount; ++s) {
+    //     delete sections[s];
+    // }
 
 }
 

@@ -50,7 +50,7 @@ Section::Section(const Section& otherSection) {
 //
 Section::~Section() {
 
-    std::cout << sectionId << " being deleted. # of meetings: " << meetingCount << std::endl;
+    // std::cout << sectionId << " being deleted. # of meetings: " << meetingCount << std::endl;
 
     // Release memory maintaining dynamically allocated Meeting objects
     removeAllMeetings();
@@ -114,6 +114,7 @@ void Section::removeMeeting(Day day) {
 // 
 void Section::removeAllMeetings() {
 
+    --meetingCount;
     while(meetingCount > 0) {
         // std::cout << "Meeting " << meetingCount << " of " << sectionId << " destroyed" << std::endl;
         delete meetings[meetingCount--];
