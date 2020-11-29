@@ -155,8 +155,6 @@ int main() {
 
 
 
-
-
     // Optimizer object that will calculate fitness for each schedule.
     Optimizer optimizer;
 
@@ -375,18 +373,25 @@ int main() {
 
 
     std::cout << std::endl
-              << "******************** RESULTS ******************\n\n"
-              << ((timesSame == STABLE_ITERATIONS && bestFit->getFitness() > MAX_ACCEPTED_FITNESS) ? "SCHEDULE DID NOT MEET " + std::to_string(MAX_ACCEPTED_FITNESS) + "\n": "")
-              << "Best schedule fitness: " << bestFit->getFitness() << std::endl
-              << "Iterations: " << iterations << std::endl
-              << "Main execution time: " << duration.count() << " ms == " << duration.count() / 1000.0 << "s " << std::endl << std::endl
-              << "***********************************************\n\n";
+        << "******************** RESULTS ******************\n\n"
+        << ((timesSame == STABLE_ITERATIONS && bestFit->getFitness() > MAX_ACCEPTED_FITNESS) ? "SCHEDULE DID NOT MEET " + std::to_string(MAX_ACCEPTED_FITNESS) + "\n": "")
+        << "Best schedule fitness: " << bestFit->getFitness() << std::endl
+        << "Iterations: " << iterations << std::endl
+        << "Main execution time: " << duration.count() << " ms == " << duration.count() / 1000.0 << "s " << std::endl << std::endl
+        << "***********************************************\n\n";
+
+
+
+    std::cout << std::endl 
+              << "**** Schedule With Best Fitness Breakdown ****\n\n";
+
+    optimizer.displayFitnessBreakdown(bestFit);
+
+    std::cout << "***********************************************\n\n";
 
 
 
     return 0;
 
-    // old: 9107634 microseconds
-    // new: 
 
 }

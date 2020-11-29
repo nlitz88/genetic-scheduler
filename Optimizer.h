@@ -24,7 +24,13 @@ public:
 
 
     // I think this functions job will be to find the sum of all of the rule objects getFitness() functions
+    //
     virtual int getScheduleFitness(Schedule* schedule);
+
+
+    // Operation that prints out results of Optimization of a schedule. Used primarily for debugging.
+    //
+    virtual void displayFitnessBreakdown(Schedule* schedule);
 
 };
 

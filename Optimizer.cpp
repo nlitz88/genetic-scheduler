@@ -14,9 +14,9 @@ Optimizer::Optimizer() {
 Optimizer::~Optimizer() {
 
     // Release memory maintaining each rule object
-    // for(int r = 0; r < ruleCount; ++r) {
-    //     delete rules[r];
-    // }
+    for(int r = 0; r < ruleCount; ++r) {
+        delete rules[r];
+    }
 
     // Release memory maintaining each pointer to Rule object that make up our collection of rules.
     delete [] rules;
@@ -52,8 +52,34 @@ int Optimizer::getScheduleFitness(Schedule* schedule) {
         std::cout << "Fitness contributed by " << ruleNames[r] << ": " << ruleFitnesses[r] << std::endl;
 #endif
 
+
     }
 
     return fitness;
+
+}
+
+
+
+// Operation that prints out results of Optimization of a schedule. Used primarily for debugging.
+//
+void Optimizer::displayFitnessBreakdown(Schedule* schedule) {
+
+
+    int fitness = 0;
+
+    // Then, calculate fitness value using each rule
+    for(int r = 0; r < ruleCount; ++r) {
+
+        rules[r]->getFitness(schedule);
+        fitness += rules[r]->fitnessValue();
+
+
+        // print out fitness contributed by each Rule
+        ruleFitnesses[r] = rules[r]->fitnessValue();
+        std::cout << "Fitness contributed by " << ruleNames[r] << ": " << ruleFitnesses[r] << std::endl;
+
+    }
+
 
 }
