@@ -317,6 +317,7 @@ int main() {
             // Create new Schedule objects (this instructor just creates a Schedule with a blank collection of pointers to sections) (Use addSection to add).
             newSchedA = new Schedule();
             newSchedB = new Schedule();
+            
 
             // Get two random elite Schedules.
             eliteA = elite[(rand() % ELITE_SIZE)];
@@ -330,7 +331,7 @@ int main() {
             
 
             // First, get a random section to act as the "split point."
-            int splitPoint = rand() % numSections;    
+            int splitPoint = rand() % numSections;
 
 
             // Give newSchedA all sections from eliteA up to section splitPoint, and then all the rest after (and including) splitPoint to newSchedA from eliteB
