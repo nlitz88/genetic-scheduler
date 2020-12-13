@@ -179,7 +179,7 @@ void Rule_CampusTime::getFitness(Schedule* schedule) {
     for(std::string instructor : schedule->getInstructors()) {
 
 #ifdef DEBUG_RULE
-            std::cout << "# " << instructors.size() << " - " << instructor << ": \n";
+            std::cout << "# " << schedule->getInstructors().size() << " - " << instructor << ": \n";
 #endif
 
 
@@ -403,7 +403,7 @@ void Rule_TwoEvenings::getFitness(Schedule* schedule) {
 
 
 #ifdef DEBUG_RULE
-        std::cout << "# " << instructors.size() << " - " << instructor << ": \n";
+        std::cout << "# " << schedule->getInstructors().size() << " - " << instructor << ": \n";
 #endif
 
         // For each section.
@@ -462,6 +462,7 @@ void Rule_TwoEvenings::getFitness(Schedule* schedule) {
     }
 
 }
+
 
 
 void Rule_BackToBack::getFitness(Schedule* schedule) {
@@ -546,6 +547,7 @@ void Rule_BackToBack::getFitness(Schedule* schedule) {
 }
 
 
+
 void Rule_AroundCommon::getFitness(Schedule* schedule) {
 
     // Reset fitness value to evaluate schedule
@@ -569,7 +571,7 @@ void Rule_AroundCommon::getFitness(Schedule* schedule) {
 
 
 #ifdef DEBUG_RULE
-        std::cout << "# " << instructors.size() << " - " << instructor << ": \n";
+        std::cout << "# " << schedule->getInstructors().size() << " - " << instructor << ": \n";
 #endif
 
 
@@ -667,6 +669,7 @@ void Rule_AroundCommon::getFitness(Schedule* schedule) {
 }
 
 
+
 void Rule_ClassesPerDay::getFitness(Schedule* schedule) {
 
     // Reset fitness value to evaluate schedule
@@ -761,6 +764,7 @@ void Rule_ClassesPerDay::getFitness(Schedule* schedule) {
 }
 
 
+
 void Rule_LongClassesPerDay::getFitness(Schedule* schedule) {
 
     // Reset fitness value to evaluate schedule
@@ -783,7 +787,7 @@ void Rule_LongClassesPerDay::getFitness(Schedule* schedule) {
 
 
 #ifdef DEBUG_RULE
-        std::cout << "# " << instructors.size() << " - " << instructor << ": \n";
+        std::cout << "# " << schedule->getInstructors().size() << " - " << instructor << ": \n";
 #endif
 
 
@@ -875,6 +879,7 @@ void Rule_LongClassesPerDay::getFitness(Schedule* schedule) {
     }
 
 }
+
 
 
 void Rule_BadTime::getFitness(Schedule* schedule) {

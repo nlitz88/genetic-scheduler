@@ -1,17 +1,9 @@
 #ifndef RULE_H
 #define RULE_H
 
-// #define DEBUG_RULE
-
-#include <iostream>
-#include <string>
-#include <vector>
-#include <algorithm>
 
 #include "Schedule.h"
-#include "Section.h"
-#include "Time.h"
-#include "Meeting.h"
+
 
 class Rule {
 

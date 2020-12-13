@@ -1,6 +1,7 @@
 // #define DEBUG_OPTIMIZER
 
 #include "Optimizer.h"
+#include <iostream>
 
 
 Optimizer::Optimizer() {
