@@ -60,6 +60,10 @@ int main() {
     // Create new Scheduler. Pass in filename so that it can generate collection of sections.
     Scheduler scheduler = Scheduler("sections.txt");
 
+
+    // ************************** GENETIC ALGORITHM **************************
+
+
     // Collection of Schedules for POPULATION and ELITE.
     Schedule** population = new Schedule* [POPULATION_SIZE];
     Schedule** elite = new Schedule* [ELITE_SIZE];
