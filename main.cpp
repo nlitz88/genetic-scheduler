@@ -49,7 +49,7 @@ int main() {
     const int STABLE_ITERATIONS = 10;
 
     // Max acceptable fitness of a schedule generated.
-    const int MAX_ACCEPTED_FITNESS = 0;
+    const int MAX_ACCEPTED_FITNESS = -1;
 
 
 
@@ -100,9 +100,9 @@ int main() {
             std::cout << "\nReleasing old population and generating new!\n\n";
 
             // Release memory maintaining old population of schedule objects.
-            // for(int p = 0; p < POPULATION_SIZE; ++p) {
-            //     delete population[p];
-            // }
+            for(int p = 0; p < POPULATION_SIZE; ++p) {
+                delete population[p];
+            }
             delete [] population;
 
             // Generate new population of schedule objects.
