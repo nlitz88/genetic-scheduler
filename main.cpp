@@ -95,14 +95,21 @@ int main() {
         // IF fitness of best schedule hasn't changed over STABLE_ITERATIONS times, then regenerate the initial population and try again!
         if(timesSame == STABLE_ITERATIONS) {
 
+            timesSame = 0;
+
+            std::cout << "\nReleasing old population and generating new!\n\n";
+
             // Release memory maintaining old population of schedule objects.
-            for(int p = 0; p < POPULATION_SIZE; ++p) {
-                delete population[p];
-            }
+            // for(int p = 0; p < POPULATION_SIZE; ++p) {
+            //     delete population[p];
+            // }
             delete [] population;
 
             // Generate new population of schedule objects.
             population = scheduler.generateSchedules(POPULATION_SIZE);
+
+            // Assign new best fit.
+            bestFit = population[0];
             
         }
 
