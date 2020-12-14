@@ -95,6 +95,13 @@ int main() {
         // IF fitness of best schedule hasn't changed over STABLE_ITERATIONS times, then regenerate the initial population and try again!
         if(timesSame == STABLE_ITERATIONS) {
 
+            // Release memory maintaining old population of schedule objects.
+            for(int p = 0; p < POPULATION_SIZE; ++p) {
+                delete population[p];
+            }
+            delete [] population;
+
+            // Generate new population of schedule objects.
             population = scheduler.generateSchedules(POPULATION_SIZE);
             
         }
