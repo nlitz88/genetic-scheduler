@@ -97,7 +97,7 @@ int main() {
 
             timesSame = 0;
 
-            std::cout << "\nReleasing old population and generating new!\n\n";
+            // std::cout << "\nReleasing old population and generating new!\n\n";
 
             // Release memory maintaining old population of schedule objects.
             for(int p = 0; p < POPULATION_SIZE; ++p) {
