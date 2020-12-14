@@ -21,114 +21,13 @@ int main() {
     auto startTime = std::chrono::high_resolution_clock::now();
 
 
-    // Test reading in from file a collection of sections
-    // Section** sections = new Section* [50];
-    // int numSections = 0;
-
-    // std::ifstream fin;
-    // fin.open("sections.txt");
+    // Old testing can be found in previous commits.
     
-    // std::string id, lname;
-    // while(!fin.eof()) {
-        
-    //     fin >> id >> lname;
-
-    //     sections[numSections++] = new Section(id, lname);
-
-    //     // NOTE: Should I check for duplicate sections in the provided list?
-    //     //       I would imagine these should be ignored. Ask Hal about this later.
-
-    // }
-
-
-    // for(int i = 0; i < s; ++i) {
-    //     std::cout << sections[i]->getSectionId() << " " << sections[i]->getInstructorLName() << std::endl;
-    // }
-
-    // Pointer to test section
-    // Section* s1 = sections[0];
-
-    // std::cout << s1->getSectionId() << " meetings: \n\n";
-    // s1->addMeeting(new Meeting(T, Time(9,05), Time(9,55)));
-    // s1->addMeeting(new Meeting(R, Time(9,05), Time(9,55)));
-    // s1->generateMeetings();
-    // std::cout << s1->toString();
-
-
-
-    // Schedule* sched1 = new Schedule(sections, numSections);
-
-    // sched1->generateSchedule();
-    // std::cout << sched1->toString();
-
-    // sched1->~Schedule();
-
-    // for(int i = 0; i < numSections; ++i) {
-    //     delete sections[i];
-    // }
-
-    // std::cout << "This section should still exist: " << s1->toString();
-
-
-
-    // Rule_TimeConflict sameTimeRule;
-    // Rule_BackToBack backToBackRule;
-    // Rule_CampusTime campusTimeRule;
-    // Rule_LongClassesPerDay longClassesPerDay;
-
-
-
-
-
-
-
-
-    // const int POPULATION_SIZE = 1;
-
-    // int overallFitness = 0;
-    // int numBad = 0;
-    // int numGood = 0;
-
-    // Optimizer opt;
-
-    // Schedule** schedules = new Schedule* [POPULATION_SIZE];
-
-    // for(int s = 0; s < POPULATION_SIZE; ++s) {
-
-    //     schedules[s] = new Schedule(sections, numSections);
-    //     schedules[s]->generateSchedule();
-
-    //     // Is this the functionality that we would wrap up in the optimizer's fitness function? (I.e. is this what the fitness function would essentially be responsible for)
-    //     // Then, get fitness of shedule (in incorrect way for now)
-    //     // sameTimeRule.getFitness(schedules[s]);
-    //     // backToBackRule.getFitness(schedules[s]);
-    //     // campusTimeRule.getFitness(schedules[s]);
-    //     // longClassesPerDay.getFitness(schedules[s]);
-
-    //     // overallFitness = longClassesPerDay.fitnessValue();
-    //     // overallFitness = sameTimeRule.fitnessValue() + backToBackRule.fitnessValue() + campusTimeRule.fitnessValue();
-
-    //     overallFitness = opt.getScheduleFitness(schedules[s]);
-
-    //     if(overallFitness >= 1000000) {
-    //         ++numBad;
-    //     } else {
-    //         ++numGood;
-    //     }
-
-    //     std::cout << "Fitness of schedule #" <<  s << " : " << overallFitness << std::endl;
-
-    // }
-
-    // std::cout << "Probability to getting schedule w/o time conflict: " << numGood << "\\" << numBad + numGood << "  ==  " << static_cast<double>(numGood)/(numBad + numGood) * 100 << "%" << std::endl;
-
-
-
 
 
     // *******************************************************************************
     //
-    //                             Testing Scheduler
+    //                             SCHEDULE GENERATION
     //
     // *******************************************************************************
 
@@ -283,9 +182,6 @@ int main() {
 
 
         // Also, depending on how this works, should I release memory of all other schedules left in the population?? (this should subequently have each's sections and meetings destroyed).
-
-
-        // Then, perform crossover on schedules.
 
 
         // Crossover:
