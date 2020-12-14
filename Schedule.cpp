@@ -42,6 +42,8 @@ Schedule::Schedule(Section** importSectionList, int importCount) {
 //
 Schedule::~Schedule() {
 
+    // std::cout << "Schedule being destroyed\n";
+
     removeAllSections();
     delete [] sections;
 

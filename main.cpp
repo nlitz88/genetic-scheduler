@@ -49,7 +49,7 @@ int main() {
     const int STABLE_ITERATIONS = 10;
 
     // Max acceptable fitness of a schedule generated.
-    const int MAX_ACCEPTED_FITNESS = -1;
+    const int MAX_ACCEPTED_FITNESS = 0;
 
 
 
